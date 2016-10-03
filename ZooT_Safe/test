@@ -1,0 +1,36 @@
+entrance
+newt at $a = 3, $b = 9:
+mane()
+{{
+   newt at $x,$y,$total:
+   zoout(( "Enter first number:":
+   zooin))$x: 
+   zoout(( "Enter second number:":
+   $a = $b:
+   zooin))$y:
+   $total=$x+$y:
+   zoout(($total:
+  zooin))$a[]:
+  if(($a == 3) || ($b < 4)) 
+  {{
+     if($a == 2)
+     {{
+     zoout(( "Enter first number:":
+     }}
+     eelsif( $a == 3 )
+     {{
+     zoout(( "Enter first number:":
+     }}
+     eels
+     {{
+     zoout(("Value is: " ? $a:
+     }}
+  }} 
+}}
+newt at $addition(newt at $num1,newt at $num2)
+{{
+  newt at $sum:
+  $sum=$num1+$num2:
+  hop $sum:
+}}
+exit
