@@ -1,0 +1,180 @@
+%header%
+
+GRAMMARTYPE = "LL"
+
+%tokens%
+/* Reserved Words */
+ENTRANCE = "entrance"
+EXIT = "exit"
+MANE = "mane"
+LET = "let"
+WIPE = "wipe"
+ZOOIN = "zooin"
+ZOOUT = "zoout"
+IF = "if"
+EELSIF = "eelsif"
+EELS = "eels"
+CHAMOIS = "chamois"
+TERMITE = "termite"
+SEAL = "seal"
+WHALE = "whale"
+DO = "do"
+FUR = "fur"
+HOP = "hop"
+SWASP = "swasp"
+STORK = "stork"
+AT = "at"
+
+/* Reserved Symbol */
+COMSYM = "'"
+TERMI = ":"
+SC = ";"
+COMMA = ","
+EQUAL = "="
+OB = "["
+CB = "]"
+OC = "{"
+CC = "}"
+OP = "("
+CP = ")"
+ODC = "{{"
+CDC = "}}"
+CONC = ".+"
+CON = "?"
+ODP = "(("
+CDP = "))"
+NEG = "~"
+ADD = "+"
+SUB = "-"
+MUL = "*"
+DIV = "/"
+MOD = "%"
+EXP = "^"
+OA = "<"
+CA = ">"
+OAE = "<="
+CAE = ">="
+EE = "!="
+DE = "=="
+EXC = "!"
+DAND = "&&"
+DOR = "||"
+INCRE = "++"
+DECRE = "--"
+
+/* Data Type */
+NEWT = "newt"
+DUCK = "duck"
+BULL = "bull"
+STARLING = "starling"
+VIPER = "viper"
+
+/* Literals */
+NEWTLIT = "newt literals"
+DUCKLIT = "duck literals"
+STARLIT = "starling literals"
+TRUE = "true"
+FALSE = "false"
+
+/* Identifier */
+ID = "id"
+COMMENT = "comment"
+
+WHITESPACE   = <<[ \t\n\r\s]+>> %ignore%
+
+
+%productions%
+
+program = ENTRANCE [prod_comment] [global_dec] [global_funcdec] prod_mane [sub_function] EXIT ;
+prod_comment = COMSYM COMMENT [prod_comment] ;
+global_dec = var_dec [global_dec] [prod_comment] | const_dec [global_dec] | stork_dec [global_dec] ;
+global_funcdec = func_dec [global_dec] ;
+var_dec = ident_var [next2_var] TERMI [prod_comment] ;
+ident_var = dtype AT ID ;
+dtype = NEWT | DUCK | STARLING | BULL ;
+next2_var = COMMA ID [next2_var] | EQUAL val [next2var_tail] | array1D [next2var_tail] ;
+next2var_tail = array2D [next2var_tail] | COMMA ID [next2_var] ;
+val = NEWTLIT | DUCKLIT | STARLIT | bulLit ; 
+bulLit = TRUE | FALSE ;
+array1D = OB [size] CB [elem1D_next] ;
+elem1D_next = EQUAL OC elem1D_list CC ;
+elem1D_list = val [elemlist1D_tail] ; 
+elemlist1D_tail = COMMA val [elemlist1D_tail] ;
+array2D = OB [size] CB [elem2D_next] ; 
+elem2D_next = EQUAL OC elem2D_list  CC | COMMA OC elem1D_list CC [elem2D_next] ;
+elem2D_list = OC elem1D_list CC [elem2D_next] ;
+size = NEWTLIT | ID ;
+const_dec = LET ident_var EQUAL val [const_next] TERMI [prod_comment] ;
+const_next = COMMA ID EQUAL val [const_next] ;
+func_dec = dtype1 AT ID OP [param] CP TERMI [prod_comment] ; 
+dtype1 = VIPER | dtype ;
+param = dtype [multi_param] ;
+multi_param = COMMA [param] ;
+stork_dec = STORK AT ID [prod_comment] ODC stork_elem [multistork_elem] CDC [obj_dec] TERMI [prod_comment] ;
+stork_elem = ident_var [multi_vardec] [prod_comment] ;
+multi_vardec = COMMA ID [multi_vardec] ;
+multistork_elem = stork_elem ;
+obj_dec = ID [multi_vardec] ;
+prod_mane = MANE OP CP [prod_comment] ODC [local_dec] statement [statement1] [return] CDC [prod_comment] ;
+local_dec = var_dec [local_dec] ;
+statement = input [statement_tail] [prod_comment] | output [clrscr] [statement_tail] [prod_comment] | math_eq TERMI [statement_tail] [prod_comment] | conditional [statement_tail] [prod_comment] | iterative [statement_tail] [prod_comment] ;
+clrscr = WIPE TERMI ;
+statement1 = function_call [statement_tail] ;
+statement_tail = statement [prod_comment] | statement1 ;
+input = ZOOIN CDP ID [scan_fig] [multi_input] TERMI [prod_comment] ;
+scan_fig = arr1D | stork_access1 ;
+multi_input = CDP ID [scan_fig] [multi_input] ;
+arr1D = OB [size] CB [arr2D] ;
+arr2D = OB [size] CB ;
+stork_access1 = CONC ID ;
+output = ZOOUT ODP output_next [multi_output] TERMI [prod_comment];
+output_next = ID scan_fig1 | STARLIT [math_eqtail] | ID ;
+multi_output = ODP output_next [multi_output] ;
+scan_fig1 = arr1D | stork_access1 ;
+math_eq = ID EQUAL math_eqtail ;
+math_eqtail = [negate] OP math_id [math_tail] CP [matheq_next] | CON ID | CON STARLING | math_id [math_tail] [matheq_next] ;
+math_tail = math_op math_id [math_tail] ;
+math_op = ADD | SUB | MUL | DIV | MOD |EXP ;
+math_id = ID | NEWTLIT | DUCKLIT ;
+negate = NEG ;
+matheq_next = math_op [negate] OP math_id [matheq_next] CP ;
+conditional = IF OP cond_expr CP ODC statement [statement1] CDC [cond_eelsif] | SWASP OP ID CP [prod_comment] ODC swasp_case default CDC [prod_comment] ;
+cond_expr = rel_expr1 | log_expr | bulLit ;
+rel_expr1 =  ID relex_tail ;
+relex_tail = rel_op1 arithmetic | rel_op2 rel_fig ;
+arithmetic = expression [arithmetic_tail] ;
+arithmetic_tail = math_op expression [arithmetic_tail] ;
+expression = NEWTLIT | negate expr_next | ID | DUCKLIT ;
+expr_next = DUCKLIT | NEWTLIT ;
+rel_op1 = OA | CA | OAE | CAE ;
+rel_op2 = EE | DE ;
+rel_fig = val | scan_fig1 | ID ;
+log_expr = EXC not_fig | OP cond_expr CP log_op OP cond_expr CP [log_expr_next] ;
+not_fig = ID | OP cond_expr CP | bulLit ;
+log_expr_next = log_op OP cond_expr CP [log_expr_next] ;
+log_op = DAND | DOR ;
+cond_eelsif =  EELSIF OP cond_expr CP [prod_comment] ODC statement [statement1] CDC [prod_comment] [cond_eelsif] cond_eels ;
+cond_eels = EELS [prod_comment] ODC statement [statement1] CDC [prod_comment] ;
+swasp_case = CHAMOIS term_expr SC statement [statement1] TERMITE TERMI [swasp_case1] [prod_comment] ;
+swasp_case1 = swasp_case ;
+term_expr = NEWTLIT | STARLIT ; 
+default = SEAL TERMI statement [statement1] ; 
+iterative = WHALE OP cond_expr CP ODC statement [statement1] loop_fig2 TERMI CDC [prod_comment] | DO [prod_comment] ODC statement [statement1] CDC WHALE OP cond_expr CP TERMI | FUR OP ID EQUAL loop_fig1 TERMI rel_expr1 TERMI loop_fig2 CP [prod_comment] ODC statement [statement1] CDC [prod_comment] ;
+loop_fig1 = NEWTLIT | ID ;
+loop_fig2 = increm_decrem ;
+increm_decrem = unary_op ID | ID unary_op ;
+unary_op = INCRE | DECRE ;
+function_call = ID OP [args1] CP ;
+args1 = args2 [multi_args] ;
+args2 = ID [args_tail] |  val ;
+args_tail = OB [size] CB [arr2D] ;
+multi_args = COMMA args2 [multi_args] ;
+sub_function = dtype1 AT ID OP [func_args] CP [prod_comment] ODC [local_dec] statement [statement1] [return] CDC [prod_comment] ;
+func_args = ident_var [func_tail][multifunc_args] ;
+func_tail = one_array ;
+one_array = OB CB [two_array] ;
+two_array = OB CB ;
+multifunc_args = COMMA [func_args] ;
+return = HOP result TERMI [prod_comment] ;
+result = val | ID [result_tail] ;
+result_tail = arr1D | OP [args1] CP ;
