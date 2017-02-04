@@ -51,6 +51,19 @@ namespace Code_Generation
         }
 
         public string error = "";
+        public string code = "using System; \nnamespace Zootopia\n{\n public class Compiler\n{\n";
+        private bool isRead = false;
+        private bool isSay = false;
+        private bool isSwitch = false;
+        private bool isCase = false;
+        private bool isDo = false;
+        private bool isArray = false;
+        private bool isFor = false;
+        private bool isOutput = false;
+        private bool isAt = false;
+        private bool isAdd;
+        private string input_datatype;
+        private bool isDec;
 
         public string Start()
         {
@@ -130,15 +143,909 @@ namespace Code_Generation
             }
             return token;
         }
+        
 
-     /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+
+        //START TOKENS
+        public override void EnterEntrance(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitEntrance(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterExit(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitExit(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterMane(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitMane(Token node)
+        {
+            if (isAdd)
+            {
+                code += "static void Main";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterLet(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitLet(Token node)
+        {
+            if (isAdd)
+            {
+                code += "const ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterWipe(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitWipe(Token node)
+        {
+            if (isAdd)
+            {
+                code += "Console.Clear";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterZooin(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitZooin(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterZoout(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitZoout(Token node)
+        {
+            if (isAdd)
+            {
+
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterIf(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitIf(Token node)
+        {
+            if (isAdd)
+            {
+                code += "if ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterEelsif(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitEelsif(Token node)
+        {
+            if (isAdd)
+            {
+                code += "else if ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterEels(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitEels(Token node)
+        {
+            if (isAdd)
+            {
+                code += "else";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterChamois(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitChamois(Token node)
+        {
+            if (isAdd)
+            {
+                code += "case: ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterTermite(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitTermite(Token node)
+        {
+            if (isAdd)
+            {
+                code += "break ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterSeal(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitSeal(Token node)
+        {
+            if (isAdd)
+            {
+                code += "default ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterWhale(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitWhale(Token node)
+        {
+            if (isAdd)
+            {
+                code += "while ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDo(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDo(Token node)
+        {
+            if (isAdd)
+            {
+                code += "do ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterFur(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitFur(Token node)
+        {
+            if (isAdd)
+            {
+                code += "for "; 
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterHop(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitHop(Token node)
+        {
+            if (isAdd)
+            {
+                code += "return";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterSwasp(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitSwasp(Token node)
+        {
+            if (isAdd)
+            {
+                code += "switch ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterStork(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitStork(Token node)
+        {
+            if (isAdd)
+            {
+                code += "struc ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterAt(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitAt(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterNull(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitNull(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterComsym(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitComsym(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterTermi(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitTermi(Token node)
+        {
+            if (isAdd)
+            {
+                code += ";";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterSc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitSc(Token node)
+        {
+            if (isAdd)
+            {
+                code += ";";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterComma(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitComma(Token node)
+        {
+            if (isAdd)
+            {
+                code += ",";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterEqual(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitEqual(Token node)
+        {
+            if (isAdd)
+            {
+                code += "=";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOb(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOb(Token node)
+        {
+            if (isAdd)
+            {
+                code += "[";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCb(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCb(Token node)
+        {
+            if (isAdd)
+            {
+                code += "]";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOc(Token node)
+        {
+            if (isAdd)
+            {
+                code += "{";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCc(Token node)
+        {
+            if (isAdd)
+            {
+                code += "}";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOp(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOp(Token node)
+        {
+            if (isAdd)
+            {
+                code += "(";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCp(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCp(Token node)
+        {
+            if (isAdd)
+            {
+                code += "\n)\n";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOdc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOdc(Token node)
+        {
+            if (isAdd)
+            {
+                code += "(\n";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCdc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCdc(Token node)
+        {
+            if (isAdd)
+            {
+                code += ")\n";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterConc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitConc(Token node)
+        {
+            if (isAdd)
+            {
+                code += ".+";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCon(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCon(Token node)
+        {
+            if (isAdd)
+            {
+                code += "?";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOda(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOda(Token node)
+        {
+            if (isAdd)
+            {
+                code += "<<";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCda(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCda(Token node)
+        {
+            if (isAdd)
+            {
+                code += ">>";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterNeg(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitNeg(Token node)
+        {
+            if (isAdd)
+            {
+                code += "~";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterAdd(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitAdd(Token node)
+        {
+            if (isAdd)
+            {
+                code += "+ ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterSub(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitSub(Token node)
+        {
+            if (isAdd)
+            {
+                code += "- ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterMul(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitMul(Token node)
+        {
+            if (isAdd)
+            {
+                code += "* ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDiv(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDiv(Token node)
+        {
+            if (isAdd)
+            {
+                code += "/ ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterMod(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitMod(Token node)
+        {
+            if (isAdd)
+            {
+                code += "% ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterExp(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitExp(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOa(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOa(Token node)
+        {
+            if (isAdd)
+            {
+                code += "< ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCa(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCa(Token node)
+        {
+            if (isAdd)
+            {
+                code += "> ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterOae(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitOae(Token node)
+        {
+            if (isAdd)
+            {
+                code += "<= ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterCae(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitCae(Token node)
+        {
+            if (isAdd)
+            {
+                code += ">= ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterEe(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitEe(Token node)
+        {
+            if (isAdd)
+            {
+                code += "!= ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDe(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDe(Token node)
+        {
+            if (isAdd)
+            {
+                code += "== ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterExc(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitExc(Token node)
+        {
+            if (isAdd)
+            {
+                code += "! ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDand(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDand(Token node)
+        {
+            if (isAdd)
+            {
+                code += "&& ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDor(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDor(Token node)
+        {
+            if (isAdd)
+            {
+                code += "|| ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterIncre(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitIncre(Token node)
+        {
+            if (isAdd)
+            {
+                code += "++ ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDecre(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDecre(Token node)
+        {
+            if (isAdd)
+            {
+                code += "-- "; 
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterNewt(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitNewt(Token node)
+        {
+            if (isAdd)
+            {
+                code += "int ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDuck(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDuck(Token node)
+        {
+            if (isAdd)
+            {
+                code += "double ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterBull(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitBull(Token node)
+        {
+            if (isAdd)
+            {
+                code += "bool ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterStarling(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitStarling(Token node)
+        {
+            if (isAdd)
+            {
+                code += "string ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterViper(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitViper(Token node)
+        {
+            if (isAdd)
+            {
+                code += "void ";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterNewtlit(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitNewtlit(Token node)
+        {
+            if (isAdd)
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                code += t.getLexemes();
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterDucklit(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitDucklit(Token node)
+        {
+            if (isAdd)
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                code += t.getLexemes();
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterStarlit(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitStarlit(Token node)
+        {
+            if (isAdd)
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                code += t.getLexemes();
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterTrue(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitTrue(Token node)
+        {
+            if (isAdd)
+            {
+                code += "true";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterFalse(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitFalse(Token node)
+        {
+            if (isAdd)
+            {
+                code += "false";
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterId(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitId(Token node)
+        {
+            if (isAdd)
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                code += " " + t.getLexemes();
+                isAdd = false;
+            }
+            return node;
+        }
+        public override void EnterComment(Token node)
+        {
+            isAdd = true;
+        }
+        public override Node ExitComment(Token node)
+        {
+            if (isAdd)
+            {
+                isAdd = false;
+            }
+            return node;
+        }
+
+
+        //END TOKENS
+
+
+
+
+        /**
+        * <summary>Called when entering a parse tree node.</summary>
+        *
+        * <param name='node'>the node being entered</param>
+        *
+        * <exception cref='ParseException'>if the node analysis
+        * discovered errors</exception>
+        */
         public override void EnterProdProgram(Production node)
         {
             Console.Clear();
@@ -1534,7 +2441,7 @@ namespace Code_Generation
          */
         public override Node ExitProdLocalDec(Production node)
         {
-            return node;
+           return node;
         }
 
         /**

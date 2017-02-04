@@ -211,9 +211,9 @@ namespace Semantics_Analyzer
                 {
                     if(item.getId() == id.getId())
                     {
-                        if(item.getScope() == id.getScope() || item.getScope() == "Global" || item.getScope() == "Constant")
+                        if(item.getScope() == id.getScope() || item.getScope() == "Global")
                         {
-                            error += "Semantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
+                            error += "\nSemantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
                             isvalid = false;
                         }
                     }
@@ -1323,8 +1323,7 @@ namespace Semantics_Analyzer
          * discovered errors</exception>
          */
         public override void EnterProdConstDec(Production node)
-        {
-            currscope = "Constant";
+        { 
         }
 
         /**
@@ -1846,26 +1845,42 @@ namespace Semantics_Analyzer
             SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
             identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
             isSaved = checkIdentifier(identifier);
-            //if (node.GetChildCount() > 2)
-            //{
-            //    if (node.GetChildAt(1).GetName() == "prod_func_var")
-            //    {
-            //        Node func_var = node.GetChildAt(1);
-            //        if (func_var.GetChildAt(0).GetName() == "prod_next2var")
-            //        {
 
-            //        }
-            //        else
-            //        {
-            //            isFunct = true;
-            //        }
-            //    }
-            //    else
-            //    {
 
-            //    }
-            //};
+            if (node.GetChildCount() > 2)
+            {
+                    Node next2var = node.GetChildAt(1);
+                    if (next2var.GetName() == "prod_next2var")
+                    {
+                        saveVariables(next2var, dtype, scope);   
+                    }
+            }
+            
             return node;
+        }
+
+        private void saveVariables(Node node, string dtype, string scope)
+        {
+            int idline, idcol;
+            string id = "";
+            bool isSaved = false;
+            idline = node.GetChildAt(1).GetStartLine();
+            idcol = node.GetChildAt(1).GetStartColumn();
+            Tokens token = new Tokens();
+            token = GetTokens(idline, idcol);
+            id = token.getLexemes();
+            SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+            identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+            isSaved = checkIdentifier(identifier);
+            
+            if (node.GetChildCount() > 2)
+            {
+                Node next2var = node.GetChildAt(2);
+                if (next2var.GetName() == "prod_next2var")
+                {
+                    saveVariables(next2var, dtype, scope);
+                }
+            }
         }
 
         /**

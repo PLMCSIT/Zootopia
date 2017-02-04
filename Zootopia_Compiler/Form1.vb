@@ -3368,6 +3368,8 @@ Public Class Form1
         Dim generate As New CodeGenInitialize
         generate = codeGenStart(tokenDump(tokenstream), semantics)
         generate.Start()
+        Dim code As String = generate.code
+        MessageBox.Show(code)
     End Sub
 
     Function SemanticStart(ByVal tokens As List(Of Semantics_Analyzer.SemanticsInitializer.Tokens)) As Semantics_Analyzer.SemanticsInitializer
