@@ -974,7 +974,7 @@ namespace Semantics_Analyzer
          
         public override void EnterProdLocalDec(Production node)
         {
-            currscope = "Local";
+            currscope = "Mane";
         }
 
          

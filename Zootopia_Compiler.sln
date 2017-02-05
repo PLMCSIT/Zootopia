@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syntax Analyzer", "Syntax A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticsAnalyzer", "SemanticsAnalyzer\SemanticsAnalyzer.csproj", "{E187009E-0B2B-4569-B16C-C35EF06FDFE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code Generation", "CodeGeneration\Code Generation.csproj", "{A371B79E-2C88-40A3-8AA5-3C5731FF607F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code Translation", "CodeGeneration\Code Translation.csproj", "{A371B79E-2C88-40A3-8AA5-3C5731FF607F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code Generation", "Code Generation\Code Generation.csproj", "{E58302EE-B74F-4B4E-BEA8-85EBA0C3FFD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A371B79E-2C88-40A3-8AA5-3C5731FF607F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A371B79E-2C88-40A3-8AA5-3C5731FF607F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A371B79E-2C88-40A3-8AA5-3C5731FF607F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58302EE-B74F-4B4E-BEA8-85EBA0C3FFD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58302EE-B74F-4B4E-BEA8-85EBA0C3FFD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58302EE-B74F-4B4E-BEA8-85EBA0C3FFD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58302EE-B74F-4B4E-BEA8-85EBA0C3FFD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

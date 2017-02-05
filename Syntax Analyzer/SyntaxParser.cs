@@ -818,9 +818,6 @@ public class SyntaxParser : RecursiveDescentParser {
                                         "prod_cond_tail");
         alt = new ProductionPatternAlternative();
         alt.AddProduction((int) SyntaxConstants.PROD_LOG_EXPR, 1, 1);
-        alt.AddToken((int) SyntaxConstants.OP, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_COND_EXPR, 1, 1);
-        alt.AddToken((int) SyntaxConstants.CP, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_COND_TAIL, 0, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);

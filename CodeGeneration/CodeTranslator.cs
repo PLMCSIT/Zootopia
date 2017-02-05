@@ -9,12 +9,12 @@ using TokenLibrary.TokenLibrary;
 using System.IO;
 using Semantics_Analyzer;
 
-namespace Code_Generation
+namespace Code_Translation
 {
 
-    public class CodeGenInitialize : SyntaxAnalyzer
+    public class CodeTranslator : SyntaxAnalyzer
     {
-        public CodeGenInitialize()
+        public CodeTranslator()
     : this(new List<Tokens>(), new Semantics_Analyzer.SemanticsInitializer()) { }
         public Boolean runtime_error = false;
         private List<Tokens> tokens;
@@ -23,9 +23,10 @@ namespace Code_Generation
         private List<SemanticsConstants.Index> index;
         private List<SemanticsConstants.Objects> objects;
         private List<SemanticsConstants.Task> task;
+        private string currscope = "Mane";
 
 
-        public CodeGenInitialize(List<Tokens> tokens, SemanticsInitializer semantics)
+        public CodeTranslator(List<Tokens> tokens, SemanticsInitializer semantics)
         {
             this.tokens = tokens;
             this.arrays = semantics.arrays;
@@ -64,6 +65,7 @@ namespace Code_Generation
         private bool isAdd;
         private string input_datatype;
         private bool isDec;
+        private bool isMultiOutput;
 
         public string Start()
         {
@@ -218,6 +220,7 @@ namespace Code_Generation
         {
             if (isAdd)
             {
+                isRead = true;
                 isAdd = false;
             }
             return node;
@@ -230,7 +233,8 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-
+                code += "Console.Write";
+                isSay = true;
                 isAdd = false;
             }
             return node;
@@ -565,7 +569,7 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-                code += "(\n";
+                code += "{\n";
                 isAdd = false;
             }
             return node;
@@ -578,7 +582,7 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-                code += ")\n";
+                code += "}\n";
                 isAdd = false;
             }
             return node;
@@ -617,7 +621,14 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-                code += "<<";
+                if (isMultiOutput)
+                {
+                    code += " + ";
+                }
+                else
+                {
+                    code += "(";
+                }
                 isAdd = false;
             }
             return node;
@@ -630,7 +641,6 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-                code += ">>";
                 isAdd = false;
             }
             return node;
@@ -643,7 +653,7 @@ namespace Code_Generation
         {
             if (isAdd)
             {
-                code += "~";
+                code += "-";
                 isAdd = false;
             }
             return node;
@@ -961,7 +971,7 @@ namespace Code_Generation
             {
                 Tokens t = new Tokens();
                 t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                code += t.getLexemes();
+                code += "\"" + t.getLexemes() + "\"";
                 isAdd = false;
             }
             return node;
@@ -1002,7 +1012,7 @@ namespace Code_Generation
             {
                 Tokens t = new Tokens();
                 t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                code += " " + t.getLexemes();
+                code += " " + t.getLexemes().Remove(0,1);
                 isAdd = false;
             }
             return node;
@@ -1026,7 +1036,7 @@ namespace Code_Generation
          
         public override void EnterProdProgram(Production node)
         {
-            Console.Clear();
+            
         }
 
 
@@ -1062,11 +1072,13 @@ namespace Code_Generation
          
         public override void EnterProdGlobalDec(Production node)
         {
+            currscope = "Global";
         }
 
          
         public override Node ExitProdGlobalDec(Production node)
         {
+            currscope = "Mane";
             return node;
         }
 
@@ -1560,6 +1572,7 @@ namespace Code_Generation
          
         public override Node ExitProdMane(Production node)
         {
+            code += "\nConsole.ReadKey();\n";
             return node;
         }
 
@@ -1594,6 +1607,7 @@ namespace Code_Generation
          
         public override Node ExitProdStatement(Production node)
         {
+            
             return node;
         }
 
@@ -1662,6 +1676,7 @@ namespace Code_Generation
          
         public override Node ExitProdNextFig(Production node)
         {
+            
             return node;
         }
 
@@ -1747,22 +1762,7 @@ namespace Code_Generation
          
         public override Node ExitProdMathEqtail1(Production node)
         {
-            Node math = node.GetChildAt(1);
-            Node mathfig = math.GetChildAt(0);
-            if (mathfig.GetName() == "ID")
-            {
-                
-            }
-            else if (mathfig.GetName() == "prod_va1")
-            {
-                
-            }
-            else
-            {
-
-            }
-
-
+            
             return node;
         }
 
@@ -1943,103 +1943,117 @@ namespace Code_Generation
         {
         }
 
-         
+
         public override Node ExitProdInput(Production node)
         {
-            //Node input = node.GetChildAt(1);
-            //Tokens token;
-            //if (input.GetName() == "CDA")
-            //{
-            //    Node ident = node.GetChildAt(2);
-            //    int idline = ident.GetStartLine();
-            //    int idcol = ident.GetStartColumn();
-            //    token = GetTokens(idline, idcol);
-            //    foreach (var item in identifiers)
-            //    {
-            //        if (item.getId() == token.getLexemes())
-            //        {
-            //            var ins = (String)Console.ReadLine();
-            //            if (String.IsNullOrEmpty(ins))
-            //            {
-            //                ins = Console.ReadLine();
-            //            }
-            //            string dtype = item.getDtype();
-            //            bool isneg = false;
-            //            switch (dtype)
-            //            {
-
-            //                case "Newt":
-            //                    int input_int = 0;
-            //                    if (ins.Contains("~"))
-            //                    {
-            //                        isneg = true;
-            //                        ins = ins.Remove(0, 1);
-            //                    }
-            //                    if (Int32.TryParse(ins, out input_int))
-            //                    {
-            //                        if (isneg)
-            //                        {
-            //                            input_int *= -1;
-            //                        }
-            //                        item.setValue(input_int.ToString());
-            //                    }
-            //                    else
-            //                    {
-            //                        runtime_error = true;
-            //                        Console.WriteLine("");
-            //                        Console.WriteLine("Runtime Error: Type Mismatch");
-            //                    }
-            //                    break;
-            //                case "Duck":
-            //                    double input_double = 0.0;
-            //                    if (ins.Contains("~"))
-            //                    {
-            //                        isneg = true;
-            //                        ins = ins.Remove(0, 1);
-            //                    }
-            //                    if (Double.TryParse(ins, out input_double))
-            //                    {
-            //                        if (isneg)
-            //                        {
-            //                            input_double *= -1;
-            //                        }
-            //                        item.setValue(input_double.ToString());
-            //                    }
-            //                    else
-            //                    {
-            //                        runtime_error = true;
-            //                        Console.WriteLine("");
-            //                        Console.WriteLine("Runtime Error: Type Mismatch");
-            //                    }
-            //                    break;
-            //                case "Bull":
-            //                    if (ins == "true" || ins == "false")
-            //                    {
-            //                        item.setValue(ins);
-            //                    }
-            //                    else
-            //                    {
-            //                        runtime_error = true;
-            //                        Console.WriteLine("");
-            //                        Console.WriteLine("Runtime Error: Type Mismatch");
-            //                    }
-            //                    break;
-            //                case "Starling":
-            //                    item.setValue(ins);
-            //                    break;
-            //            }
-
-            //        }
-            //    }
-
-            //}
-
+            
             return node;
+            //if (!runtime_error)
+            //{
+            //    Node isRead = node.GetChildAt(0);
+            //    if (isRead.GetName() == "READ")
+            //    {
+            //        Node id = node.GetChildAt(1);
+            //        int idcol = id.GetStartColumn();
+            //        int idline = id.GetStartLine();
+            //        Tokens token = GetTokens(idline, idcol);
+            //        foreach (var item in identifiers)
+            //        {
+            //            if (item.getId() == token.getLexemes())
+            //            {
+            //                var input = (String)Console.ReadLine();
+            //                if(String.IsNullOrEmpty(input))
+            //                {
+
+            //                    input = Console.ReadLine();
+            //                }
+            //                string dtype = item.getDtype();
+            //                bool isneg = false;
+            //                switch (dtype)
+            //                {
+            //                    case "Int":
+            //                        int input_int = 0;
+            //                        if (input.Contains("~"))
+            //                        {
+            //                            isneg = true;
+            //                            input = input.Remove(0, 1);
+            //                        }
+            //                        if (Int32.TryParse(input, out input_int))
+            //                        {
+            //                            if (isneg)
+            //                            {
+            //                                input_int *= -1;
+            //                            }
+            //                            item.setValue(input_int.ToString());
+            //                        }
+            //                        else
+            //                        {
+            //                            runtime_error = true;
+            //                            Console.WriteLine("");
+            //                            Console.WriteLine("Runtime error: Type mismatch!");
+
+            //                        }
+            //                        break;
+            //                    case "Double":
+            //                        double input_double = 0;
+            //                        if (input.Contains("~"))
+            //                        {
+            //                            isneg = true;
+            //                            input = input.Remove(0, 1);
+            //                        }
+            //                        if (Double.TryParse(input, out input_double))
+            //                        {
+            //                            if (isneg)
+            //                            {
+            //                                input_double *= -1;
+            //                            }
+            //                            item.setValue(input_double.ToString());
+            //                        }
+            //                        else
+            //                        {
+            //                            runtime_error = true;
+            //                            Console.WriteLine("");
+            //                            Console.WriteLine("Runtime error: Type mismatch!");
+            //                        }
+
+            //                        break;
+            // 
+
         }
 
-         
+
         public override void ChildProdInput(Production node, Node child)
         {
+            if (child.GetName() == "ID")
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                //t = tokens[t.getCode()];
+                string input_datatype = "";
+
+                foreach (var item in identifiers)
+                {
+                    if (item.getScope() == currscope)
+                    {
+                        if (item.getId() == t.getLexemes())
+                        {
+                            input_datatype = item.getDtype();
+                        }
+                    }
+                }
+
+                switch (input_datatype)
+                {
+                    case "Newt": code += " = Int32.Parse(Console.ReadLine())"; break;
+                    case "Duck": code += " = Double.Parse(Console.ReadLine())"; break;
+                    case "Char": code += " = Char.Parse(Console.ReadLine())"; break;
+                    case "Starling": code += " = Console.ReadLine()"; break;
+                    case "Bull": code += " = Boolean.Parse(Console.ReadLine())"; break;
+                    default:
+                        break;
+                }
+
+            }
             node.AddChild(child);
         }
 
@@ -2063,6 +2077,7 @@ namespace Code_Generation
          
         public override void EnterProdMultiInput(Production node)
         {
+            code += ";\n";
         }
 
          
@@ -2075,6 +2090,36 @@ namespace Code_Generation
         public override void ChildProdMultiInput(Production node, Node child)
         {
             node.AddChild(child);
+            if (child.GetName() == "ID")
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                //t = tokens[t.getCode()];
+                string input_datatype = "";
+
+                foreach (var item in identifiers)
+                {
+                    if (item.getScope() == currscope)
+                    {
+                        if (item.getId() == t.getLexemes())
+                        {
+                            input_datatype = item.getDtype();
+                        }
+                    }
+                }
+
+                switch (input_datatype)
+                {
+                    case "Newt": code += " = Int32.Parse(Console.ReadLine())"; break;
+                    case "Duck": code += " = Double.Parse(Console.ReadLine())"; break;
+                    case "Char": code += " = Char.Parse(Console.ReadLine())"; break;
+                    case "Starling": code += " = Console.ReadLine()"; break;
+                    case "Bull": code += " = Boolean.Parse(Console.ReadLine())"; break;
+                    default:
+                        break;
+                }
+
+            }
         }
 
          
@@ -2143,6 +2188,11 @@ namespace Code_Generation
         public override void ChildProdOutput(Production node, Node child)
         {
             node.AddChild(child);
+            if (child.GetName() == "TERMI")
+            {
+                code = code.Remove(code.Length - 2, 2);
+                code += ");\n";
+            }
         }
 
          
@@ -2193,11 +2243,13 @@ namespace Code_Generation
          
         public override void EnterProdMultiOutput(Production node)
         {
+            isMultiOutput = true;
         }
 
          
         public override Node ExitProdMultiOutput(Production node)
         {
+            isMultiOutput = false;
             return node;
         }
 

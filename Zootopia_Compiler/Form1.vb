@@ -6,7 +6,9 @@ Imports System.CodeDom.Compiler
 Imports Microsoft.VisualBasic
 Imports Syntax_Analyzer
 Imports Core.Library
+Imports Code_Translation
 Imports Code_Generation
+
 
 
 Public Class Form1
@@ -3137,7 +3139,7 @@ Public Class Form1
                     symbolCtr += 1
                     tokens = New TokenLibrary.TokenLibrary.TokenClass
                     tokens.setTokens("newt literals")
-                    tokens.setLexemes("newtlit")
+                    tokens.setLexemes(number)
                     tokens.setAttributes("newtlit")
                     tokens.setLines(line)
                     tokenstream.Add(tokens)
@@ -3177,7 +3179,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("duck literals")
-                        tokens.setLexemes("ducklit")
+                        tokens.setLexemes(number)
                         tokens.setAttributes("ducklit")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -3365,11 +3367,22 @@ Public Class Form1
 
         End If
 
-        Dim generate As New CodeGenInitialize
+        Dim generate As New CodeTranslator
         generate = codeGenStart(tokenDump(tokenstream), semantics)
         generate.Start()
         Dim code As String = generate.code
-        MessageBox.Show(code)
+        code += vbLf & "}" & vbLf & "}"
+        If CodeGenerationToolStripMenuItem1.Checked Then
+            MessageBox.Show(code)
+        End If
+        If ConsoleOutputToolStripMenuItem.Checked Then
+            Dim output As New OutputInitializer
+            output.Start(code)
+            If (output.error <> "") Then
+                MessageBox.Show(output.error, "Woops!")
+            End If
+        End If
+
     End Sub
 
     Function SemanticStart(ByVal tokens As List(Of Semantics_Analyzer.SemanticsInitializer.Tokens)) As Semantics_Analyzer.SemanticsInitializer
@@ -3382,10 +3395,10 @@ Public Class Form1
         Return sem
     End Function
 
-    Function codeGenStart(ByVal tokens As List(Of CodeGenInitialize.Tokens), ByVal semantics As Semantics_Analyzer.SemanticsInitializer) As CodeGenInitialize
-        Dim gen As New CodeGenInitialize
+    Function codeGenStart(ByVal tokens As List(Of CodeTranslator.Tokens), ByVal semantics As Semantics_Analyzer.SemanticsInitializer) As CodeTranslator
+        Dim gen As New CodeTranslator
         Try
-            gen = New CodeGenInitialize(tokens, semantics)
+            gen = New CodeTranslator(tokens, semantics)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -3407,12 +3420,12 @@ Public Class Form1
         Return token
     End Function
 
-    Function tokenDump(ByVal tokens As List(Of TokenLibrary.TokenLibrary.TokenClass)) As List(Of CodeGenInitialize.Tokens)
-        Dim token As New List(Of CodeGenInitialize.Tokens)
-        Dim t As New CodeGenInitialize.Tokens
+    Function tokenDump(ByVal tokens As List(Of TokenLibrary.TokenLibrary.TokenClass)) As List(Of CodeTranslator.Tokens)
+        Dim token As New List(Of CodeTranslator.Tokens)
+        Dim t As New CodeTranslator.Tokens
 
         For Each item In tokens
-            t = New CodeGenInitialize.Tokens
+            t = New CodeTranslator.Tokens
             t.setAttributes(item.getAttributes)
             t.setLexemes(item.getLexemes)
             t.setLines(item.getLines)
@@ -6147,6 +6160,24 @@ Public Class Form1
 
     Private Sub dGridIden_SelectedIndexChanged(sender As Object, e As EventArgs) Handles dGridIden.SelectedIndexChanged
 
+    End Sub
+
+
+
+    Private Sub CodeGenerationToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles CodeGenerationToolStripMenuItem1.Click
+        If CodeGenerationToolStripMenuItem1.Checked Then
+            CodeGenerationToolStripMenuItem1.Checked = False
+        Else
+            CodeGenerationToolStripMenuItem1.Checked = True
+        End If
+    End Sub
+
+    Private Sub ConsoleOutputToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleOutputToolStripMenuItem.Click
+        If ConsoleOutputToolStripMenuItem.Checked Then
+            ConsoleOutputToolStripMenuItem.Checked = False
+        Else
+            ConsoleOutputToolStripMenuItem.Checked = True
+        End If
     End Sub
 End Class
 
