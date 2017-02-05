@@ -395,7 +395,7 @@ Partial Class Form1
         Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
         Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
-        Me.ToolStripDropDownButton1.Text = "ToolStripDropDownButton1"
+        Me.ToolStripDropDownButton1.Text = "Developer Option"
         '
         'CodeGenerationToolStripMenuItem1
         '
