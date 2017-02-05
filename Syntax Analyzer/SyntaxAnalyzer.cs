@@ -1,25 +1,11 @@
-/*
- * SyntaxAnalyzer.cs
- *
- * THIS FILE HAS BEEN GENERATED AUTOMATICALLY. DO NOT EDIT!
- */
+ 
 
 using Core.Library;
 
-/**
- * <remarks>A class providing callback methods for the
- * parser.</remarks>
- */
+ 
 public abstract class SyntaxAnalyzer : Analyzer {
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public override void Enter(Node node) {
         switch (node.Id) {
         case (int) SyntaxConstants.ENTRANCE:
@@ -154,9 +140,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.MOD:
             EnterMod((Token) node);
             break;
-        case (int) SyntaxConstants.EXP:
-            EnterExp((Token) node);
-            break;
+        //case (int) SyntaxConstants.EXP:
+        //    EnterExp((Token) node);
+        //    break;
         case (int) SyntaxConstants.OA:
             EnterOa((Token) node);
             break;
@@ -511,17 +497,7 @@ public abstract class SyntaxAnalyzer : Analyzer {
         }
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public override Node Exit(Node node) {
         switch (node.Id) {
         case (int) SyntaxConstants.ENTRANCE:
@@ -612,8 +588,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitDiv((Token) node);
         case (int) SyntaxConstants.MOD:
             return ExitMod((Token) node);
-        case (int) SyntaxConstants.EXP:
-            return ExitExp((Token) node);
+        //case (int) SyntaxConstants.EXP:
+        //    return ExitExp((Token) node);
         case (int) SyntaxConstants.OA:
             return ExitOa((Token) node);
         case (int) SyntaxConstants.CA:
@@ -852,16 +828,7 @@ public abstract class SyntaxAnalyzer : Analyzer {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public override void Child(Production node, Node child) {
         switch (node.Id) {
         case (int) SyntaxConstants.PROD_PROGRAM:
@@ -1149,5530 +1116,1930 @@ public abstract class SyntaxAnalyzer : Analyzer {
         }
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterEntrance(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitEntrance(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterExit(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitExit(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterMane(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitMane(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterLet(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitLet(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterWipe(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitWipe(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterZooin(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitZooin(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterZoout(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitZoout(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterIf(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitIf(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterEelsif(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitEelsif(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterEels(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitEels(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterChamois(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitChamois(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterTermite(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitTermite(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterSeal(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitSeal(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterWhale(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitWhale(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDo(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDo(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterFur(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitFur(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterHop(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitHop(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterSwasp(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitSwasp(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterStork(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitStork(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterAt(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitAt(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterNull(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitNull(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterComsym(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitComsym(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterTermi(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitTermi(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterSc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitSc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterComma(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitComma(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterEqual(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitEqual(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOb(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOb(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCb(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCb(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOp(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOp(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCp(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCp(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOdc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOdc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCdc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCdc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterConc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitConc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCon(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCon(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOda(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOda(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCda(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCda(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterNeg(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitNeg(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterAdd(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitAdd(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterSub(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitSub(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterMul(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitMul(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDiv(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDiv(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterMod(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitMod(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
-    public virtual void EnterExp(Token node) {
-    }
+     
+    //public virtual void EnterExp(Token node) {
+    //}
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
-    public virtual Node ExitExp(Token node) {
-        return node;
-    }
+     
+    //public virtual Node ExitExp(Token node) {
+    //    return node;
+    //}
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOa(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOa(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCa(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCa(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterOae(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitOae(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterCae(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitCae(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterEe(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitEe(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDe(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDe(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterExc(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitExc(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDand(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDand(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDor(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDor(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterIncre(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitIncre(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDecre(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDecre(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterNewt(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitNewt(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDuck(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDuck(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterBull(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitBull(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterStarling(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitStarling(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterViper(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitViper(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterNewtlit(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitNewtlit(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterDucklit(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitDucklit(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterStarlit(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitStarlit(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterTrue(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitTrue(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterFalse(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitFalse(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterId(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitId(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterComment(Token node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitComment(Token node) {
         return node;
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdProgram(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdProgram(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdProgram(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdComment(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdComment(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdComment(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdGlobalDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdGlobalDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdGlobalDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdVarDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdVarDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdVarDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFuncVar(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFuncVar(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFuncVar(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdIdentVar(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdIdentVar(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdIdentVar(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdDtype(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdDtype(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdDtype(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdNext2var(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdNext2var(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdNext2var(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdNext2varTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdNext2varTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdNext2varTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdVal(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdVal(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdVal(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdVal1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdVal1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdVal1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdVal2(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdVal2(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdVal2(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdBulLit(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdBulLit(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdBulLit(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArray1d(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArray1d(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArray1d(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElem1dNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElem1dNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElem1dNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElem1dList(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElem1dList(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElem1dList(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElemlist1dTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElemlist1dTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElemlist1dTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElem2dNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElem2dNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElem2dNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElem2dList(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElem2dList(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElem2dList(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdElem2dListTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdElem2dListTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdElem2dListTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdSize(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdSize(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdSize(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdConstDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdConstDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdConstDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdConstNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdConstNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdConstNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFuncName(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFuncName(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFuncName(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdParam(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdParam(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdParam(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdParam2(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdParam2(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdParam2(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdStorkDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdStorkDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdStorkDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdStorkElem(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdStorkElem(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdStorkElem(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMultiVardec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMultiVardec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMultiVardec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMultistorkElem(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMultistorkElem(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMultistorkElem(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdObjDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdObjDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdObjDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMane(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMane(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMane(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLocalDec(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLocalDec(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLocalDec(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdStatement(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdStatement(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdStatement(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdStateNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdStateNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdStateNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdAssign1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdAssign1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdAssign1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdAssignTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdAssignTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdAssignTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdNextFig(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdNextFig(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdNextFig(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathEqtail1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathEqtail1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathEqtail1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathEqtail2(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathEqtail2(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathEqtail2(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathOp(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathOp(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathOp(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathFig(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathFig(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathFig(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMathFig1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMathFig1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMathFig1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMatheqNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMatheqNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMatheqNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFunctionCall(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFunctionCall(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFunctionCall(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdScanNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdScanNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdScanNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArgs1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArgs1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArgs1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArgsTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArgsTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArgsTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArgIn(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArgIn(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArgIn(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdClrscr(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdClrscr(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdClrscr(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdInput(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdInput(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdInput(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdScanFig(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdScanFig(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdScanFig(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMultiInput(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMultiInput(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMultiInput(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArr1d(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArr1d(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArr1d(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdArr2d(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdArr2d(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdArr2d(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdStorkAccess1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdStorkAccess1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdStorkAccess1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdOutput(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdOutput(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdOutput(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdOut(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdOut(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdOut(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMultiOutput(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMultiOutput(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMultiOutput(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdConditional(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdConditional(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdConditional(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdCondi(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdCondi(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdCondi(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdNotFig(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdNotFig(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdNotFig(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdCondExpr(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdCondExpr(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdCondExpr(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdCondTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdCondTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdCondTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelExpr(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelExpr(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelExpr(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelexTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelexTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelexTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdExpression(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdExpression(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdExpression(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelOp1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelOp1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelOp1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelOp2(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelOp2(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelOp2(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelFig(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelFig(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelFig(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLogExpr(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLogExpr(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLogExpr(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLogExprNext(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLogExprNext(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLogExprNext(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLogOp(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLogOp(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLogOp(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdCondEelsif(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdCondEelsif(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdCondEelsif(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdCondEels(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdCondEels(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdCondEels(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdSwaspCase(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdSwaspCase(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdSwaspCase(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdSwaspCase1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdSwaspCase1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdSwaspCase1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdTermExpr(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdTermExpr(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdTermExpr(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdDefault(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdDefault(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdDefault(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdIterative(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdIterative(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdIterative(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLoopFig1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLoopFig1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLoopFig1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdRelExpr1(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdRelExpr1(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdRelExpr1(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdLoopFig2(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdLoopFig2(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdLoopFig2(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdIncremDecrem(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdIncremDecrem(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdIncremDecrem(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdVar(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdVar(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdVar(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdUnaryOp(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdUnaryOp(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdUnaryOp(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdSubFunction(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdSubFunction(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdSubFunction(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFuncInside(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFuncInside(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFuncInside(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFuncArgs(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFuncArgs(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFuncArgs(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdMultifuncArgs(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdMultifuncArgs(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdMultifuncArgs(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdResult(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdResult(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdResult(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdFigTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdFigTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdFigTail(Production node, Node child) {
         node.AddChild(child);
     }
 
-    /**
-     * <summary>Called when entering a parse tree node.</summary>
-     *
-     * <param name='node'>the node being entered</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void EnterProdResultTail(Production node) {
     }
 
-    /**
-     * <summary>Called when exiting a parse tree node.</summary>
-     *
-     * <param name='node'>the node being exited</param>
-     *
-     * <returns>the node to add to the parse tree, or
-     *          null if no parse tree should be created</returns>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual Node ExitProdResultTail(Production node) {
         return node;
     }
 
-    /**
-     * <summary>Called when adding a child to a parse tree
-     * node.</summary>
-     *
-     * <param name='node'>the parent node</param>
-     * <param name='child'>the child node, or null</param>
-     *
-     * <exception cref='ParseException'>if the node analysis
-     * discovered errors</exception>
-     */
+     
     public virtual void ChildProdResultTail(Production node, Node child) {
         node.AddChild(child);
     }

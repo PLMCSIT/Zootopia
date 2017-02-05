@@ -836,7 +836,7 @@ Public Class Form1
 
             ElseIf sc(i) = "i" Then
                 If sc(i + 1) = "f" Then
-                    If sc(i + 2) = "(" Then
+                    If sc(i + 2) = "(" Or sc(i + 2) = " " Then
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("if")
