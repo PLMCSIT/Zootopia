@@ -452,7 +452,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += ";\n";
+                code += ":\n";
                 isAdd = false;
             }
             return node;
