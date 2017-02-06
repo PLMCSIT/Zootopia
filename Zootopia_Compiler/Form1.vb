@@ -497,7 +497,7 @@ Public Class Form1
                         If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" Then
                             If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" And sc(i + 4) = "i" Then
                                 If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" And sc(i + 4) = "i" And sc(i + 5) = "f" Then
-                                    If sc(i + 6) = "(" Then
+                                    If sc(i + 6) = "(" Or sc(i + 6) = " " Then
                                         symbolCtr += 1
                                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                                         tokens.setTokens("eelsif")
@@ -755,7 +755,7 @@ Public Class Form1
 
                 ElseIf sc(i + 1) = "u" Then
                     If sc(i + 1) = "u" And sc(i + 2) = "r" Then
-                        If sc(i + 3) = "(" Then
+                        If sc(i + 3) = "(" Or sc(i + 3) = " " Then
                             symbolCtr += 1
                             tokens = New TokenLibrary.TokenLibrary.TokenClass
                             tokens.setTokens("fur")

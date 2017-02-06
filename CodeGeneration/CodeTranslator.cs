@@ -157,6 +157,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
+                code += "static ";
                 isAdd = false;
             }
             return node;
