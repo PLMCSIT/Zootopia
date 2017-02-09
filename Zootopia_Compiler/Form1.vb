@@ -1858,7 +1858,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("++")
-                        tokens.setLexemes("increOp")
+                        tokens.setLexemes("++")
                         tokens.setAttributes("increOp, ++")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -1925,7 +1925,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("--")
-                        tokens.setLexemes("decreOp")
+                        tokens.setLexemes("--")
                         tokens.setAttributes("decreOp, --")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)

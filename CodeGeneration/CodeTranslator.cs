@@ -66,6 +66,7 @@ namespace Code_Translation
         private string input_datatype;
         private bool isDec;
         private bool isMultiOutput;
+        private bool isGlobal;
 
         public string Start()
         {
@@ -145,7 +146,7 @@ namespace Code_Translation
             }
             return token;
         }
-        
+
 
 
         //START TOKENS
@@ -157,7 +158,15 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "static ";
+                //if (isGlobal)
+                //{
+                //    code += "static ";
+                //    isAdd = false;
+                //}
+                //else
+                //{
+                //    isAdd = false;
+                //}
                 isAdd = false;
             }
             return node;
@@ -352,7 +361,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "for "; 
+                code += "for ";
                 isAdd = false;
             }
             return node;
@@ -596,7 +605,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += ".+";
+                code += "+";
                 isAdd = false;
             }
             return node;
@@ -724,7 +733,7 @@ namespace Code_Translation
             }
             return node;
         }
-       public override void EnterOa(Token node)
+        public override void EnterOa(Token node)
         {
             isAdd = true;
         }
@@ -849,7 +858,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += " ++ ";
+                code += "++";
                 isAdd = false;
             }
             return node;
@@ -862,7 +871,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += " -- "; 
+                code += "--";
                 isAdd = false;
             }
             return node;
@@ -1013,7 +1022,7 @@ namespace Code_Translation
             {
                 Tokens t = new Tokens();
                 t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                code += " " + t.getLexemes().Remove(0,1);
+                code += " " + t.getLexemes().Remove(0, 1);
                 isAdd = false;
             }
             return node;
@@ -1034,797 +1043,784 @@ namespace Code_Translation
 
         //END TOKENS
 
-         
+
         public override void EnterProdProgram(Production node)
         {
-            
+
         }
 
 
-         
+
         public override Node ExitProdProgram(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdProgram(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdComment(Production node)
         {
         }
 
-         
+
         public override Node ExitProdComment(Production node)
         {
             return node;
         }
 
-         
         public override void ChildProdComment(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
         public override void EnterProdGlobalDec(Production node)
         {
+            isGlobal = true;
             currscope = "Global";
         }
 
-         
         public override Node ExitProdGlobalDec(Production node)
         {
+            isGlobal = false;
             currscope = "Mane";
             return node;
         }
 
-         
         public override void ChildProdGlobalDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdVarDec(Production node)
         {
+            if (currscope == "Global")
+            {
+                code += "\npublic static ";
+            }
         }
 
-         
+
         public override Node ExitProdVarDec(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdVarDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFuncVar(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFuncVar(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFuncVar(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdIdentVar(Production node)
         {
         }
 
-         
+
         public override Node ExitProdIdentVar(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdIdentVar(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdDtype(Production node)
         {
         }
 
-         
+
         public override Node ExitProdDtype(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdDtype(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdNext2var(Production node)
         {
         }
 
-         
+
         public override Node ExitProdNext2var(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdNext2var(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdNext2varTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdNext2varTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdNext2varTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdVal(Production node)
         {
         }
 
-         
+
         public override Node ExitProdVal(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdVal(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdVal1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdVal1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdVal1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdVal2(Production node)
         {
         }
 
-         
+
         public override Node ExitProdVal2(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdVal2(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdBulLit(Production node)
         {
         }
 
-         
+
         public override Node ExitProdBulLit(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdBulLit(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdArray1d(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArray1d(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArray1d(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElem1dNext(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElem1dNext(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElem1dNext(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElem1dList(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElem1dList(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElem1dList(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElemlist1dTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElemlist1dTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElemlist1dTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElem2dNext(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElem2dNext(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElem2dNext(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElem2dList(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElem2dList(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElem2dList(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdElem2dListTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdElem2dListTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdElem2dListTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdSize(Production node)
         {
         }
 
-         
+
         public override Node ExitProdSize(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdSize(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdConstDec(Production node)
         {
         }
 
-         
+
         public override Node ExitProdConstDec(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdConstDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdConstNext(Production node)
         {
         }
 
-         
+
         public override Node ExitProdConstNext(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdConstNext(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFuncName(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFuncName(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFuncName(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdParam(Production node)
         {
         }
 
-         
+
         public override Node ExitProdParam(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdParam(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdParam2(Production node)
         {
         }
 
-         
+
         public override Node ExitProdParam2(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdParam2(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdStorkDec(Production node)
         {
         }
 
-         
+
         public override Node ExitProdStorkDec(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdStorkDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdStorkElem(Production node)
         {
         }
 
-         
+
         public override Node ExitProdStorkElem(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdStorkElem(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMultiVardec(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMultiVardec(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMultiVardec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMultistorkElem(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMultistorkElem(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMultistorkElem(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdObjDec(Production node)
         {
         }
 
-         
+
         public override Node ExitProdObjDec(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdObjDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMane(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMane(Production node)
         {
             code += "\nConsole.ReadKey();\n";
             return node;
         }
 
-         
+
         public override void ChildProdMane(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdLocalDec(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLocalDec(Production node)
         {
-           return node;
+            return node;
         }
 
-         
+
         public override void ChildProdLocalDec(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdStatement(Production node)
         {
         }
 
-         
+
         public override Node ExitProdStatement(Production node)
         {
-            
+
             return node;
         }
 
-         
+
         public override void ChildProdStatement(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdStateNext(Production node)
         {
         }
 
-         
+
         public override Node ExitProdStateNext(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdStateNext(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdAssign1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdAssign1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdAssign1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdAssignTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdAssignTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdAssignTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdNextFig(Production node)
         {
         }
 
-         
+
         public override Node ExitProdNextFig(Production node)
         {
-            
+
             return node;
         }
 
-         
+
         public override void ChildProdNextFig(Production node, Node child)
         {
             node.AddChild(child);
         }
-        
-         
-        public override void EnterProdScanNext(Production node)
-        {
-        }
 
-         
-        public override Node ExitProdScanNext(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdScanNext(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
         
-         
+
+
         public override void EnterProdArgs1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArgs1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArgs1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdArgsTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArgsTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArgsTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdArgIn(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArgIn(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArgIn(Production node, Node child)
         {
             node.AddChild(child);
         }
-        
-         
+
+
         public override void EnterProdMathEqtail1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMathEqtail1(Production node)
         {
-            
+
             return node;
         }
 
-         
+
         public override void ChildProdMathEqtail1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMathEqtail2(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMathEqtail2(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMathEqtail2(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
-        
-         
-        
-         
-        
-         
+
+
+
+
+
+
+
         public override void EnterProdMathTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMathTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMathTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMathOp(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMathOp(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMathOp(Production node, Node child)
         {
             //Node op = child.GetChildAt(0);
@@ -1851,95 +1847,95 @@ namespace Code_Translation
             node.AddChild(child);
         }
 
-         
-        public override void EnterProdMathFig(Production node)
-        {
 
-        }
+        //public override void EnterProdMathFig(Production node)
+        //{
 
-         
-        public override Node ExitProdMathFig(Production node)
-        {
-            return node;
-        }
+        //}
 
-         
-        public override void ChildProdMathFig(Production node, Node child)
-        {
-            Node val = child.GetChildAt(0);
-            
-            node.AddChild(child);
-        }
 
-         
+        //public override Node ExitProdMathFig(Production node)
+        //{
+        //    return node;
+        //}
+
+
+        //public override void ChildProdMathFig(Production node, Node child)
+        //{
+        //    Node val = child.GetChildAt(0);
+
+        //    node.AddChild(child);
+        //}
+
+
         public override void EnterProdMathFig1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMathFig1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMathFig1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
-        public override void EnterProdMatheqNext(Production node)
+
+        public override void EnterProdMatheq(Production node)
         {
         }
 
-         
-        public override Node ExitProdMatheqNext(Production node)
+
+        public override Node ExitProdMatheq(Production node)
         {
             return node;
         }
 
-         
-        public override void ChildProdMatheqNext(Production node, Node child)
+
+        public override void ChildProdMatheq(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFunctionCall(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFunctionCall(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFunctionCall(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdClrscr(Production node)
         {
         }
 
-         
+
         public override Node ExitProdClrscr(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdClrscr(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdInput(Production node)
         {
         }
@@ -1947,7 +1943,7 @@ namespace Code_Translation
 
         public override Node ExitProdInput(Production node)
         {
-            
+
             return node;
             //if (!runtime_error)
             //{
@@ -2058,36 +2054,35 @@ namespace Code_Translation
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdScanFig(Production node)
         {
         }
 
-         
+
         public override Node ExitProdScanFig(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdScanFig(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
         public override void EnterProdMultiInput(Production node)
         {
             code += ";\n";
         }
 
-         
+
         public override Node ExitProdMultiInput(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMultiInput(Production node, Node child)
         {
             node.AddChild(child);
@@ -2123,69 +2118,69 @@ namespace Code_Translation
             }
         }
 
-         
+
         public override void EnterProdArr1d(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArr1d(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArr1d(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdArr2d(Production node)
         {
         }
 
-         
+
         public override Node ExitProdArr2d(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdArr2d(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdStorkAccess1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdStorkAccess1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdStorkAccess1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdOutput(Production node)
         {
         }
 
-         
+
         public override Node ExitProdOutput(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdOutput(Production node, Node child)
         {
             node.AddChild(child);
@@ -2196,20 +2191,20 @@ namespace Code_Translation
             }
         }
 
-         
+
         public override void EnterProdOut(Production node)
         {
         }
 
-         
+
         public override Node ExitProdOut(Production node)
         {
-           
+
             return node;
 
         }
 
-         
+
         public override void ChildProdOut(Production node, Node child)
         {
             ////Node output = node.GetChildAt(0);
@@ -2240,599 +2235,564 @@ namespace Code_Translation
             //}
             node.AddChild(child);
         }
-        
-         
+
+
         public override void EnterProdMultiOutput(Production node)
         {
             isMultiOutput = true;
         }
 
-         
+
         public override Node ExitProdMultiOutput(Production node)
         {
             isMultiOutput = false;
             return node;
         }
 
-         
+
         public override void ChildProdMultiOutput(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdConditional(Production node)
         {
         }
 
-         
+
         public override Node ExitProdConditional(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdConditional(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdCondi(Production node)
         {
         }
 
-         
+
         public override Node ExitProdCondi(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdCondi(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdNotFig(Production node)
         {
         }
 
-         
+
         public override Node ExitProdNotFig(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdNotFig(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdCondExpr(Production node)
         {
         }
 
-         
+
         public override Node ExitProdCondExpr(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdCondExpr(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
-        public override void EnterProdCondTail(Production node)
-        {
-        }
 
-         
-        public override Node ExitProdCondTail(Production node)
-        {
-            return node;
-        }
 
-         
-        public override void ChildProdCondTail(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
-         
         public override void EnterProdRelExpr(Production node)
         {
         }
 
-         
+
         public override Node ExitProdRelExpr(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdRelExpr(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdRelexTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdRelexTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdRelexTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdExpression(Production node)
         {
         }
 
-         
+
         public override Node ExitProdExpression(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdExpression(Production node, Node child)
         {
             node.AddChild(child);
         }
-        
-         
+
+
         public override void EnterProdRelOp1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdRelOp1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdRelOp1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdRelOp2(Production node)
         {
         }
 
-         
+
         public override Node ExitProdRelOp2(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdRelOp2(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdRelFig(Production node)
         {
         }
 
-         
+
         public override Node ExitProdRelFig(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdRelFig(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdLogExpr(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLogExpr(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdLogExpr(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdLogExprNext(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLogExprNext(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdLogExprNext(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdLogOp(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLogOp(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdLogOp(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdCondEelsif(Production node)
         {
         }
 
-         
+
         public override Node ExitProdCondEelsif(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdCondEelsif(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdCondEels(Production node)
         {
         }
 
-         
+
         public override Node ExitProdCondEels(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdCondEels(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdSwaspCase(Production node)
         {
         }
 
-         
+
         public override Node ExitProdSwaspCase(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdSwaspCase(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdSwaspCase1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdSwaspCase1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdSwaspCase1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdTermExpr(Production node)
         {
         }
 
-         
+
         public override Node ExitProdTermExpr(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdTermExpr(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdDefault(Production node)
         {
         }
 
-         
+
         public override Node ExitProdDefault(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdDefault(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdIterative(Production node)
         {
         }
 
-         
+
         public override Node ExitProdIterative(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdIterative(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdLoopFig1(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLoopFig1(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdLoopFig1(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
-        public override void EnterProdRelExpr1(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdRelExpr1(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdRelExpr1(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
-         
         public override void EnterProdLoopFig2(Production node)
         {
         }
 
-         
+
         public override Node ExitProdLoopFig2(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdLoopFig2(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+        public override void EnterProdRelExpr1(Production node)
+        {
+        }
+
+
+        public override Node ExitProdRelExpr1(Production node)
+        {
+            return node;
+        }
+
+
+        public override void ChildProdRelExpr1(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
+
+        
         public override void EnterProdIncremDecrem(Production node)
         {
         }
 
-         
+
         public override Node ExitProdIncremDecrem(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdIncremDecrem(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
-        public override void EnterProdVar(Production node)
-        {
-        }
 
-         
-        public override Node ExitProdVar(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdVar(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
-         
         public override void EnterProdUnaryOp(Production node)
         {
         }
 
-         
+
         public override Node ExitProdUnaryOp(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdUnaryOp(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdSubFunction(Production node)
         {
         }
 
-         
+
         public override Node ExitProdSubFunction(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdSubFunction(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFuncInside(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFuncInside(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFuncInside(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFuncArgs(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFuncArgs(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFuncArgs(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdMultifuncArgs(Production node)
         {
         }
 
-         
+
         public override Node ExitProdMultifuncArgs(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdMultifuncArgs(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdResult(Production node)
         {
         }
 
-         
+
         public override Node ExitProdResult(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdResult(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdFigTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdFigTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdFigTail(Production node, Node child)
         {
             node.AddChild(child);
         }
 
-         
+
         public override void EnterProdResultTail(Production node)
         {
         }
 
-         
+
         public override Node ExitProdResultTail(Production node)
         {
             return node;
         }
 
-         
+
         public override void ChildProdResultTail(Production node, Node child)
         {
             node.AddChild(child);

@@ -1124,30 +1124,7 @@ namespace Semantics_Analyzer
         {
             node.AddChild(child);
         }
-
-         
         
-         
-        
-         
-        
-
-         
-        public override void EnterProdScanNext(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdScanNext(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdScanNext(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
 
          
         public override void EnterProdArgs1(Production node)
@@ -1275,23 +1252,6 @@ namespace Semantics_Analyzer
         }
 
          
-        public override void EnterProdMathFig(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdMathFig(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdMathFig(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
-         
         public override void EnterProdMathFig1(Production node)
         {
         }
@@ -1309,18 +1269,18 @@ namespace Semantics_Analyzer
         }
 
          
-        public override void EnterProdMatheqNext(Production node)
+        public override void EnterProdMatheq(Production node)
         {
         }
 
          
-        public override Node ExitProdMatheqNext(Production node)
+        public override Node ExitProdMatheq(Production node)
         {
             return node;
         }
 
          
-        public override void ChildProdMatheqNext(Production node, Node child)
+        public override void ChildProdMatheq(Production node, Node child)
         {
             node.AddChild(child);
         }
@@ -1581,21 +1541,7 @@ namespace Semantics_Analyzer
         }
 
          
-        public override void EnterProdCondTail(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdCondTail(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdCondTail(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
+       
 
          
         public override void EnterProdRelExpr(Production node)
@@ -1886,7 +1832,23 @@ namespace Semantics_Analyzer
             node.AddChild(child);
         }
 
-         
+        public override void EnterProdLoopFig2(Production node)
+        {
+        }
+
+
+        public override Node ExitProdLoopFig2(Production node)
+        {
+            return node;
+        }
+
+
+        public override void ChildProdLoopFig2(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
+
+
         public override void EnterProdRelExpr1(Production node)
         {
         }
@@ -1904,22 +1866,6 @@ namespace Semantics_Analyzer
         }
 
          
-        public override void EnterProdLoopFig2(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdLoopFig2(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdLoopFig2(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
          
         public override void EnterProdIncremDecrem(Production node)
         {
@@ -1936,24 +1882,7 @@ namespace Semantics_Analyzer
         {
             node.AddChild(child);
         }
-
-         
-        public override void EnterProdVar(Production node)
-        {
-        }
-
-         
-        public override Node ExitProdVar(Production node)
-        {
-            return node;
-        }
-
-         
-        public override void ChildProdVar(Production node, Node child)
-        {
-            node.AddChild(child);
-        }
-
+        
          
         public override void EnterProdUnaryOp(Production node)
         {
