@@ -971,7 +971,6 @@ namespace Semantics_Analyzer
             node.AddChild(child);
         }
 
-         
         public override void EnterProdLocalDec(Production node)
         {
             currscope = "Mane";
@@ -1003,7 +1002,18 @@ namespace Semantics_Analyzer
                     Node next2var = node.GetChildAt(1);
                     if (next2var.GetName() == "prod_next2var")
                     {
-                        saveVariables(next2var, dtype, scope);   
+                        if (next2var.GetChildAt(0).GetName() == "EQUAL")
+                        {
+                            if (next2var.GetChildCount() > 2)
+                            {
+                                next2var = next2var.GetChildAt(2);
+                                saveVariables(next2var, dtype, scope);
+                            }
+                        }
+                        else
+                        {
+                            saveVariables(next2var, dtype, scope);
+                        }
                     }
             }
             
@@ -1015,23 +1025,39 @@ namespace Semantics_Analyzer
             int idline, idcol;
             string id = "";
             bool isSaved = false;
-            idline = node.GetChildAt(1).GetStartLine();
-            idcol = node.GetChildAt(1).GetStartColumn();
-            Tokens token = new Tokens();
-            token = GetTokens(idline, idcol);
-            id = token.getLexemes();
-            SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
-            identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
-            isSaved = checkIdentifier(identifier);
-            
-            if (node.GetChildCount() > 2)
+            if(node.GetChildCount() == 1)
             {
-                Node next2var = node.GetChildAt(2);
-                if (next2var.GetName() == "prod_next2var")
+                idline = node.GetChildAt(0).GetStartLine();
+                idcol = node.GetChildAt(0).GetStartColumn();
+                Tokens token = new Tokens();
+                token = GetTokens(idline, idcol);
+                id = token.getLexemes();
+                SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+                identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+                isSaved = checkIdentifier(identifier);
+                
+            }
+            else
+            {
+                idline = node.GetChildAt(1).GetStartLine();
+                idcol = node.GetChildAt(1).GetStartColumn();
+                Tokens token = new Tokens();
+                token = GetTokens(idline, idcol);
+                id = token.getLexemes();
+                SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+                identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+                isSaved = checkIdentifier(identifier);
+                if (node.GetChildCount() > 2)
                 {
-                    saveVariables(next2var, dtype, scope);
+                    Node next2var = node.GetChildAt(2);
+                    if (next2var.GetName() == "prod_next2var")
+                    {
+                        saveVariables(next2var, dtype, scope);
+                    }
                 }
             }
+            
+           
         }
 
          
@@ -1378,10 +1404,37 @@ namespace Semantics_Analyzer
          
         public override Node ExitProdArr1d(Production node)
         {
+            string dtype = "", scope = currscope, id = "";
+            Node ident_var = node.GetChildAt(0);
+            Node datatype = ident_var.GetChildAt(0).GetChildAt(0);
+            dtype = getDtype(datatype.GetName());
+            bool isFunct = false;
+            bool isArray = false;
+            bool isSaved = false;
+            int idline, idcol;
+            idline = ident_var.GetChildAt(2).GetStartLine();
+            idcol = ident_var.GetChildAt(2).GetStartColumn();
+            Tokens token = new Tokens();
+            token = GetTokens(idline, idcol);
+            id = token.getLexemes();
+            SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+            identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+            isSaved = checkIdentifier(identifier);
+
+
+            if (node.GetChildCount() > 2)
+            {
+                Node next2var = node.GetChildAt(1);
+                if (next2var.GetName() == "prod_next2var")
+                {
+                    saveVariables(next2var, dtype, scope);
+                }
+            }
+
             return node;
         }
 
-         
+
         public override void ChildProdArr1d(Production node, Node child)
         {
             node.AddChild(child);

@@ -35,7 +35,9 @@ Partial Class Form1
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.dGridBoard = New System.Windows.Forms.ListView()
         Me.ColumnHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -57,14 +59,12 @@ Partial Class Form1
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.dGridSemantic = New System.Windows.Forms.ListView()
         Me.btnClr = New System.Windows.Forms.Button()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.lineNum = New System.Windows.Forms.PictureBox()
         Me.btnAna = New System.Windows.Forms.Button()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.CodeGenerationToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CodeGenerationToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lineNum, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -78,7 +78,7 @@ Partial Class Form1
         Me.rTBCode.Name = "rTBCode"
         Me.rTBCode.Size = New System.Drawing.Size(362, 446)
         Me.rTBCode.TabIndex = 2
-        Me.rTBCode.Text = ""
+        Me.rTBCode.Text = "entrance" & Global.Microsoft.VisualBasic.ChrW(10) & "mane()" & Global.Microsoft.VisualBasic.ChrW(10) & "{{" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10) & "}}" & Global.Microsoft.VisualBasic.ChrW(10) & "exit"
         '
         'dGridLexi
         '
@@ -167,6 +167,15 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(165, 458)
         Me.Panel1.TabIndex = 9
         '
+        'Panel3
+        '
+        Me.Panel3.BackgroundImage = Global.Zootopia_Compiler.My.Resources.Resources.analyzer
+        Me.Panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.Panel3.Location = New System.Drawing.Point(58, 170)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(49, 198)
+        Me.Panel3.TabIndex = 10
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -174,6 +183,16 @@ Partial Class Form1
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(0, 13)
         Me.Label1.TabIndex = 10
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackgroundImage = Global.Zootopia_Compiler.My.Resources.Resources.Zoo_whale
+        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.PictureBox1.Location = New System.Drawing.Point(10, 12)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(142, 139)
+        Me.PictureBox1.TabIndex = 10
+        Me.PictureBox1.TabStop = False
         '
         'dGridBoard
         '
@@ -332,25 +351,6 @@ Partial Class Form1
         Me.btnClr.Text = "Clear"
         Me.btnClr.UseVisualStyleBackColor = False
         '
-        'Panel3
-        '
-        Me.Panel3.BackgroundImage = Global.Zootopia_Compiler.My.Resources.Resources.analyzer
-        Me.Panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.Panel3.Location = New System.Drawing.Point(58, 170)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(49, 198)
-        Me.Panel3.TabIndex = 10
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = Global.Zootopia_Compiler.My.Resources.Resources.Zoo_whale
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.PictureBox1.Location = New System.Drawing.Point(10, 12)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(142, 139)
-        Me.PictureBox1.TabIndex = 10
-        Me.PictureBox1.TabStop = False
-        '
         'lineNum
         '
         Me.lineNum.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(191, Byte), Integer), CType(CType(79, Byte), Integer))
@@ -397,6 +397,12 @@ Partial Class Form1
         Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
         Me.ToolStripDropDownButton1.Text = "Developer Option"
         '
+        'ConsoleOutputToolStripMenuItem
+        '
+        Me.ConsoleOutputToolStripMenuItem.Name = "ConsoleOutputToolStripMenuItem"
+        Me.ConsoleOutputToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
+        Me.ConsoleOutputToolStripMenuItem.Text = "Console output"
+        '
         'CodeGenerationToolStripMenuItem1
         '
         Me.CodeGenerationToolStripMenuItem1.Checked = True
@@ -404,12 +410,6 @@ Partial Class Form1
         Me.CodeGenerationToolStripMenuItem1.Name = "CodeGenerationToolStripMenuItem1"
         Me.CodeGenerationToolStripMenuItem1.Size = New System.Drawing.Size(162, 22)
         Me.CodeGenerationToolStripMenuItem1.Text = "Code generation"
-        '
-        'ConsoleOutputToolStripMenuItem
-        '
-        Me.ConsoleOutputToolStripMenuItem.Name = "ConsoleOutputToolStripMenuItem"
-        Me.ConsoleOutputToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
-        Me.ConsoleOutputToolStripMenuItem.Text = "Console output"
         '
         'Form1
         '

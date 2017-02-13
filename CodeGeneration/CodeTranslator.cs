@@ -24,8 +24,7 @@ namespace Code_Translation
         private List<SemanticsConstants.Objects> objects;
         private List<SemanticsConstants.Task> task;
         private string currscope = "Mane";
-
-
+        
         public CodeTranslator(List<Tokens> tokens, SemanticsInitializer semantics)
         {
             this.tokens = tokens;
@@ -40,6 +39,10 @@ namespace Code_Translation
         {
             public List<string> attribute = new List<string>();
 
+            public string datatype;
+
+            public int code;
+
             public void addAttribute(string attribute)
             {
                 this.attribute.Add(attribute);
@@ -49,7 +52,28 @@ namespace Code_Translation
             {
                 return this.attribute;
             }
+
+            public void setDatatype(string datatype)
+            {
+                this.datatype = datatype;
+            }
+
+            public string getDatatype()
+            {
+                return this.datatype;
+            }
+
+            public void setCode(int code)
+            {
+                this.code = code;
+            }
+
+            public int getCode()
+            {
+                return this.code;
+            }
         }
+
 
         public string error = "";
         public string code = "using System; \nnamespace Zootopia\n{\n public class Compiler\n{\n";
@@ -67,6 +91,17 @@ namespace Code_Translation
         private bool isDec;
         private bool isMultiOutput;
         private bool isGlobal;
+        private bool isIdentVar = false;
+        private string varid;
+        private string vardtype;
+        private bool isFunct = false;
+        private bool hasDeclared = false;
+        private bool isFirstDec = false;
+        private bool isArrayDec = false;
+        private string arrval;
+        private bool isFunctVar = false;
+        private bool isFunctArgs = false;
+        private bool isSemiDone;
 
         public string Start()
         {
@@ -109,6 +144,8 @@ namespace Code_Translation
             }
             return result;
         }
+
+
 
         private Parser CreateParser(string input)
         {
@@ -191,7 +228,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "static void Main";
+                code += "public static void Main";
                 isAdd = false;
             }
             return node;
@@ -374,7 +411,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "return";
+                code += "return ";
                 isAdd = false;
             }
             return node;
@@ -449,7 +486,18 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += ";\n";
+                if (!isFunct)
+                {
+                    if (!isIdentVar)
+                    {
+                        if (!isFunctVar)
+                        {
+                            code += ";\n";
+                        }
+                    }
+                }
+                else
+                    isFunct = false;
                 isAdd = false;
             }
             return node;
@@ -501,7 +549,9 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "[";
+                if (!isArray)
+                    if(!isArrayDec)
+                    code += "[";
                 isAdd = false;
             }
             return node;
@@ -514,7 +564,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "]";
+                if (isArray)
+                    if (!isArrayDec)
+                    {
+                        code += "]";
+                    }
                 isAdd = false;
             }
             return node;
@@ -566,7 +620,10 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += ")";
+                if (!isFunct)
+                {
+                    code += ")";
+                }
                 isAdd = false;
             }
             return node;
@@ -884,7 +941,18 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "int ";
+                if (!isArray)
+                {
+                    if (!isIdentVar)
+                    {
+                        if (!isFunct)
+                        {
+                            input_datatype = "Int";
+                            code += "int ";
+                        }
+                    }
+                    
+                }
                 isAdd = false;
             }
             return node;
@@ -897,7 +965,18 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "double ";
+                if (!isArray)
+                {
+                    if(!isIdentVar)
+                    {
+                        if (!isFunct)
+                        {
+                            input_datatype = "Double";
+                            code += "double ";
+                        }
+                    }
+                    
+                }
                 isAdd = false;
             }
             return node;
@@ -910,7 +989,12 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "bool ";
+                if (!isArray)
+                {
+                    if (!isIdentVar)
+                        if (!isFunct)
+                            code += "bool ";
+                }
                 isAdd = false;
             }
             return node;
@@ -923,7 +1007,17 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "string ";
+                if (!isArray)
+                {
+                    if(!isIdentVar)
+                    {
+                        if (!isFunct)
+                        {
+                            input_datatype = "String";
+                            code += "string ";
+                        }
+                    }
+                }
                 isAdd = false;
             }
             return node;
@@ -949,9 +1043,15 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                Tokens t = new Tokens();
-                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                code += t.getLexemes();
+                if (!isArray)
+                {
+                    if (!isArrayDec)
+                    {
+                        Tokens t = new Tokens();
+                        t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                        code += t.getLexemes();
+                    }
+                }
                 isAdd = false;
             }
             return node;
@@ -1020,9 +1120,20 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                Tokens t = new Tokens();
-                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                code += " " + t.getLexemes().Remove(0, 1);
+                if (!isArray)
+                {
+                    if (!isIdentVar)
+                    {
+                            Tokens t = new Tokens();
+                            t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                            code += " " + t.getLexemes().Remove(0, 1);
+                            if (isDec)
+                            {
+                                int codenum = t.getCode();
+                                tokens[codenum].setDatatype(input_datatype);
+                            }
+                    }                    
+                }
                 isAdd = false;
             }
             return node;
@@ -1101,20 +1212,32 @@ namespace Code_Translation
         {
             if (currscope == "Global")
             {
-                code += "\npublic static ";
+                code += "\n";
             }
+            isDec = true;
         }
 
 
         public override Node ExitProdVarDec(Production node)
         {
+            isIdentVar = false;
             return node;
         }
 
 
         public override void ChildProdVarDec(Production node, Node child)
         {
+            
             node.AddChild(child);
+            if(child.GetName() == "TERMI")
+            {
+                if(!hasDeclared)
+                {
+                    code += "public static " + vardtype + " " + varid ;
+                }
+                isIdentVar = true;
+                code += ";\n";
+            }     
         }
 
 
@@ -1131,17 +1254,54 @@ namespace Code_Translation
 
         public override void ChildProdFuncVar(Production node, Node child)
         {
+            if (child.GetName() == "OP" && isIdentVar)
+            {
+
+                code = code.Remove(code.Length - 16, 16);
+                isFunct = true;
+                isIdentVar = false;
+
+            }
             node.AddChild(child);
         }
 
 
         public override void EnterProdIdentVar(Production node)
         {
+            if (!isFunctArgs) {
+                isSemiDone = false;
+                isIdentVar = true;
+            }
+            isFirstDec = true;
         }
 
 
         public override Node ExitProdIdentVar(Production node)
         {
+            vardtype = " "; varid = " ";
+            Tokens t = new Tokens();
+            t = GetTokens(node.GetChildAt(0).GetStartLine(), node.GetChildAt(0).GetStartColumn());
+            vardtype = t.getLexemes();
+            t = GetTokens(node.GetChildAt(2).GetStartLine(), node.GetChildAt(2).GetStartColumn());
+            varid = t.getLexemes();
+            varid = varid.Remove(0, 1);
+
+            switch (vardtype)
+            {
+                case "newt":
+                    vardtype = "int";
+                    break;
+                case "duck":
+                    vardtype = "double";
+                    break;
+                case "starling":
+                    vardtype = "string";
+                    break;
+                case "bull":
+                    vardtype = "bool";
+                    break;
+            }
+
             return node;
         }
 
@@ -1171,6 +1331,7 @@ namespace Code_Translation
 
         public override void EnterProdNext2var(Production node)
         {
+            
         }
 
 
@@ -1183,13 +1344,88 @@ namespace Code_Translation
         public override void ChildProdNext2var(Production node, Node child)
         {
             node.AddChild(child);
+            Tokens st = new Tokens();
+            st = GetTokens(child.GetStartLine(), child.GetStartColumn());
+            string ss = st.getLexemes();
+            if (node.GetChildCount() == 1 && child.GetName() == "prod_array1D")
+            {
+                string codes = code;
+                if (!isFirstDec)
+                    code += ";\n";
+                else
+                {
+                    isFirstDec = false;
+                }
+                if (currscope == "Global")
+                {
+                    code += "public static ";
+                }
+                Node val = child.GetChildAt(1).GetChildAt(0);
+                if (val.GetName() == "NEWTLIT")
+                {
+                    Tokens tval = new Tokens();
+                    tval = GetTokens(val.GetStartLine(), child.GetStartColumn());
+                    arrval = tval.getLexemes();
+                }
+            }
+            else if(node.GetChildCount() == 1 && child.GetName() == "EQUAL")
+            {
+                
+                code = code.Remove(code.Length - 2, 2);
+
+                if (!isFirstDec)
+                    code += ";\n";
+                else
+                {
+                    isFirstDec = false;
+                }
+                if (currscope == "Global")
+                {
+                    code += "public static ";
+                }
+                code += vardtype + " " + varid + " = ";
+                hasDeclared = true;
+            }
+            else if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
+            {
+                code = code.Remove(code.Length - 2, 2);
+                if(!hasDeclared)
+                {
+                    if (!isFirstDec)
+                       code += ";\n";
+                    else
+                    {
+                        isFirstDec = false;
+                    }
+                    if (currscope == "Global")
+                    {
+                        code += "public static ";
+                    }
+                    code += vardtype + " " + varid;
+                }
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                varid = t.getLexemes();
+                varid = varid.Remove(0, 1);
+                hasDeclared = false;
+            }
+            if (child.GetName() == "prod_next2var")
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                if(t.getLexemes() == "," && !isSemiDone)
+                {
+                    code += ";\n";
+                    isSemiDone = true;
+                }
+            }
         }
 
 
         public override void EnterProdNext2varTail(Production node)
         {
-        }
 
+        }
 
         public override Node ExitProdNext2varTail(Production node)
         {
@@ -1200,6 +1436,70 @@ namespace Code_Translation
         public override void ChildProdNext2varTail(Production node, Node child)
         {
             node.AddChild(child);
+            if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
+            {
+                code = code.Remove(code.Length - 2, 2);
+                if (!hasDeclared)
+                {
+                    if (!isFirstDec)
+                        code += ";\n";
+                    else
+                    {
+                        isFirstDec = false;
+                    }
+                    if (currscope == "Global")
+                    {
+                        code += "public static ";
+                    }
+                    code += vardtype + " " + varid;
+                }
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                varid = t.getLexemes();
+                varid = varid.Remove(0, 1);
+                hasDeclared = false;
+            }
+            if (child.GetName() == "prod_next2var")
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                if (t.getLexemes() == "," && !isSemiDone)
+                {
+                    code += ";\n";
+                    isSemiDone = true;
+                }
+            }
+
+
+            //if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
+            //{
+            //    code = code.Remove(code.Length - 2, 2);
+            //    if (!hasDeclared)
+            //    {
+            //        if (!isFirstDec)
+            //            code += ";\n";
+            //        else
+            //        {
+            //            isFirstDec = false;
+            //        }
+            //        if(currscope == "Global")
+            //        {
+            //            code += "public static ";
+            //        }
+            //        code += vardtype + " " + varid;
+            //    }
+            //    Tokens t = new Tokens();
+            //    t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+            //    varid = t.getLexemes();
+            //    varid = varid.Remove(0, 1);
+            //    hasDeclared = false;
+            //    isFirstDec = false;
+            //}
+            //if(child.GetName() == "prod_next2var")
+            //{
+            //    Tokens t = new Tokens();
+            //    t = GetTokens(child.GetChildAt(1).GetStartLine(), child.GetChildAt(1).GetStartColumn());
+            //}
         }
 
 
@@ -1272,12 +1572,21 @@ namespace Code_Translation
 
 
         public override void EnterProdArray1d(Production node)
-        {
+        { 
+            isAdd = true;
+            isArrayDec = true;
         }
 
 
         public override Node ExitProdArray1d(Production node)
         {
+            isArrayDec = false;
+            isArray = false;
+            //var size = " ";
+            //var input_size = 0;
+            //Node arrsize = node.GetChildAt(1);
+            //Node arrval = arrsize.GetChildAt(0).GetValue(Int32.Parse(size, out input_size));
+
             return node;
         }
 
@@ -1602,6 +1911,7 @@ namespace Code_Translation
 
         public override Node ExitProdLocalDec(Production node)
         {
+            isIdentVar = false;
             return node;
         }
 
@@ -1609,6 +1919,15 @@ namespace Code_Translation
         public override void ChildProdLocalDec(Production node, Node child)
         {
             node.AddChild(child);
+            if (child.GetName() == "TERMI")
+            {
+                if (!hasDeclared)
+                {
+                    code += vardtype + " " + varid;
+                }
+                isIdentVar = true;
+                code += ";\n";
+            }
         }
 
 
@@ -2570,6 +2889,7 @@ namespace Code_Translation
 
         public override Node ExitProdDefault(Production node)
         {
+            code += "break;\n";
             return node;
         }
 
@@ -2682,6 +3002,7 @@ namespace Code_Translation
 
         public override void EnterProdSubFunction(Production node)
         {
+            code += "\npublic static ";
         }
 
 
@@ -2694,6 +3015,7 @@ namespace Code_Translation
         public override void ChildProdSubFunction(Production node, Node child)
         {
             node.AddChild(child);
+            
         }
 
 
@@ -2711,16 +3033,27 @@ namespace Code_Translation
         public override void ChildProdFuncInside(Production node, Node child)
         {
             node.AddChild(child);
+            //if (child.GetName() == "TERMI")
+            //{
+            //    if (!hasDeclared)
+            //    {
+            //        code += vardtype + " " + varid;
+            //    }
+            //    isIdentVar = true;
+            //    code += ";\n";
+            //}
         }
 
 
         public override void EnterProdFuncArgs(Production node)
         {
+            isFunctArgs = true;
         }
 
 
         public override Node ExitProdFuncArgs(Production node)
         {
+            isFunctArgs = false;
             return node;
         }
 
