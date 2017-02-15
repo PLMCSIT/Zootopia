@@ -499,6 +499,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_RESULT:
             EnterProdResult((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            EnterProdResultMath((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             EnterProdFigTail((Production) node);
             break;
@@ -839,6 +842,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdMultifuncArgs((Production) node);
         case (int) SyntaxConstants.PROD_RESULT:
             return ExitProdResult((Production) node);
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            return ExitProdResultMath((Production) node);
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             return ExitProdFigTail((Production) node);
         case (int) SyntaxConstants.PROD_RESULT_TAIL:
@@ -1131,6 +1136,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_RESULT:
             ChildProdResult(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            ChildProdResultMath(node, child);
             break;
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             ChildProdFigTail(node, child);
@@ -6546,6 +6554,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdResult(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdResultMath(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdResultMath(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdResultMath(Production node, Node child) {
         node.AddChild(child);
     }
 

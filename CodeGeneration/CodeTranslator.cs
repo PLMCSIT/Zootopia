@@ -102,6 +102,7 @@ namespace Code_Translation
         private bool isFunctVar = false;
         private bool isFunctArgs = false;
         private bool isSemiDone;
+        private int size;
 
         public string Start()
         {
@@ -254,7 +255,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "Console.Clear";
+                code += "Console.Clear()";
                 isAdd = false;
             }
             return node;
@@ -1233,10 +1234,17 @@ namespace Code_Translation
             {
                 if(!hasDeclared)
                 {
+                    if (!isFirstDec)
+                    {
+                        if(!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                        code += ";\n";
+                    }
                     code += "public static " + vardtype + " " + varid ;
                 }
                 isIdentVar = true;
-                code += ";\n";
+
+                if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                    code += ";\n";
             }     
         }
 
@@ -1360,13 +1368,6 @@ namespace Code_Translation
                 {
                     code += "public static ";
                 }
-                Node val = child.GetChildAt(1).GetChildAt(0);
-                if (val.GetName() == "NEWTLIT")
-                {
-                    Tokens tval = new Tokens();
-                    tval = GetTokens(val.GetStartLine(), child.GetStartColumn());
-                    arrval = tval.getLexemes();
-                }
             }
             else if(node.GetChildCount() == 1 && child.GetName() == "EQUAL")
             {
@@ -1442,8 +1443,8 @@ namespace Code_Translation
                 if (!hasDeclared)
                 {
                     if (!isFirstDec)
-                        code += ";\n";
-                    else
+                    //    code += ";\n";
+                    //else
                     {
                         isFirstDec = false;
                     }
@@ -1580,12 +1581,50 @@ namespace Code_Translation
 
         public override Node ExitProdArray1d(Production node)
         {
-            isArrayDec = false;
-            isArray = false;
-            //var size = " ";
-            //var input_size = 0;
-            //Node arrsize = node.GetChildAt(1);
-            //Node arrval = arrsize.GetChildAt(0).GetValue(Int32.Parse(size, out input_size));
+            string dtype = "";
+            string size1 = "";
+            string size2 = "";
+            bool isMultiD = false;
+            if (node.GetChildCount() == 4)
+            {
+                isMultiD = true;
+            }
+            Node size_1 = node.GetChildAt(1);
+            Tokens t = new Tokens();
+            t = GetTokens(size_1.GetStartLine(), size_1.GetStartColumn());
+            size1 = t.getLexemes();
+
+            switch (dtype)
+            {
+                case "Int": dtype = "int"; break;
+                case "Double": dtype = "double"; break;
+                case "String": dtype = "string"; break;
+                case "Char": dtype = "char"; break;
+                case "Boolean": dtype = "bool"; break;
+            }
+
+            if (isMultiD)
+            {
+                Node multi = node.GetChildAt(3);
+                if (multi.GetName() == "prod_elem1D_next")
+                {
+                    Node size_2 = multi.GetChildAt(1);
+                    t = GetTokens(size_2.GetStartLine(), size_2.GetStartColumn());
+                    size2 = t.getLexemes();
+                    code += vardtype + "[][] " + varid + " = new " + vardtype + "[" + size1 + "][];\n";
+                    for (int i = 0; i < Int32.Parse(size1); i++)
+                    {
+                        code += varid + "[" + i + "] = new " + vardtype + "[" + size2 + "];\n";
+                    }
+                    code = code.Remove(code.Length - 2, 2);
+                    isArray = true;
+                }
+            }
+            else
+            {
+                code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "]";
+                isArray = true;
+            }
 
             return node;
         }
@@ -1919,14 +1958,22 @@ namespace Code_Translation
         public override void ChildProdLocalDec(Production node, Node child)
         {
             node.AddChild(child);
+            
             if (child.GetName() == "TERMI")
             {
                 if (!hasDeclared)
                 {
+                    if (!isFirstDec)
+                    {
+                        if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                            code += ";\n";
+                    }
                     code += vardtype + " " + varid;
                 }
                 isIdentVar = true;
-                code += ";\n";
+
+                if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                    code += ";\n";
             }
         }
 
