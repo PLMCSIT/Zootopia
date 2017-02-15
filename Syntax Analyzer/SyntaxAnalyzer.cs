@@ -274,6 +274,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_ELEM1D_NEXT:
             EnterProdElem1dNext((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_1D_INITIAL:
+            EnterProd1dInitial((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_ELEM1D_LIST:
             EnterProdElem1dList((Production) node);
             break;
@@ -282,6 +285,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_ELEM2D_NEXT:
             EnterProdElem2dNext((Production) node);
+            break;
+        case (int) SyntaxConstants.PROD_2D_INITIAL:
+            EnterProd2dInitial((Production) node);
             break;
         case (int) SyntaxConstants.PROD_ELEM2D_LIST:
             EnterProdElem2dList((Production) node);
@@ -499,6 +505,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_RESULT:
             EnterProdResult((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            EnterProdResultMath((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             EnterProdFigTail((Production) node);
             break;
@@ -689,12 +698,16 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdArray1d((Production) node);
         case (int) SyntaxConstants.PROD_ELEM1D_NEXT:
             return ExitProdElem1dNext((Production) node);
+        case (int) SyntaxConstants.PROD_1D_INITIAL:
+            return ExitProd1dInitial((Production) node);
         case (int) SyntaxConstants.PROD_ELEM1D_LIST:
             return ExitProdElem1dList((Production) node);
         case (int) SyntaxConstants.PROD_ELEMLIST1D_TAIL:
             return ExitProdElemlist1dTail((Production) node);
         case (int) SyntaxConstants.PROD_ELEM2D_NEXT:
             return ExitProdElem2dNext((Production) node);
+        case (int) SyntaxConstants.PROD_2D_INITIAL:
+            return ExitProd2dInitial((Production) node);
         case (int) SyntaxConstants.PROD_ELEM2D_LIST:
             return ExitProdElem2dList((Production) node);
         case (int) SyntaxConstants.PROD_ELEM2D_LIST_TAIL:
@@ -839,6 +852,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdMultifuncArgs((Production) node);
         case (int) SyntaxConstants.PROD_RESULT:
             return ExitProdResult((Production) node);
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            return ExitProdResultMath((Production) node);
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             return ExitProdFigTail((Production) node);
         case (int) SyntaxConstants.PROD_RESULT_TAIL:
@@ -907,6 +922,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_ELEM1D_NEXT:
             ChildProdElem1dNext(node, child);
             break;
+        case (int) SyntaxConstants.PROD_1D_INITIAL:
+            ChildProd1dInitial(node, child);
+            break;
         case (int) SyntaxConstants.PROD_ELEM1D_LIST:
             ChildProdElem1dList(node, child);
             break;
@@ -915,6 +933,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_ELEM2D_NEXT:
             ChildProdElem2dNext(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_2D_INITIAL:
+            ChildProd2dInitial(node, child);
             break;
         case (int) SyntaxConstants.PROD_ELEM2D_LIST:
             ChildProdElem2dList(node, child);
@@ -1131,6 +1152,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_RESULT:
             ChildProdResult(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_RESULT_MATH:
+            ChildProdResultMath(node, child);
             break;
         case (int) SyntaxConstants.PROD_FIG_TAIL:
             ChildProdFigTail(node, child);
@@ -3557,6 +3581,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * <exception cref='ParseException'>if the node analysis
      * discovered errors</exception>
      */
+    public virtual void EnterProd1dInitial(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProd1dInitial(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProd1dInitial(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
     public virtual void EnterProdElem1dList(Production node) {
     }
 
@@ -3666,6 +3730,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdElem2dNext(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProd2dInitial(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProd2dInitial(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProd2dInitial(Production node, Node child) {
         node.AddChild(child);
     }
 
@@ -6546,6 +6650,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdResult(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdResultMath(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdResultMath(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdResultMath(Production node, Node child) {
         node.AddChild(child);
     }
 

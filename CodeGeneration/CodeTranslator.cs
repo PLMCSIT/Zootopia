@@ -102,6 +102,10 @@ namespace Code_Translation
         private bool isFunctVar = false;
         private bool isFunctArgs = false;
         private bool isSemiDone;
+        private int size;
+        private bool hasArrDec = false;
+        private bool hasMultiArrDec;
+        private string multarrval;
 
         public string Start()
         {
@@ -254,7 +258,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "Console.Clear";
+                code += "Console.Clear()";
                 isAdd = false;
             }
             return node;
@@ -497,7 +501,7 @@ namespace Code_Translation
                     }
                 }
                 else
-                    isFunct = false;
+                isFunct = false;
                 isAdd = false;
             }
             return node;
@@ -523,8 +527,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += ", ";
-                isAdd = false;
+                //if (hasMultiArrDec)
+                //{
+                    code += ", ";
+                    isAdd = false;
+                //}
             }
             return node;
         }
@@ -536,8 +543,8 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += " = ";
-                isAdd = false;
+                    code += " = ";
+                    isAdd = false;
             }
             return node;
         }
@@ -581,8 +588,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "{";
-                isAdd = false;
+                if (hasArrDec)
+                {
+                    code += "{";
+                    isAdd = false;
+                }
             }
             return node;
         }
@@ -594,9 +604,12 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "}";
-                isAdd = false;
-            }
+                if (hasArrDec)
+                {
+                    code += "}";
+                    isAdd = false;
+                }
+           }
             return node;
         }
         public override void EnterOp(Token node)
@@ -636,7 +649,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "{\n";
+                code += "\n{\n";
                 isAdd = false;
             }
             return node;
@@ -1122,8 +1135,10 @@ namespace Code_Translation
             {
                 if (!isArray)
                 {
-                    if (!isIdentVar)
+                    if (!hasArrDec)
                     {
+                        if (!isIdentVar)
+                        {
                             Tokens t = new Tokens();
                             t = GetTokens(node.GetStartLine(), node.GetStartColumn());
                             code += " " + t.getLexemes().Remove(0, 1);
@@ -1132,7 +1147,8 @@ namespace Code_Translation
                                 int codenum = t.getCode();
                                 tokens[codenum].setDatatype(input_datatype);
                             }
-                    }                    
+                        }
+                    }                   
                 }
                 isAdd = false;
             }
@@ -1233,11 +1249,18 @@ namespace Code_Translation
             {
                 if(!hasDeclared)
                 {
-                    code += "public static " + vardtype + " " + varid ;
+                    if (!isFirstDec)
+                    {
+                        if(!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                        code += ";\n";
+                    }
+                    code += "public static " + vardtype + " " + varid;
                 }
                 isIdentVar = true;
-                code += ";\n";
-            }     
+
+                if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                    code += ";\n";
+            }
         }
 
 
@@ -1360,19 +1383,12 @@ namespace Code_Translation
                 {
                     code += "public static ";
                 }
-                Node val = child.GetChildAt(1).GetChildAt(0);
-                if (val.GetName() == "NEWTLIT")
-                {
-                    Tokens tval = new Tokens();
-                    tval = GetTokens(val.GetStartLine(), child.GetStartColumn());
-                    arrval = tval.getLexemes();
-                }
             }
             else if(node.GetChildCount() == 1 && child.GetName() == "EQUAL")
             {
                 
                 code = code.Remove(code.Length - 2, 2);
-
+                
                 if (!isFirstDec)
                     code += ";\n";
                 else
@@ -1580,12 +1596,88 @@ namespace Code_Translation
 
         public override Node ExitProdArray1d(Production node)
         {
-            isArrayDec = false;
-            isArray = false;
-            //var size = " ";
-            //var input_size = 0;
-            //Node arrsize = node.GetChildAt(1);
-            //Node arrval = arrsize.GetChildAt(0).GetValue(Int32.Parse(size, out input_size));
+            string dtype = "";
+            string size1 = "";
+            string size2 = "";
+            string arrval = "";
+            bool isMultiD = false;
+            Node arr1d = node.GetChildAt(3);
+            if (node.GetChildCount() == 4 && arr1d.GetChildAt(0).GetName() == "EQUAL")
+            {
+                hasArrDec = true;
+                code = code.Remove(code.Length - 3, 3);
+            }
+            else if (node.GetChildCount() == 4 && arr1d.GetChildAt(0).GetName() == "OB")
+            {
+                isMultiD = true;
+                hasArrDec = false;
+            }
+            else
+                hasArrDec = false;
+
+            Node size_1 = node.GetChildAt(1);
+            Tokens t = new Tokens();
+            t = GetTokens(size_1.GetStartLine(), size_1.GetStartColumn());
+            size1 = t.getLexemes();
+
+            switch (dtype)
+            {
+                case "Int": dtype = "int"; break;
+                case "Double": dtype = "double"; break;
+                case "String": dtype = "string"; break;
+                case "Char": dtype = "char"; break;
+                case "Boolean": dtype = "bool"; break;
+            }
+
+            if (isMultiD)
+            {
+                Node multi = node.GetChildAt(3);
+                if (multi.GetName() == "prod_elem1D_next" )
+                {
+                    Node size_2 = multi.GetChildAt(1);
+                    t = GetTokens(size_2.GetStartLine(), size_2.GetStartColumn());
+                    size2 = t.getLexemes();
+                    code += vardtype + "[][] " + varid + " = new " + vardtype + "[" + size1 + "][];\n";
+                    for (int i = 0; i < Int32.Parse(size1); i++)
+                    {
+                        code += varid + "[" + i + "] = new " + vardtype + "[" + size2 + "];\n";
+                    }
+                    code = code.Remove(code.Length - 2, 2);
+                    isArray = true;
+                }
+            }
+            else if(hasArrDec)
+            {
+                Node arrset = node.GetChildAt(3);
+                if (arrset.GetChildAt(1).GetChildAt(0).GetName() == "OC")
+                {
+                    Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(1);
+                    t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
+                    arrval = t.getLexemes();
+                    code += vardtype + "[]" + varid + " = " + "{ " + arrval + " };\n";
+                    if (arr_val.GetChildCount() > 1 && arr_val.GetChildAt(1).GetChildAt(0).GetName() == "COMMA")
+                    {
+                        hasMultiArrDec = true;
+                        Node multarr_val = arr_val.GetChildAt(1).GetChildAt(1);
+                        t = GetTokens(multarr_val.GetStartLine(), multarr_val.GetStartColumn());
+                        multarrval = t.getLexemes();
+                        code += ", " + multarrval;
+                    }
+                }
+                else
+                {
+                    Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(0);
+                    t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
+                    arrval = t.getLexemes();
+                    code += vardtype + "[]" + varid + " = " + arrval + ";\n";
+                }
+            }
+            
+            else
+            {
+                code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "]";
+                isArray = true;
+            }
 
             return node;
         }
@@ -1610,7 +1702,26 @@ namespace Code_Translation
 
         public override void ChildProdElem1dNext(Production node, Node child)
         {
-            node.AddChild(child);
+            //if (node.GetChildCount() == 1 && child.GetName() == "EQUAL")
+            //{
+                //    if (node.GetChildAt(0).GetChildAt(0).GetName() == "OC")
+                //    { }
+                //    code = code.Remove(code.Length - 2, 2);
+
+                //    if (!isFirstDec)
+                //        code += ";\n";
+                //    else
+                //    {
+                //        isFirstDec = false;
+                //    }
+                //    if (currscope == "Global")
+                //    {
+                //        code += "public static ";
+                //    }
+                //    code += vardtype + " " + varid + " = ";
+                //    hasDeclared = true;
+           //}
+                node.AddChild(child);
         }
 
 
@@ -1919,14 +2030,30 @@ namespace Code_Translation
         public override void ChildProdLocalDec(Production node, Node child)
         {
             node.AddChild(child);
+
             if (child.GetName() == "TERMI")
             {
-                if (!hasDeclared)
+                if (!isArray)
                 {
-                    code += vardtype + " " + varid;
+                    if (!hasArrDec)
+                    {
+                        if (!hasDeclared)
+                        {
+                            if (!isFirstDec)
+                            {
+                                if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                                    code += ";\n";
+                            }
+                            code += vardtype + " " + varid;
+                        }
+                        isIdentVar = true;
+
+                        if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                            code += ";\n";
+                    }
                 }
-                isIdentVar = true;
-                code += ";\n";
+                if (isArray)
+                    code += ";\n";
             }
         }
 
