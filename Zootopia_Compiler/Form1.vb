@@ -6,7 +6,9 @@ Imports System.CodeDom.Compiler
 Imports Microsoft.VisualBasic
 Imports Syntax_Analyzer
 Imports Core.Library
+Imports Code_Translation
 Imports Code_Generation
+
 
 
 Public Class Form1
@@ -495,7 +497,7 @@ Public Class Form1
                         If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" Then
                             If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" And sc(i + 4) = "i" Then
                                 If sc(i + 1) = "e" And sc(i + 2) = "l" And sc(i + 3) = "s" And sc(i + 4) = "i" And sc(i + 5) = "f" Then
-                                    If sc(i + 6) = "(" Then
+                                    If sc(i + 6) = "(" Or sc(i + 6) = " " Then
                                         symbolCtr += 1
                                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                                         tokens.setTokens("eelsif")
@@ -753,7 +755,7 @@ Public Class Form1
 
                 ElseIf sc(i + 1) = "u" Then
                     If sc(i + 1) = "u" And sc(i + 2) = "r" Then
-                        If sc(i + 3) = "(" Then
+                        If sc(i + 3) = "(" Or sc(i + 3) = " " Then
                             symbolCtr += 1
                             tokens = New TokenLibrary.TokenLibrary.TokenClass
                             tokens.setTokens("fur")
@@ -836,7 +838,7 @@ Public Class Form1
 
             ElseIf sc(i) = "i" Then
                 If sc(i + 1) = "f" Then
-                    If sc(i + 2) = "(" Then
+                    If sc(i + 2) = "(" Or sc(i + 2) = " " Then
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("if")
@@ -1856,7 +1858,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("++")
-                        tokens.setLexemes("increOp")
+                        tokens.setLexemes("++")
                         tokens.setAttributes("increOp, ++")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -1923,7 +1925,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("--")
-                        tokens.setLexemes("decreOp")
+                        tokens.setLexemes("--")
                         tokens.setAttributes("decreOp, --")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -2979,7 +2981,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("~")
-                        tokens.setLexemes("~")
+                        tokens.setLexemes("negOp")
                         tokens.setAttributes("negOp, ~, unary")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -3137,7 +3139,7 @@ Public Class Form1
                     symbolCtr += 1
                     tokens = New TokenLibrary.TokenLibrary.TokenClass
                     tokens.setTokens("newt literals")
-                    tokens.setLexemes("newtlit")
+                    tokens.setLexemes(number)
                     tokens.setAttributes("newtlit")
                     tokens.setLines(line)
                     tokenstream.Add(tokens)
@@ -3177,7 +3179,7 @@ Public Class Form1
                         symbolCtr += 1
                         tokens = New TokenLibrary.TokenLibrary.TokenClass
                         tokens.setTokens("duck literals")
-                        tokens.setLexemes("ducklit")
+                        tokens.setLexemes(number)
                         tokens.setAttributes("ducklit")
                         tokens.setLines(line)
                         tokenstream.Add(tokens)
@@ -3341,7 +3343,7 @@ Public Class Form1
 
 
         lexinew()
-        identifierList()
+        'identifierList()
         Dim semantics As New Semantics_Analyzer.SemanticsInitializer
         'semantic()
 
@@ -3365,11 +3367,22 @@ Public Class Form1
 
         End If
 
-        Dim generate As New CodeGenInitialize
+        Dim generate As New CodeTranslator
         generate = codeGenStart(tokenDump(tokenstream), semantics)
         generate.Start()
         Dim code As String = generate.code
-        MessageBox.Show(code)
+        code += vbLf & "}" & vbLf & "}"
+        If CodeGenerationToolStripMenuItem1.Checked Then
+            MessageBox.Show(code)
+        End If
+        If ConsoleOutputToolStripMenuItem.Checked Then
+            Dim output As New OutputInitializer
+            output.Start(code)
+            If (output.error <> "") Then
+                MessageBox.Show(output.error, "Woops!")
+            End If
+        End If
+
     End Sub
 
     Function SemanticStart(ByVal tokens As List(Of Semantics_Analyzer.SemanticsInitializer.Tokens)) As Semantics_Analyzer.SemanticsInitializer
@@ -3382,10 +3395,10 @@ Public Class Form1
         Return sem
     End Function
 
-    Function codeGenStart(ByVal tokens As List(Of CodeGenInitialize.Tokens), ByVal semantics As Semantics_Analyzer.SemanticsInitializer) As CodeGenInitialize
-        Dim gen As New CodeGenInitialize
+    Function codeGenStart(ByVal tokens As List(Of CodeTranslator.Tokens), ByVal semantics As Semantics_Analyzer.SemanticsInitializer) As CodeTranslator
+        Dim gen As New CodeTranslator
         Try
-            gen = New CodeGenInitialize(tokens, semantics)
+            gen = New CodeTranslator(tokens, semantics)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -3407,12 +3420,12 @@ Public Class Form1
         Return token
     End Function
 
-    Function tokenDump(ByVal tokens As List(Of TokenLibrary.TokenLibrary.TokenClass)) As List(Of CodeGenInitialize.Tokens)
-        Dim token As New List(Of CodeGenInitialize.Tokens)
-        Dim t As New CodeGenInitialize.Tokens
+    Function tokenDump(ByVal tokens As List(Of TokenLibrary.TokenLibrary.TokenClass)) As List(Of CodeTranslator.Tokens)
+        Dim token As New List(Of CodeTranslator.Tokens)
+        Dim t As New CodeTranslator.Tokens
 
         For Each item In tokens
-            t = New CodeGenInitialize.Tokens
+            t = New CodeTranslator.Tokens
             t.setAttributes(item.getAttributes)
             t.setLexemes(item.getLexemes)
             t.setLines(item.getLines)
@@ -5437,600 +5450,600 @@ Public Class Form1
     End Sub
 
 
-    Private Sub identifierList()
-        Dim x As Integer = 0
-        Dim isMane As Boolean = False
-        Dim isStork As Boolean = False
-        Dim isFunction As Boolean = False
-        Dim Ctr As Integer = 0
-        Dim bCtr As Integer = 0
-        Dim erCtr As Integer = 0
-        Dim valDType As String = ""
-        Dim value As String = ""
-        Dim curDtype As String = ""
-        Dim type As String = ""
-        Dim used As String = "No"
-        Dim arraySize As String = ""
-        Dim arraySize2 As String = ""
-        Dim parameter As String = ""
-        Dim constAns As String = ""
+    'Private Sub identifierList()
+    '    Dim x As Integer = 0
+    '    Dim isMane As Boolean = False
+    '    Dim isStork As Boolean = False
+    '    Dim isFunction As Boolean = False
+    '    Dim Ctr As Integer = 0
+    '    Dim bCtr As Integer = 0
+    '    Dim erCtr As Integer = 0
+    '    Dim valDType As String = ""
+    '    Dim value As String = ""
+    '    Dim curDtype As String = ""
+    '    Dim type As String = ""
+    '    Dim used As String = "No"
+    '    Dim arraySize As String = ""
+    '    Dim arraySize2 As String = ""
+    '    Dim parameter As String = ""
+    '    Dim constAns As String = ""
 
-        Dim dtype(4) As String
-        dtype(0) = "newt"
-        dtype(1) = "duck"
-        dtype(2) = "bull"
-        dtype(3) = "starling"
+    '    Dim dtype(4) As String
+    '    dtype(0) = "newt"
+    '    dtype(1) = "duck"
+    '    dtype(2) = "bull"
+    '    dtype(3) = "starling"
 
-        For i As Integer = 0 To dGridLexi.Items.Count - 1
-            selinee(i) = dGridLexi.Items.Item(i).SubItems(1).Text() 'LINE
-        Next
+    '    For i As Integer = 0 To dGridLexi.Items.Count - 1
+    '        selinee(i) = dGridLexi.Items.Item(i).SubItems(1).Text() 'LINE
+    '    Next
 
-        For i As Integer = 0 To dGridLexi.Items.Count - 1
-            setokee(i) = dGridLexi.Items.Item(i).SubItems(3).Text() 'TOKEN
-        Next
+    '    For i As Integer = 0 To dGridLexi.Items.Count - 1
+    '        setokee(i) = dGridLexi.Items.Item(i).SubItems(3).Text() 'TOKEN
+    '    Next
 
-        While x < dGridLexi.Items.Count
-            If setokee(x) = "mane" Then
-                isStork = False
-                isMane = True
-            End If
+    '    While x < dGridLexi.Items.Count
+    '        If setokee(x) = "mane" Then
+    '            isStork = False
+    '            isMane = True
+    '        End If
 
-            If setokee(x) = "stork" Then
-                isStork = True
-                'MessageBox.Show(isStork)
-                Ctr += 1
-                objList = dGridIden.Items.Add(Ctr)
-                objList.SubItems.Add(dGridLexi.Items.Item(x + 2).SubItems(2).Text())
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("stork")
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("-")
-                objList.SubItems.Add("stork/global")
-                objList.SubItems.Add("-")
-            End If
+    '        If setokee(x) = "stork" Then
+    '            isStork = True
+    '            'MessageBox.Show(isStork)
+    '            Ctr += 1
+    '            objList = dGridIden.Items.Add(Ctr)
+    '            objList.SubItems.Add(dGridLexi.Items.Item(x + 2).SubItems(2).Text())
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("stork")
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("-")
+    '            objList.SubItems.Add("stork/global")
+    '            objList.SubItems.Add("-")
+    '        End If
 
-            If setokee(x) = "clsymbol" Then
-                Dim termi As Integer = x
-                Dim termi2 As Integer = x
-                Dim iden As String = ""
-                If setokee(x + 1) = "identifier" Then
-                    While termi2 >= 0
-                        If setokee(termi2) = "stork" Then
-                            Exit While
-                        End If
-                        termi2 -= 1
-                    End While
+    '        If setokee(x) = "clsymbol" Then
+    '            Dim termi As Integer = x
+    '            Dim termi2 As Integer = x
+    '            Dim iden As String = ""
+    '            If setokee(x + 1) = "identifier" Then
+    '                While termi2 >= 0
+    '                    If setokee(termi2) = "stork" Then
+    '                        Exit While
+    '                    End If
+    '                    termi2 -= 1
+    '                End While
 
-                    iden = dGridLexi.Items.Item(x).SubItems(2).Text
-                    While setokee(termi) <> ":"
-                        If setokee(termi) = "identifier" Then
-                            bCtr += 1
-                            objList = dGridBoard.Items.Add(dGridLexi.Items.Item(termi).SubItems(2).Text())
-                            objList.SubItems.Add(dGridLexi.Items.Item(termi2 + 2).SubItems(2).Text())
-                        End If
-                        termi += 1
-                    End While
-                    isStork = False
-                ElseIf setokee(x + 1) = ":" Then
-                    isStork = False
-                End If
-            End If
+    '                iden = dGridLexi.Items.Item(x).SubItems(2).Text
+    '                While setokee(termi) <> ":"
+    '                    If setokee(termi) = "identifier" Then
+    '                        bCtr += 1
+    '                        objList = dGridBoard.Items.Add(dGridLexi.Items.Item(termi).SubItems(2).Text())
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(termi2 + 2).SubItems(2).Text())
+    '                    End If
+    '                    termi += 1
+    '                End While
+    '                isStork = False
+    '            ElseIf setokee(x + 1) = ":" Then
+    '                isStork = False
+    '            End If
+    '        End If
 
-            If setokee(x) = "viper" Then
-                Dim kawnter As Integer = x
-                While setokee(kawnter) <> "clpar"
-                    kawnter += 1
-                End While
+    '        If setokee(x) = "viper" Then
+    '            Dim kawnter As Integer = x
+    '            While setokee(kawnter) <> "clpar"
+    '                kawnter += 1
+    '            End While
 
-                If setokee(kawnter + 1) = ":" Then
-                    Ctr += 1
-                    objList = dGridIden.Items.Add(Ctr)
-                    objList.SubItems.Add(dGridLexi.Items.Item(x + 2).SubItems(2).Text())
-                    objList.SubItems.Add(setokee(x))
-                    objList.SubItems.Add("-")
-                    objList.SubItems.Add("-")
-                    objList.SubItems.Add("function")
-                    objList.SubItems.Add("No")
-                    objList.SubItems.Add("-")
-                    objList.SubItems.Add("0")
-                    objList.SubItems.Add("global")
-                    objList.SubItems.Add("-")
-                End If
-            End If
+    '            If setokee(kawnter + 1) = ":" Then
+    '                Ctr += 1
+    '                objList = dGridIden.Items.Add(Ctr)
+    '                objList.SubItems.Add(dGridLexi.Items.Item(x + 2).SubItems(2).Text())
+    '                objList.SubItems.Add(setokee(x))
+    '                objList.SubItems.Add("-")
+    '                objList.SubItems.Add("-")
+    '                objList.SubItems.Add("function")
+    '                objList.SubItems.Add("No")
+    '                objList.SubItems.Add("-")
+    '                objList.SubItems.Add("0")
+    '                objList.SubItems.Add("global")
+    '                objList.SubItems.Add("-")
+    '            End If
+    '        End If
 
-            If inArray(setokee(x), dtype, 4) Then
-                Dim kownt As Integer = x
-                While setokee(kownt) <> "newline"
-                    If setokee(kownt) = "newline" Then
-                        Exit While
-                    End If
-                    kownt += 1
-                End While
+    '        If inArray(setokee(x), dtype, 4) Then
+    '            Dim kownt As Integer = x
+    '            While setokee(kownt) <> "newline"
+    '                If setokee(kownt) = "newline" Then
+    '                    Exit While
+    '                End If
+    '                kownt += 1
+    '            End While
 
-                If setokee(kownt - 1) = "clpar" Or setokee(kownt - 1) = "opsymbol" Then
-                    isMane = False
-                    isStork = False
-                    isFunction = True
-                End If
+    '            If setokee(kownt - 1) = "clpar" Or setokee(kownt - 1) = "opsymbol" Then
+    '                isMane = False
+    '                isStork = False
+    '                isFunction = True
+    '            End If
 
-            End If
+    '        End If
 
-            If inArray(setokee(x), dtype, 4) Then
-                curDtype = setokee(x)
+    '        If inArray(setokee(x), dtype, 4) Then
+    '            curDtype = setokee(x)
 
-                Dim declCount As Integer = 0
-                Dim declCtr As Integer = x
-                While Not (setokee(declCtr) = ":" Or setokee(declCtr) = "newline")
-                    If setokee(declCtr) = "at" Then
-                        declCount += 1
-                    End If
-                    declCtr += 1
-                End While
+    '            Dim declCount As Integer = 0
+    '            Dim declCtr As Integer = x
+    '            While Not (setokee(declCtr) = ":" Or setokee(declCtr) = "newline")
+    '                If setokee(declCtr) = "at" Then
+    '                    declCount += 1
+    '                End If
+    '                declCtr += 1
+    '            End While
 
-                If declCount = 1 Then
-                    While Not (setokee(x) = ":" Or setokee(x) = "newline")
+    '            If declCount = 1 Then
+    '                While Not (setokee(x) = ":" Or setokee(x) = "newline")
 
-                        'MessageBox.Show("x= " & x & ", " & setokee(x) & ", " & setokee(x + 1) & ", " & setokee(x + 2) & ", " & setokee(x + 3))
+    '                    'MessageBox.Show("x= " & x & ", " & setokee(x) & ", " & setokee(x + 1) & ", " & setokee(x + 2) & ", " & setokee(x + 3))
 
-                        If setokee(x) = "identifier" And setokee(x + 1) <> "clsquare" And Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
-                            If setokee(x + 1) = "assgnOp" Then
-                                valDType = setokee(x + 2).ToString
-                                value = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                If setokee(x - 3) = "let" Then
-                                    type = "constant"
-                                Else
-                                    type = "variable"
-                                End If
+    '                    If setokee(x) = "identifier" And setokee(x + 1) <> "clsquare" And Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
+    '                        If setokee(x + 1) = "assgnOp" Then
+    '                            valDType = setokee(x + 2).ToString
+    '                            value = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                            If setokee(x - 3) = "let" Then
+    '                                type = "constant"
+    '                            Else
+    '                                type = "variable"
+    '                            End If
 
-                            ElseIf setokee(x + 1) = "opsquare" Then
-                                value = "-"
-                                If curDtype = "newt" Then
-                                    valDType = "newtlit"
-                                ElseIf curDtype = "duck" Then
-                                    valDType = "ducklit"
-                                ElseIf curDtype = "bull" Then
-                                    valDType = "bullLit"
-                                ElseIf curDtype = "starling" Then
-                                    valDType = "starlinglit"
-                                End If
-                                If setokee(x + 3) = "opsquare" Or setokee(x + 4) = "opsquare" Then
-                                    type = "array2"
-                                Else
-                                    type = "array1"
-                                End If
-                            ElseIf setokee(x + 1) = "oppar" Then
-                                Dim lol As Integer = x + 1
-                                While setokee(lol) <> "newline"
-                                    If setokee(lol) = ":" Then
-                                        Exit While
-                                    End If
-                                    lol += 1
-                                End While
+    '                        ElseIf setokee(x + 1) = "opsquare" Then
+    '                            value = "-"
+    '                            If curDtype = "newt" Then
+    '                                valDType = "newtlit"
+    '                            ElseIf curDtype = "duck" Then
+    '                                valDType = "ducklit"
+    '                            ElseIf curDtype = "bull" Then
+    '                                valDType = "bullLit"
+    '                            ElseIf curDtype = "starling" Then
+    '                                valDType = "starlinglit"
+    '                            End If
+    '                            If setokee(x + 3) = "opsquare" Or setokee(x + 4) = "opsquare" Then
+    '                                type = "array2"
+    '                            Else
+    '                                type = "array1"
+    '                            End If
+    '                        ElseIf setokee(x + 1) = "oppar" Then
+    '                            Dim lol As Integer = x + 1
+    '                            While setokee(lol) <> "newline"
+    '                                If setokee(lol) = ":" Then
+    '                                    Exit While
+    '                                End If
+    '                                lol += 1
+    '                            End While
 
-                                If Not (setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
-                                    value = "-"
-                                    If curDtype = "newt" Then
-                                        valDType = "newtlit"
-                                    ElseIf curDtype = "duck" Then
-                                        valDType = "ducklit"
-                                    ElseIf curDtype = "bull" Then
-                                        valDType = "bullLit"
-                                    ElseIf curDtype = "starling" Then
-                                        valDType = "starlinglit"
-                                    End If
-                                    type = "function"
-                                End If
-                            Else
-                                If Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
-                                    If curDtype = "newt" Then
-                                        value = "0"
-                                        valDType = "newtlit"
-                                    ElseIf curDtype = "duck" Then
-                                        value = "true"
-                                        valDType = "bullLit"
-                                    ElseIf curDtype = "duck" Then
-                                        value = "0.0"
-                                        valDType = "ducklit"
-                                    ElseIf curDtype = "starling" Then
-                                        value = ""
-                                        valDType = "starlinglit"
-                                    End If
-                                    type = "variable"
-                                End If
-                            End If
+    '                            If Not (setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
+    '                                value = "-"
+    '                                If curDtype = "newt" Then
+    '                                    valDType = "newtlit"
+    '                                ElseIf curDtype = "duck" Then
+    '                                    valDType = "ducklit"
+    '                                ElseIf curDtype = "bull" Then
+    '                                    valDType = "bullLit"
+    '                                ElseIf curDtype = "starling" Then
+    '                                    valDType = "starlinglit"
+    '                                End If
+    '                                type = "function"
+    '                            End If
+    '                        Else
+    '                            If Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
+    '                                If curDtype = "newt" Then
+    '                                    value = "0"
+    '                                    valDType = "newtlit"
+    '                                ElseIf curDtype = "duck" Then
+    '                                    value = "true"
+    '                                    valDType = "bullLit"
+    '                                ElseIf curDtype = "duck" Then
+    '                                    value = "0.0"
+    '                                    valDType = "ducklit"
+    '                                ElseIf curDtype = "starling" Then
+    '                                    value = ""
+    '                                    valDType = "starlinglit"
+    '                                End If
+    '                                type = "variable"
+    '                            End If
+    '                        End If
 
-                            Ctr += 1
-                            objList = dGridIden.Items.Add(Ctr)
-                            objList.SubItems.Add(dGridLexi.Items.Item(x).SubItems(2).Text())
-                            objList.SubItems.Add(curDtype)
-                            objList.SubItems.Add(value)
-                            objList.SubItems.Add(valDType)
-                            objList.SubItems.Add(type)
-                            objList.SubItems.Add(used)
+    '                        Ctr += 1
+    '                        objList = dGridIden.Items.Add(Ctr)
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(x).SubItems(2).Text())
+    '                        objList.SubItems.Add(curDtype)
+    '                        objList.SubItems.Add(value)
+    '                        objList.SubItems.Add(valDType)
+    '                        objList.SubItems.Add(type)
+    '                        objList.SubItems.Add(used)
 
-                            If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array1" Then
-                                If setokee(x + 2) = "newtlit" Then
-                                    arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                    arraySize2 = "-"
-                                ElseIf setokee(x + 2) = "identifier" Then
-                                    Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
-                                    Dim a As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
-                                            a = index
-                                        End If
-                                    Next
+    '                        If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array1" Then
+    '                            If setokee(x + 2) = "newtlit" Then
+    '                                arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                                arraySize2 = "-"
+    '                            ElseIf setokee(x + 2) = "identifier" Then
+    '                                Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
+    '                                Dim a As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
+    '                                        a = index
+    '                                    End If
+    '                                Next
 
-                                    Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
-                                    arraySize = val
-                                    arraySize2 = "-"
-                                ElseIf setokee(x + 2) = "clsquare" Then
-                                    arraySize = "100"
-                                    arraySize2 = "-"
-                                End If
-                            ElseIf dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array2" Then
-                                If setokee(x + 2) = "newtlit" Then
-                                    arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                    If setokee(x + 5) = "newtlit" Then
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
-                                    ElseIf setokee(x + 5) = "identifier" Then
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 5) = "clsquare" Then
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
-                                ElseIf setokee(x + 2) = "identifier" Then
-                                    Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
-                                    Dim a As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
-                                            a = index
-                                        End If
-                                    Next
+    '                                Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
+    '                                arraySize = val
+    '                                arraySize2 = "-"
+    '                            ElseIf setokee(x + 2) = "clsquare" Then
+    '                                arraySize = "100"
+    '                                arraySize2 = "-"
+    '                            End If
+    '                        ElseIf dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array2" Then
+    '                            If setokee(x + 2) = "newtlit" Then
+    '                                arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                                If setokee(x + 5) = "newtlit" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
+    '                                ElseIf setokee(x + 5) = "identifier" Then
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 5) = "clsquare" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
+    '                            ElseIf setokee(x + 2) = "identifier" Then
+    '                                Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
+    '                                Dim a As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
+    '                                        a = index
+    '                                    End If
+    '                                Next
 
-                                    Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
-                                    arraySize = val
+    '                                Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
+    '                                arraySize = val
 
-                                    If setokee(x + 5) = "newtlit" Then '[@s][2]
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
-                                    ElseIf setokee(x + 5) = "identifier" Then '[@s][@a]
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 5) = "clsquare" Then '[@s][]
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
+    '                                If setokee(x + 5) = "newtlit" Then '[@s][2]
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
+    '                                ElseIf setokee(x + 5) = "identifier" Then '[@s][@a]
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 5) = "clsquare" Then '[@s][]
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
 
-                                ElseIf setokee(x + 2) = "clsquare" Then
-                                    arraySize = "10"
-                                    If setokee(x + 4) = "newtlit" Then
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 4).SubItems(2).Text()
-                                    ElseIf setokee(x + 4) = "identifier" Then
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 4).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 4) = "clsquare" Then
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
-                                End If
-                            Else
-                                arraySize = "-"
-                                arraySize2 = "-"
-                            End If
+    '                            ElseIf setokee(x + 2) = "clsquare" Then
+    '                                arraySize = "10"
+    '                                If setokee(x + 4) = "newtlit" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 4).SubItems(2).Text()
+    '                                ElseIf setokee(x + 4) = "identifier" Then
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 4).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 4) = "clsquare" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
+    '                            End If
+    '                        Else
+    '                            arraySize = "-"
+    '                            arraySize2 = "-"
+    '                        End If
 
-                            objList.SubItems.Add(arraySize)
-
-
-                            If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "function" Then
-                                Dim paramCtr As Integer = x
-                                Dim paramCount As Integer = 0
-                                While Not setokee(paramCtr) = "clpar"
-                                    If inArray(setokee(paramCtr), dtype, 4) Then
-                                        paramCount += 1
-                                    End If
-                                    paramCtr += 1
-                                End While
-                                parameter = paramCount.ToString
-                            Else
-                                parameter = "-"
-                            End If
-
-                            objList.SubItems.Add(parameter)
-
-                            If isMane = True Then
-                                objList.SubItems.Add("mane")
-                            ElseIf isStork = True Then
-                                Dim kaw As Integer = x
-                                While kaw >= 0
-                                    If setokee(kaw) = "opsymbol" Then
-                                        Exit While
-                                    Else
-                                        kaw -= 1
-                                    End If
-                                End While
-                                If setokee(kaw - 1) = "newline" Then
-                                    objList.SubItems.Add(dGridLexi.Items.Item(kaw - 2).SubItems(2).Text)
-                                Else
-                                    objList.SubItems.Add(dGridLexi.Items.Item(kaw - 1).SubItems(2).Text)
-                                End If
-                            ElseIf isFunction = True Then
-                                objList.SubItems.Add("subfunction")
-                            Else
-                                objList.SubItems.Add("global")
-                            End If
-
-                            objList.SubItems.Add(arraySize2)
-                        End If
-                        x += 1
-                    End While
-                ElseIf declCount >= 1 Then
-                    Dim kawnt As Integer = x
-                    While setokee(kawnt) <> "newline"
-                        If setokee(kawnt) = "newline" Then
-                            Exit While
-                        End If
-                        kawnt += 1
-                    End While
-
-                    While setokee(x) <> ","
-                        If setokee(x) = "identifier" And setokee(x + 1) <> "clsquare" And Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And (setokee(kawnt - 1) = "clpar" Or setokee(kawnt - 1) = "opsymbol")) Then
-                            If setokee(x + 1) = "assgnOp" Then
-                                valDType = setokee(x + 2).ToString
-                                value = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                If setokee(x - 3) = "let" Then
-                                    type = "constant"
-                                Else
-                                    type = "variable"
-                                End If
-
-                            ElseIf setokee(x + 1) = "opsquare" Then
-                                value = "-"
-                                If curDtype = "newt" Then
-                                    valDType = "newtlit"
-                                ElseIf curDtype = "duck" Then
-                                    valDType = "ducklit"
-                                ElseIf curDtype = "bull" Then
-                                    valDType = "bullLit"
-                                ElseIf curDtype = "starling" Then
-                                    valDType = "starlinglit"
-                                End If
-                                If setokee(x + 3) = "opsquare" Or setokee(x + 4) = "opsquare" Then
-                                    type = "array2"
-                                Else
-                                    type = "array1"
-                                End If
-                            ElseIf setokee(x + 1) = "oppar" Then
-                                Dim lol As Integer = x + 1
-                                While setokee(lol) <> "newline"
-                                    If setokee(lol) = ":" Then
-                                        Exit While
-                                    End If
-                                    lol += 1
-                                End While
-
-                                If Not (setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
-                                    value = "-"
-                                    If curDtype = "newt" Then
-                                        valDType = "newtlit"
-                                    ElseIf curDtype = "duck" Then
-                                        valDType = "ducklit"
-                                    ElseIf curDtype = "bull" Then
-                                        valDType = "bullLit"
-                                    ElseIf curDtype = "starling" Then
-                                        valDType = "starlinglit"
-                                    End If
-                                    type = "function"
-                                End If
-                            Else
-                                If Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
-                                    If curDtype = "newt" Then
-                                        value = "0"
-                                        valDType = "newtlit"
-                                    ElseIf curDtype = "bull" Then
-                                        value = "true"
-                                        valDType = "bullLit"
-                                    ElseIf curDtype = "duck" Then
-                                        value = "0.0"
-                                        valDType = "ducklit"
-                                    ElseIf curDtype = "starling" Then
-                                        value = ""
-                                        valDType = "starlinglit"
-                                    End If
-                                    type = "variable"
-                                End If
-                            End If
-
-                            Ctr += 1
-                            objList = dGridIden.Items.Add(Ctr)
-                            objList.SubItems.Add(dGridLexi.Items.Item(x).SubItems(2).Text())
-                            objList.SubItems.Add(curDtype)
-                            objList.SubItems.Add(value)
-                            objList.SubItems.Add(valDType)
-                            objList.SubItems.Add(type)
-                            objList.SubItems.Add(used)
-
-                            If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array1" Then     'size ng array
-                                If setokee(x + 2) = "newtlit" Then
-                                    arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                    arraySize2 = "-"
-                                ElseIf setokee(x + 2) = "identifier" Then
-                                    Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
-                                    Dim a As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
-                                            a = index
-                                        End If
-                                    Next
-
-                                    Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
-                                    arraySize = val
-                                    arraySize2 = "-"
-                                ElseIf setokee(x + 2) = "clsquare" Then
-                                    arraySize = "100"
-                                    arraySize2 = "-"
-                                End If
-                            ElseIf dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array2" Then
-                                If setokee(x + 2) = "newtlit" Then
-                                    arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
-                                    If setokee(x + 5) = "newtlit" Then
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
-                                    ElseIf setokee(x + 5) = "identifier" Then
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 5) = "clsquare" Then
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
-                                ElseIf setokee(x + 2) = "identifier" Then
-                                    Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
-                                    Dim a As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
-                                            a = index
-                                        End If
-                                    Next
-
-                                    Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
-                                    arraySize = val
-
-                                    If setokee(x + 5) = "newtlit" Then
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
-                                    ElseIf setokee(x + 5) = "identifier" Then
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 5) = "clsquare" Then
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
-
-                                ElseIf setokee(x + 2) = "clsquare" Then
-                                    arraySize = "10"
-                                    If setokee(x + 4) = "newtlit" Then
-                                        arraySize = arraySize
-                                        arraySize2 = dGridLexi.Items.Item(x + 4).SubItems(2).Text()
-                                    ElseIf setokee(x + 4) = "identifier" Then
-                                        Dim arrayID As String = dGridLexi.Items.Item(x + 4).SubItems(2).Text
-                                        Dim b As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
-                                                b = index
-                                            End If
-                                        Next
-                                        Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
-                                        arraySize = arraySize
-                                        arraySize2 = value1
-                                    ElseIf setokee(x + 4) = "clsquare" Then
-                                        arraySize = arraySize
-                                        arraySize2 = "10"
-                                    End If
-                                End If
-                            Else
-                                arraySize = "-"
-                                arraySize2 = "-"
-                            End If
-
-                            objList.SubItems.Add(arraySize)
-
-                            If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "function" Then
-                                Dim paramCtr As Integer = x
-                                Dim paramCount As Integer = 0
-                                While Not setokee(paramCtr) = "clpar"
-                                    If inArray(setokee(paramCtr), dtype, 4) Then
-                                        paramCount += 1
-                                    End If
-                                    paramCtr += 1
-                                End While
-                                parameter = paramCount.ToString
-                            Else
-                                parameter = "-"
-                            End If
-
-                            objList.SubItems.Add(parameter)
-
-                            If isMane = True Then
-                                objList.SubItems.Add("mane")
-                            ElseIf isStork = True Then
-                                Dim kaw As Integer = x
-                                While kaw >= 0
-                                    If setokee(kaw) = "opsymbol" Then
-                                        Exit While
-                                    Else
-                                        kaw -= 1
-                                    End If
-                                End While
-                                If setokee(kaw - 1) = "newline" Then
-                                    objList.SubItems.Add(dGridLexi.Items.Item(kaw - 2).SubItems(2).Text)
-                                Else
-                                    objList.SubItems.Add(dGridLexi.Items.Item(kaw - 1).SubItems(2).Text)
-                                End If
-
-                            ElseIf isFunction = True Then
-                                objList.SubItems.Add("subfunction")
-                            Else
-                                objList.SubItems.Add("global")
-                            End If
-
-                            objList.SubItems.Add(arraySize2)
-
-                        End If
-                        x += 1
-                    End While
-                End If
-            End If
+    '                        objList.SubItems.Add(arraySize)
 
 
-            x += 1
-        End While
-    End Sub
+    '                        If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "function" Then
+    '                            Dim paramCtr As Integer = x
+    '                            Dim paramCount As Integer = 0
+    '                            While Not setokee(paramCtr) = "clpar"
+    '                                If inArray(setokee(paramCtr), dtype, 4) Then
+    '                                    paramCount += 1
+    '                                End If
+    '                                paramCtr += 1
+    '                            End While
+    '                            parameter = paramCount.ToString
+    '                        Else
+    '                            parameter = "-"
+    '                        End If
+
+    '                        objList.SubItems.Add(parameter)
+
+    '                        If isMane = True Then
+    '                            objList.SubItems.Add("mane")
+    '                        ElseIf isStork = True Then
+    '                            Dim kaw As Integer = x
+    '                            While kaw >= 0
+    '                                If setokee(kaw) = "opsymbol" Then
+    '                                    Exit While
+    '                                Else
+    '                                    kaw -= 1
+    '                                End If
+    '                            End While
+    '                            If setokee(kaw - 1) = "newline" Then
+    '                                objList.SubItems.Add(dGridLexi.Items.Item(kaw - 2).SubItems(2).Text)
+    '                            Else
+    '                                objList.SubItems.Add(dGridLexi.Items.Item(kaw - 1).SubItems(2).Text)
+    '                            End If
+    '                        ElseIf isFunction = True Then
+    '                            objList.SubItems.Add("subfunction")
+    '                        Else
+    '                            objList.SubItems.Add("global")
+    '                        End If
+
+    '                        objList.SubItems.Add(arraySize2)
+    '                    End If
+    '                    x += 1
+    '                End While
+    '            ElseIf declCount >= 1 Then
+    '                Dim kawnt As Integer = x
+    '                While setokee(kawnt) <> "newline"
+    '                    If setokee(kawnt) = "newline" Then
+    '                        Exit While
+    '                    End If
+    '                    kawnt += 1
+    '                End While
+
+    '                While setokee(x) <> ","
+    '                    If setokee(x) = "identifier" And setokee(x + 1) <> "clsquare" And Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And (setokee(kawnt - 1) = "clpar" Or setokee(kawnt - 1) = "opsymbol")) Then
+    '                        If setokee(x + 1) = "assgnOp" Then
+    '                            valDType = setokee(x + 2).ToString
+    '                            value = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                            If setokee(x - 3) = "let" Then
+    '                                type = "constant"
+    '                            Else
+    '                                type = "variable"
+    '                            End If
+
+    '                        ElseIf setokee(x + 1) = "opsquare" Then
+    '                            value = "-"
+    '                            If curDtype = "newt" Then
+    '                                valDType = "newtlit"
+    '                            ElseIf curDtype = "duck" Then
+    '                                valDType = "ducklit"
+    '                            ElseIf curDtype = "bull" Then
+    '                                valDType = "bullLit"
+    '                            ElseIf curDtype = "starling" Then
+    '                                valDType = "starlinglit"
+    '                            End If
+    '                            If setokee(x + 3) = "opsquare" Or setokee(x + 4) = "opsquare" Then
+    '                                type = "array2"
+    '                            Else
+    '                                type = "array1"
+    '                            End If
+    '                        ElseIf setokee(x + 1) = "oppar" Then
+    '                            Dim lol As Integer = x + 1
+    '                            While setokee(lol) <> "newline"
+    '                                If setokee(lol) = ":" Then
+    '                                    Exit While
+    '                                End If
+    '                                lol += 1
+    '                            End While
+
+    '                            If Not (setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
+    '                                value = "-"
+    '                                If curDtype = "newt" Then
+    '                                    valDType = "newtlit"
+    '                                ElseIf curDtype = "duck" Then
+    '                                    valDType = "ducklit"
+    '                                ElseIf curDtype = "bull" Then
+    '                                    valDType = "bullLit"
+    '                                ElseIf curDtype = "starling" Then
+    '                                    valDType = "starlinglit"
+    '                                End If
+    '                                type = "function"
+    '                            End If
+    '                        Else
+    '                            If Not (setokee(x) = "identifier" And setokee(x + 1) = "oppar" And setokee(x + 2) = "clpar" And (setokee(x + 3) = "newline" Or setokee(x + 3) = "opsymbol")) Then
+    '                                If curDtype = "newt" Then
+    '                                    value = "0"
+    '                                    valDType = "newtlit"
+    '                                ElseIf curDtype = "bull" Then
+    '                                    value = "true"
+    '                                    valDType = "bullLit"
+    '                                ElseIf curDtype = "duck" Then
+    '                                    value = "0.0"
+    '                                    valDType = "ducklit"
+    '                                ElseIf curDtype = "starling" Then
+    '                                    value = ""
+    '                                    valDType = "starlinglit"
+    '                                End If
+    '                                type = "variable"
+    '                            End If
+    '                        End If
+
+    '                        Ctr += 1
+    '                        objList = dGridIden.Items.Add(Ctr)
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(x).SubItems(2).Text())
+    '                        objList.SubItems.Add(curDtype)
+    '                        objList.SubItems.Add(value)
+    '                        objList.SubItems.Add(valDType)
+    '                        objList.SubItems.Add(type)
+    '                        objList.SubItems.Add(used)
+
+    '                        If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array1" Then     'size ng array
+    '                            If setokee(x + 2) = "newtlit" Then
+    '                                arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                                arraySize2 = "-"
+    '                            ElseIf setokee(x + 2) = "identifier" Then
+    '                                Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
+    '                                Dim a As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
+    '                                        a = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
+    '                                arraySize = val
+    '                                arraySize2 = "-"
+    '                            ElseIf setokee(x + 2) = "clsquare" Then
+    '                                arraySize = "100"
+    '                                arraySize2 = "-"
+    '                            End If
+    '                        ElseIf dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "array2" Then
+    '                            If setokee(x + 2) = "newtlit" Then
+    '                                arraySize = dGridLexi.Items.Item(x + 2).SubItems(2).Text()
+    '                                If setokee(x + 5) = "newtlit" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
+    '                                ElseIf setokee(x + 5) = "identifier" Then
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 5) = "clsquare" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
+    '                            ElseIf setokee(x + 2) = "identifier" Then
+    '                                Dim arrID As String = dGridLexi.Items.Item(x + 2).SubItems(2).Text
+    '                                Dim a As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text = arrID Then
+    '                                        a = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim val As String = dGridIden.Items.Item(a).SubItems(3).Text
+    '                                arraySize = val
+
+    '                                If setokee(x + 5) = "newtlit" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 5).SubItems(2).Text()
+    '                                ElseIf setokee(x + 5) = "identifier" Then
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 5).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 5) = "clsquare" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
+
+    '                            ElseIf setokee(x + 2) = "clsquare" Then
+    '                                arraySize = "10"
+    '                                If setokee(x + 4) = "newtlit" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = dGridLexi.Items.Item(x + 4).SubItems(2).Text()
+    '                                ElseIf setokee(x + 4) = "identifier" Then
+    '                                    Dim arrayID As String = dGridLexi.Items.Item(x + 4).SubItems(2).Text
+    '                                    Dim b As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text = arrayID Then
+    '                                            b = index
+    '                                        End If
+    '                                    Next
+    '                                    Dim value1 As String = dGridIden.Items.Item(b).SubItems(3).Text
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = value1
+    '                                ElseIf setokee(x + 4) = "clsquare" Then
+    '                                    arraySize = arraySize
+    '                                    arraySize2 = "10"
+    '                                End If
+    '                            End If
+    '                        Else
+    '                            arraySize = "-"
+    '                            arraySize2 = "-"
+    '                        End If
+
+    '                        objList.SubItems.Add(arraySize)
+
+    '                        If dGridIden.Items.Item(Ctr - 1).SubItems(5).Text() = "function" Then
+    '                            Dim paramCtr As Integer = x
+    '                            Dim paramCount As Integer = 0
+    '                            While Not setokee(paramCtr) = "clpar"
+    '                                If inArray(setokee(paramCtr), dtype, 4) Then
+    '                                    paramCount += 1
+    '                                End If
+    '                                paramCtr += 1
+    '                            End While
+    '                            parameter = paramCount.ToString
+    '                        Else
+    '                            parameter = "-"
+    '                        End If
+
+    '                        objList.SubItems.Add(parameter)
+
+    '                        If isMane = True Then
+    '                            objList.SubItems.Add("mane")
+    '                        ElseIf isStork = True Then
+    '                            Dim kaw As Integer = x
+    '                            While kaw >= 0
+    '                                If setokee(kaw) = "opsymbol" Then
+    '                                    Exit While
+    '                                Else
+    '                                    kaw -= 1
+    '                                End If
+    '                            End While
+    '                            If setokee(kaw - 1) = "newline" Then
+    '                                objList.SubItems.Add(dGridLexi.Items.Item(kaw - 2).SubItems(2).Text)
+    '                            Else
+    '                                objList.SubItems.Add(dGridLexi.Items.Item(kaw - 1).SubItems(2).Text)
+    '                            End If
+
+    '                        ElseIf isFunction = True Then
+    '                            objList.SubItems.Add("subfunction")
+    '                        Else
+    '                            objList.SubItems.Add("global")
+    '                        End If
+
+    '                        objList.SubItems.Add(arraySize2)
+
+    '                    End If
+    '                    x += 1
+    '                End While
+    '            End If
+    '        End If
+
+
+    '        x += 1
+    '    End While
+    'End Sub
 
 
 
@@ -6130,7 +6143,7 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles MyBase.Load
-        rTBCode.Text = vbCrLf & vbCrLf & vbCrLf
+        'rTBCode.Text = vbCrLf & vbCrLf & vbCrLf
     End Sub
 
     Private Sub rTBCode_TextChanged(sender As Object, e As EventArgs) Handles rTBCode.TextChanged
@@ -6147,6 +6160,24 @@ Public Class Form1
 
     Private Sub dGridIden_SelectedIndexChanged(sender As Object, e As EventArgs) Handles dGridIden.SelectedIndexChanged
 
+    End Sub
+
+
+
+    Private Sub CodeGenerationToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles CodeGenerationToolStripMenuItem1.Click
+        If CodeGenerationToolStripMenuItem1.Checked Then
+            CodeGenerationToolStripMenuItem1.Checked = False
+        Else
+            CodeGenerationToolStripMenuItem1.Checked = True
+        End If
+    End Sub
+
+    Private Sub ConsoleOutputToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleOutputToolStripMenuItem.Click
+        If ConsoleOutputToolStripMenuItem.Checked Then
+            ConsoleOutputToolStripMenuItem.Checked = False
+        Else
+            ConsoleOutputToolStripMenuItem.Checked = True
+        End If
     End Sub
 End Class
 

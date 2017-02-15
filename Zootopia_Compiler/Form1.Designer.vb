@@ -22,6 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.rTBCode = New System.Windows.Forms.RichTextBox()
         Me.dGridLexi = New System.Windows.Forms.ListView()
         Me.Number = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -40,8 +41,6 @@ Partial Class Form1
         Me.dGridBoard = New System.Windows.Forms.ListView()
         Me.ColumnHeader = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.lineNum = New System.Windows.Forms.PictureBox()
-        Me.btnAna = New System.Windows.Forms.Button()
         Me.dGridIden = New System.Windows.Forms.ListView()
         Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -60,9 +59,16 @@ Partial Class Form1
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.dGridSemantic = New System.Windows.Forms.ListView()
         Me.btnClr = New System.Windows.Forms.Button()
+        Me.lineNum = New System.Windows.Forms.PictureBox()
+        Me.btnAna = New System.Windows.Forms.Button()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.ToolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ConsoleOutputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CodeGenerationToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lineNum, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'rTBCode
@@ -72,7 +78,7 @@ Partial Class Form1
         Me.rTBCode.Name = "rTBCode"
         Me.rTBCode.Size = New System.Drawing.Size(362, 446)
         Me.rTBCode.TabIndex = 2
-        Me.rTBCode.Text = ""
+        Me.rTBCode.Text = "entrance" & Global.Microsoft.VisualBasic.ChrW(10) & "mane()" & Global.Microsoft.VisualBasic.ChrW(10) & "{{" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10) & "}}" & Global.Microsoft.VisualBasic.ChrW(10) & "exit"
         '
         'dGridLexi
         '
@@ -214,32 +220,6 @@ Partial Class Form1
         Me.ColumnHeader17.Text = "board_name"
         Me.ColumnHeader17.Width = 84
         '
-        'lineNum
-        '
-        Me.lineNum.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(191, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.lineNum.Location = New System.Drawing.Point(190, 11)
-        Me.lineNum.Name = "lineNum"
-        Me.lineNum.Size = New System.Drawing.Size(30, 446)
-        Me.lineNum.TabIndex = 8
-        Me.lineNum.TabStop = False
-        '
-        'btnAna
-        '
-        Me.btnAna.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(191, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.btnAna.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkOrange
-        Me.btnAna.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Orange
-        Me.btnAna.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAna.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAna.ForeColor = System.Drawing.Color.White
-        Me.btnAna.Image = Global.Zootopia_Compiler.My.Resources.Resources.analyze
-        Me.btnAna.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAna.Location = New System.Drawing.Point(1, 463)
-        Me.btnAna.Name = "btnAna"
-        Me.btnAna.Size = New System.Drawing.Size(360, 57)
-        Me.btnAna.TabIndex = 3
-        Me.btnAna.Text = "Analyze"
-        Me.btnAna.UseVisualStyleBackColor = False
-        '
         'dGridIden
         '
         Me.dGridIden.BackColor = System.Drawing.SystemColors.ControlLightLight
@@ -371,12 +351,73 @@ Partial Class Form1
         Me.btnClr.Text = "Clear"
         Me.btnClr.UseVisualStyleBackColor = False
         '
+        'lineNum
+        '
+        Me.lineNum.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(191, Byte), Integer), CType(CType(79, Byte), Integer))
+        Me.lineNum.Location = New System.Drawing.Point(190, 11)
+        Me.lineNum.Name = "lineNum"
+        Me.lineNum.Size = New System.Drawing.Size(30, 446)
+        Me.lineNum.TabIndex = 8
+        Me.lineNum.TabStop = False
+        '
+        'btnAna
+        '
+        Me.btnAna.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(191, Byte), Integer), CType(CType(79, Byte), Integer))
+        Me.btnAna.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkOrange
+        Me.btnAna.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Orange
+        Me.btnAna.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAna.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAna.ForeColor = System.Drawing.Color.White
+        Me.btnAna.Image = Global.Zootopia_Compiler.My.Resources.Resources.analyze
+        Me.btnAna.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAna.Location = New System.Drawing.Point(1, 463)
+        Me.btnAna.Name = "btnAna"
+        Me.btnAna.Size = New System.Drawing.Size(360, 57)
+        Me.btnAna.TabIndex = 3
+        Me.btnAna.Text = "Analyze"
+        Me.btnAna.UseVisualStyleBackColor = False
+        '
+        'ToolStrip1
+        '
+        Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripDropDownButton1})
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 540)
+        Me.ToolStrip1.Name = "ToolStrip1"
+        Me.ToolStrip1.Size = New System.Drawing.Size(1100, 25)
+        Me.ToolStrip1.TabIndex = 44
+        Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'ToolStripDropDownButton1
+        '
+        Me.ToolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleOutputToolStripMenuItem, Me.CodeGenerationToolStripMenuItem1})
+        Me.ToolStripDropDownButton1.Image = CType(resources.GetObject("ToolStripDropDownButton1.Image"), System.Drawing.Image)
+        Me.ToolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripDropDownButton1.Name = "ToolStripDropDownButton1"
+        Me.ToolStripDropDownButton1.Size = New System.Drawing.Size(29, 22)
+        Me.ToolStripDropDownButton1.Text = "Developer Option"
+        '
+        'ConsoleOutputToolStripMenuItem
+        '
+        Me.ConsoleOutputToolStripMenuItem.Name = "ConsoleOutputToolStripMenuItem"
+        Me.ConsoleOutputToolStripMenuItem.Size = New System.Drawing.Size(162, 22)
+        Me.ConsoleOutputToolStripMenuItem.Text = "Console output"
+        '
+        'CodeGenerationToolStripMenuItem1
+        '
+        Me.CodeGenerationToolStripMenuItem1.Checked = True
+        Me.CodeGenerationToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CodeGenerationToolStripMenuItem1.Name = "CodeGenerationToolStripMenuItem1"
+        Me.CodeGenerationToolStripMenuItem1.Size = New System.Drawing.Size(162, 22)
+        Me.CodeGenerationToolStripMenuItem1.Text = "Code generation"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1100, 541)
+        Me.ClientSize = New System.Drawing.Size(1100, 565)
+        Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.btnClr)
         Me.Controls.Add(Me.ErrorText)
         Me.Controls.Add(Me.dGridSemantic)
@@ -394,6 +435,8 @@ Partial Class Form1
         Me.Panel1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lineNum, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ToolStrip1.ResumeLayout(False)
+        Me.ToolStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -436,4 +479,8 @@ Partial Class Form1
     Friend WithEvents ColumnHeader6 As ColumnHeader
     Friend WithEvents dGridSemantic As ListView
     Friend WithEvents btnClr As Button
+    Friend WithEvents ToolStrip1 As ToolStrip
+    Friend WithEvents ToolStripDropDownButton1 As ToolStripDropDownButton
+    Friend WithEvents ConsoleOutputToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CodeGenerationToolStripMenuItem1 As ToolStripMenuItem
 End Class

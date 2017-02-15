@@ -5,12 +5,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E5EC999D-71D4-4FD6-B6E0-D1D6AB111463}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <StartupObject>Zootopia_Compiler.Form1</StartupObject>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Zootopia_Compiler.My.MyApplication</StartupObject>
     <RootNamespace>Zootopia_Compiler</RootNamespace>
     <AssemblyName>Zootopia_Compiler</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Console</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -95,11 +95,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SyntaxAnalyzer.vb" />
-    <Compile Include="SyntaxConstants.vb" />
-    <Compile Include="SyntaxInitializer.vb" />
-    <Compile Include="SyntaxParser.vb" />
-    <Compile Include="SyntaxTokenizer.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
@@ -140,9 +135,13 @@
     <None Include="Resources\analyze.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeGeneration\Code Generation.csproj">
-      <Project>{a371b79e-2c88-40a3-8aa5-3c5731ff607f}</Project>
+    <ProjectReference Include="..\Code Generation\Code Generation.csproj">
+      <Project>{e58302ee-b74f-4b4e-bea8-85eba0c3ffd8}</Project>
       <Name>Code Generation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CodeGeneration\Code Translation.csproj">
+      <Project>{a371b79e-2c88-40a3-8aa5-3c5731ff607f}</Project>
+      <Name>Code Translation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core Library\Core Library.csproj">
       <Project>{100bf7e7-b634-4e6b-948e-22d0566fb2af}</Project>
