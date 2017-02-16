@@ -1654,6 +1654,7 @@ namespace Code_Translation
                     Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(1);
                     t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
                     arrval = t.getLexemes();
+                    code = code.Remove(code.Length - 4, 4);
                     code += vardtype + "[]" + varid + " = " + "{ " + arrval + " };\n";
                     if (arr_val.GetChildCount() > 1 && arr_val.GetChildAt(1).GetChildAt(0).GetName() == "COMMA")
                     {

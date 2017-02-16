@@ -348,6 +348,7 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_MATHEQ, 0, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
