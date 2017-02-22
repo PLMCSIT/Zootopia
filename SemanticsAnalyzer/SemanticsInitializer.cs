@@ -211,12 +211,16 @@ namespace Semantics_Analyzer
             {
                 foreach (var item in Identifiers)
                 {
-                    if(item.getId() == id.getId())
+                    if (item.getScope() == "Global" || item.getScope() == currscope)
                     {
-                        if(item.getScope() == id.getScope() || item.getScope() == "Global")
+                        if (item.getId() == id.getId())
                         {
-                            error += "\nSemantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
-                            isvalid = false;
+                            if (item.getScope() == id.getScope() || item.getScope() == "Global")
+                            {
+                                error += "\nSemantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
+                                isvalid = false;
+                                break;
+                            }
                         }
                     }
                 }
@@ -224,10 +228,35 @@ namespace Semantics_Analyzer
             
             if(isvalid)
             {
-                Identifiers.Add(id);
+                    Identifiers.Add(id);
             }
 
             return isvalid;
+        }
+
+        private void hasMULTIID(Node node, string datatype, string scope, string attrib, string default_value)
+        {
+            SemanticsConstants.Identifiers id = new SemanticsConstants.Identifiers();
+            int idline = node.GetChildAt(1).GetStartLine();
+            int idcol = node.GetChildAt(1).GetStartColumn();
+            Tokens token = GetTokens(idline, idcol);
+            string identifier = token.getLexemes();
+            id = setIdentifier(identifier, attrib, datatype, scope, default_value, idline, token.getLexemes());
+            checkIdentifier(id);
+
+            if (node.GetChildCount() > 2)
+            {
+                //If no initialization but has vartail
+                if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
+                {
+                    hasMULTIID(node.GetChildAt(2), datatype, scope, attrib, default_value);
+                }
+                //If has initialization and vartail
+                else if (node.GetChildCount() == 2)
+                {
+                    hasMULTIID(node.GetChildAt(3), datatype, scope, attrib, default_value);
+                }
+            }
         }
 
         private string getDtype(string dtype)
@@ -395,6 +424,50 @@ namespace Semantics_Analyzer
         public override Node ExitProdGlobalDec(Production node)
         {
             currscope = "Mane";
+            //SemanticsConstants.Identifiers id = new SemanticsConstants.Identifiers();
+            //Node GlobalChoice = node;
+
+            //if (GlobalChoice.GetChildAt(0).GetName() == "Prod_vardec")
+            //{
+            //    Node vardtype = GlobalChoice.GetChildAt(0).GetChildAt(1);
+            //    int idline = vardtype.GetChildAt(1).GetStartLine();
+            //    int idcol = vardtype.GetChildAt(1).GetStartColumn();
+            //    Tokens token = GetTokens(idline, idcol);
+            //    string identifier = token.getLexemes();
+            //    string datatype = vardtype.GetChildAt(0).GetName();
+            //    string scope = "Global", value = "", attrib = "Variable";
+            //    datatype = getDtype(datatype);
+
+            //    switch (datatype)
+            //    {
+            //        case "Int":
+            //            value = "0"; break;
+            //        case "Double":
+            //            value = "0.0"; break;
+            //        case "String":
+            //            value = "\"\""; break;
+            //        case "Char":
+            //            value = "''"; break;
+            //        case "Boolean":
+            //            value = "Yes"; break;
+            //    }
+
+            //    id = setIdentifier(identifier, attrib, datatype, scope, value, idline, token.getLexemes());
+            //    isDeclaredID(id);
+            //    if (vardtype.GetChildCount() > 2)
+            //    {
+            //        //If no initialization but has vartail
+            //        if (vardtype.GetChildAt(2).GetName() == ("Prod_vartail" + datatype.ToUpper()))
+            //        {
+            //            hasMULTIID(vardtype.GetChildAt(2), datatype, scope, attrib, value);
+            //        }
+            //        //If has initialization and vartail
+            //        else if (vardtype.GetChildCount() == 4)
+            //        {
+            //            hasMULTIID(vardtype.GetChildAt(3), datatype, scope, attrib, value);
+            //        }
+            //    }
+            //}
             return node;
         }
 
@@ -1018,7 +1091,6 @@ namespace Semantics_Analyzer
                         }
                     }
             }
-            
             return node;
         }
 
@@ -1970,6 +2042,53 @@ namespace Semantics_Analyzer
          
         public override Node ExitProdSubFunction(Production node)
         {
+            Node Functions = node;
+            string function = Functions.GetChildAt(0).GetName();
+            SemanticsConstants.Identifiers id = new SemanticsConstants.Identifiers();
+            if (function == "Prod_vardec")
+            {
+                Node vardtype = Functions.GetChildAt(0).GetChildAt(1);
+                int idline = vardtype.GetChildAt(1).GetStartLine();
+                int idcol = vardtype.GetChildAt(1).GetStartColumn();
+                Tokens token = GetTokens(idline, idcol);
+                string identifier = token.getLexemes();
+                string datatype = vardtype.GetChildAt(0).GetName();
+                string scope = currscope, value = "", attrib = "Variable";
+                datatype = getDtype(datatype);
+
+                switch (datatype)
+                {
+                    case "Int":
+                        value = "0"; break;
+                    case "Double":
+                        value = "0.0"; break;
+                    case "String":
+                        value = "\"\""; break;
+                    case "Char":
+                        value = "''"; break;
+                    case "Boolean":
+                        value = "Yes"; break;
+                }
+
+                id = setIdentifier(identifier, attrib, datatype, scope, value, idline, token.getLexemes());
+                checkIdentifier(id);
+                if (vardtype.GetChildCount() > 2)
+                {
+                    //If no initialization but has vartail
+                    if (node.GetChildAt(2).GetName() == ("Prod_next2var" + datatype))
+                    {
+                        if(node.GetChildAt(0).GetName() == "COMMA")
+                            hasMULTIID(vardtype.GetChildAt(2), datatype, scope, attrib, value);
+                        if(node.GetChildAt(0).GetName() == "EQUAL")
+                            hasMULTIID(vardtype.GetChildAt(2), datatype, scope, attrib, value);
+                    }
+                    ////If has initialization and vartail
+                    //else if (vardtype.GetChildCount() == 4)
+                    //{
+                    //    hasMULTIID(vardtype.GetChildAt(3), datatype, scope, attrib, value);
+                    //}
+                }
+            }
             return node;
         }
 
