@@ -82,7 +82,7 @@ namespace Code_Translation
         private bool isSwitch = false;
         private bool isCase = false;
         private bool isDo = false;
-        private bool isArray = false;
+        private bool isArray;
         private bool isFor = false;
         private bool isOutput = false;
         private bool isAt = false;
@@ -108,6 +108,8 @@ namespace Code_Translation
         private string multarrval;
         private bool isNextID;
         private bool isArrDec;
+        private bool hasArrIn = false;
+        private bool isMultID = false;
 
         public string Start()
         {
@@ -493,19 +495,22 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                    if (!isFunct)
-                    {
-                        if (!isIdentVar)
+                if (!isArray)
+                {
+                        if (!isFunct)
                         {
-                            if (!isFunctVar)
+                            if (!isIdentVar)
                             {
-                                code += ";\n";
+                                if (!isFunctVar)
+                                {
+                                    code += ";\n";
+                                }
                             }
                         }
-                    }
-                    else
-                        isFunct = false;
-                    isAdd = false;
+                        else
+                            isFunct = false;
+                        isAdd = false;
+                }
             }
             return node;
         }
@@ -530,11 +535,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                //if (hasMultiArrDec)
-                //{
+                    //if (hasMultiArrDec)
+                    //{
                     code += ", ";
                     isAdd = false;
-                //}
+                    //}
             }
             return node;
         }
@@ -1140,8 +1145,8 @@ namespace Code_Translation
             {
                     //if (!isArray)
                     //{
-                        if (!isArrDec)
-                        {
+                        //if (!isArrDec)
+                        //{
                             if (!isIdentVar)
                             {
                                 Tokens t = new Tokens();
@@ -1153,7 +1158,7 @@ namespace Code_Translation
                                     tokens[codenum].setDatatype(input_datatype);
                                 }
                             }
-                        }
+                        //}
                     //}
                 isAdd = false;
             }
@@ -1362,7 +1367,9 @@ namespace Code_Translation
 
         public override void EnterProdNext2var(Production node)
         {
-            
+            isArray = false;
+            hasDeclared = false;
+            isMultID = false;
         }
 
 
@@ -1392,7 +1399,8 @@ namespace Code_Translation
                     code += "public static ";
                 }
                 hasDeclared = false;
-                isArray = false;
+                isArray = true;
+                isMultID = false;
             }
             else if (node.GetChildCount() == 1 && child.GetName() == "EQUAL")
             {
@@ -1412,6 +1420,7 @@ namespace Code_Translation
                 code += vardtype + " " + varid + " = ";
                 hasDeclared = true;
                 isArray = false;
+                isMultID = false;
             }
             else if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
             {
@@ -1435,7 +1444,8 @@ namespace Code_Translation
                 varid = t.getLexemes();
                 varid = varid.Remove(0, 1);
                 hasDeclared = false;
-                isArray = false;    
+                isArray = false;
+                isMultID = true;
                 
             }
             if (child.GetName() == "prod_next2var")
@@ -1448,6 +1458,7 @@ namespace Code_Translation
                     isSemiDone = true;
                     hasDeclared = false;
                     isArray = false;
+                    isMultID = false;
                 }
             }
             
@@ -1489,7 +1500,9 @@ namespace Code_Translation
                 t = GetTokens(child.GetStartLine(), child.GetStartColumn());
                 varid = t.getLexemes();
                 varid = varid.Remove(0, 1);
+                isMultID = true;
                 hasDeclared = false;
+                isArray = false;
             }
             if (child.GetName() == "prod_next2var")
             {
@@ -1500,6 +1513,7 @@ namespace Code_Translation
                     code += ";\n";
                     isSemiDone = true;
                     hasDeclared = false;
+                    isArray = false;
                 }
             }
 
@@ -1605,10 +1619,9 @@ namespace Code_Translation
 
 
         public override void EnterProdArray1d(Production node)
-        { 
-            isAdd = true;
-            isArrayDec = true;
+        {
             isArray = true;
+            isAdd = true;
         }
 
 
@@ -1632,7 +1645,10 @@ namespace Code_Translation
                 hasArrDec = false;
             }
             else
+            {
                 hasArrDec = false;
+                isMultID = false;
+            }
 
             Node size_1 = node.GetChildAt(1);
             Tokens t = new Tokens();
@@ -1664,12 +1680,12 @@ namespace Code_Translation
                     }
                     code = code.Remove(code.Length - 2, 2);
                 }
-                isArrDec = false;
+                //isArrDec = false;
             }
             else if (hasArrDec)
             {
                 Node arrset = node.GetChildAt(3);
-                if (arrset.GetChildAt(1).GetChildAt(0).GetName() == "OC")
+                if (node.GetChildCount() == 4 && arrset.GetChildAt(1).GetChildAt(0).GetName() == "OC")
                 {
                         Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(1);
                         t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
@@ -1694,7 +1710,6 @@ namespace Code_Translation
                     arrval = t.getLexemes();
                     code += vardtype + "[]" + varid + " = " + arrval + ";\n";
                 }
-                isArrDec = true;
             }
 
             else
@@ -1713,10 +1728,9 @@ namespace Code_Translation
                 //else
                 //{
                 code = code.Remove(code.Length -2, 2);
-                    code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "]";
+                    code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "];\n";
                 //}
             }
-            isArray = true;
             return node;
         }
 
@@ -1724,46 +1738,6 @@ namespace Code_Translation
         public override void ChildProdArray1d(Production node, Node child)
         {
             node.AddChild(child);
-            //isArray = true;
-            //if(hasArrDec)
-            //{
-            //    Tokens t = new Tokens();
-            //    if (node.GetChildCount() == 4)
-            //    {
-            //        Node arrset = node.GetChildAt(3);
-            //        if (arrset.GetChildAt(1).GetChildAt(0).GetName() == "OC")
-            //        {
-            //            Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(1);
-            //            t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
-            //            arrval = t.getLexemes();
-            //            if (arr_val.GetChildCount() > 1 && arr_val.GetChildAt(1).GetChildAt(0).GetName() == "COMMA")
-            //            {
-            //                hasMultiArrDec = true;
-            //                Node multarr_val = arr_val.GetChildAt(1).GetChildAt(1);
-            //                t = GetTokens(multarr_val.GetStartLine(), multarr_val.GetStartColumn());
-            //                multarrval = t.getLexemes();
-            //                code += ", " + multarrval;
-            //                arrval += ", " + multarrval;
-            //                code = code.Remove(code.Length - 3, 3);
-            //            }
-            //            code = code.Remove(code.Length - 4, 4);
-            //            code += vardtype + "[]" + varid + " = " + "{ " + arrval + " };\n";
-
-            //        }
-            //        else
-            //        {
-            //            Node arr_val = node.GetChildAt(3).GetChildAt(1).GetChildAt(0);
-            //            t = GetTokens(arr_val.GetStartLine(), arr_val.GetStartColumn());
-            //            arrval = t.getLexemes();
-            //            code += vardtype + "[]" + varid + " = " + arrval + ";\n";
-            //        }
-            //    }
-            //    else
-            //    {
-
-            //    }
-            //}
-            
         }
 
 
@@ -2122,9 +2096,9 @@ namespace Code_Translation
 
             if (child.GetName() == "TERMI")
             {
-                //if (!isArray)
-                //{
-                    //if (!isArrDec)
+                if (!isArray)
+                {
+                    //if (!isMultID)
                     //{
                         if (!hasDeclared)
                         {
@@ -2141,10 +2115,10 @@ namespace Code_Translation
                         if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
                             code += ";\n";
                     //}
-                //}
-                //if (isArray)
-                //{
-                    //code += ";\n";
+                }
+                //else
+                //{ 
+                //    code += ";\n";
                 //}
             }
         }
@@ -2209,6 +2183,7 @@ namespace Code_Translation
 
         public override Node ExitProdAssignTail(Production node)
         {
+            hasArrIn = true;
             return node;
         }
 
@@ -2275,6 +2250,7 @@ namespace Code_Translation
 
         public override void EnterProdArgIn(Production node)
         {
+            isAdd = true;
         }
 
 
@@ -2559,36 +2535,72 @@ namespace Code_Translation
 
         public override void ChildProdInput(Production node, Node child)
         {
-            if (child.GetName() == "ID")
-            {
-                Tokens t = new Tokens();
-                t = GetTokens(child.GetStartLine(), child.GetStartColumn());
-                //t = tokens[t.getCode()];
-                string input_datatype = "";
+            //string size = "";
+            //if (child.GetName() == "prod_assign_tail")
+            //{
+            //    Node idArr = node.GetChildAt(2);
+            //    Tokens t = new Tokens();
+            //    t = GetTokens(idArr.GetStartLine(), idArr.GetStartColumn());
+            //    //t = tokens[t.getCode()];
+            //    string input_datatype = "";
+            //    Node inarr = child.GetChildAt(0).GetChildAt(0).GetChildAt(1);
+            //    Tokens s = new Tokens();
+            //    s = GetTokens(inarr.GetStartLine(), inarr.GetStartColumn());
+            //    size = s.getLexemes();
 
-                foreach (var item in identifiers)
+
+            //    foreach (var item in identifiers)
+            //    {
+            //        if (item.getScope() == currscope)
+            //        {
+            //            if (item.getId() == t.getLexemes())
+            //            {
+            //                input_datatype = item.getDtype();
+            //            }
+            //        }
+            //    }
+
+            //    switch (input_datatype)
+            //    {
+            //        case "Newt": code += "[ " + size + " ] = Int32.Parse(Console.ReadLine())"; break;
+            //        case "Duck": code += "[ " + size + " ] = Double.Parse(Console.ReadLine())"; break;
+            //        case "Starling": code += "[ " + size + " ] = Console.ReadLine()"; break;
+            //        case "Bull": code += "[ " + size + " ] = Boolean.Parse(Console.ReadLine())"; break;
+            //        default:
+            //            break;
+            //    }
+            //}
+            if (child.GetName() == "ID")
                 {
-                    if (item.getScope() == currscope)
+                    Tokens t = new Tokens();
+                    t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+                    //t = tokens[t.getCode()];
+                    string input_datatype = "";
+
+                    foreach (var item in identifiers)
                     {
-                        if (item.getId() == t.getLexemes())
+                        if (item.getScope() == currscope)
                         {
-                            input_datatype = item.getDtype();
+                            if (item.getId() == t.getLexemes())
+                            {
+                                input_datatype = item.getDtype();
+                            }
                         }
                     }
-                }
 
-                switch (input_datatype)
-                {
-                    case "Newt": code += " = Int32.Parse(Console.ReadLine())"; break;
-                    case "Duck": code += " = Double.Parse(Console.ReadLine())"; break;
-                    case "Char": code += " = Char.Parse(Console.ReadLine())"; break;
-                    case "Starling": code += " = Console.ReadLine()"; break;
-                    case "Bull": code += " = Boolean.Parse(Console.ReadLine())"; break;
-                    default:
-                        break;
+                    switch (input_datatype)
+                    {
+                        case "Newt": code += " = Int32.Parse(Console.ReadLine())"; break;
+                        case "Duck": code += " = Double.Parse(Console.ReadLine())"; break;
+                        case "Char": code += " = Char.Parse(Console.ReadLine())"; break;
+                        case "Starling": code += " = Console.ReadLine()"; break;
+                        case "Bull": code += " = Boolean.Parse(Console.ReadLine())"; break;
+                        default:
+                            break;
+                    }
                 }
+                
 
-            }
             node.AddChild(child);
         }
 
@@ -3222,12 +3234,14 @@ namespace Code_Translation
 
         public override void EnterProdSubFunction(Production node)
         {
+            //currscope = "Function";
             code += "\npublic static ";
         }
 
 
         public override Node ExitProdSubFunction(Production node)
         {
+            //currscope = "Mane";
             return node;
         }
 
@@ -3253,15 +3267,35 @@ namespace Code_Translation
         public override void ChildProdFuncInside(Production node, Node child)
         {
             node.AddChild(child);
-            //if (child.GetName() == "TERMI")
-            //{
-            //    if (!hasDeclared)
-            //    {
-            //        code += vardtype + " " + varid;
-            //    }
-            //    isIdentVar = true;
-            //    code += ";\n";
-            //}
+            node.AddChild(child);
+
+            if (child.GetName() == "TERMI")
+            {
+                if (!isArray)
+                {
+                    //if (!isArrDec)
+                    //{
+                    if (!hasDeclared)
+                    {
+                        if (!isFirstDec)
+                        {
+                            if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                                code += ";\n";
+                        }
+                        code += vardtype + " " + varid;
+                    }
+
+                    isIdentVar = true;
+
+                    if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                        code += ";\n";
+                    //}
+                }
+                //if (isArray)
+                //{
+                //    code += ";\n";
+                //}
+            }
         }
 
 

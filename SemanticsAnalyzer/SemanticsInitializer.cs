@@ -586,6 +586,13 @@ namespace Semantics_Analyzer
         public override void ChildProdIdentVar(Production node, Node child)
         {
             node.AddChild(child);
+            if (child.GetName() == "ID")
+            {
+                int idline = child.GetStartLine();
+                int idcol = child.GetStartColumn();
+                Tokens token = GetTokens(idline, idcol);
+                currscope = token.getLexemes();
+            }
         }
 
          
