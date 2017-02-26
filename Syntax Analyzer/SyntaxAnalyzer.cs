@@ -361,6 +361,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_MATHEQ:
             EnterProdMatheq((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_CONCAT:
+            EnterProdConcat((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_MATH_TAIL:
             EnterProdMathTail((Production) node);
             break;
@@ -756,6 +759,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdMathEqtail2((Production) node);
         case (int) SyntaxConstants.PROD_MATHEQ:
             return ExitProdMatheq((Production) node);
+        case (int) SyntaxConstants.PROD_CONCAT:
+            return ExitProdConcat((Production) node);
         case (int) SyntaxConstants.PROD_MATH_TAIL:
             return ExitProdMathTail((Production) node);
         case (int) SyntaxConstants.PROD_MATH_OP:
@@ -1008,6 +1013,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_MATHEQ:
             ChildProdMatheq(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_CONCAT:
+            ChildProdConcat(node, child);
             break;
         case (int) SyntaxConstants.PROD_MATH_TAIL:
             ChildProdMathTail(node, child);
@@ -4730,6 +4738,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdMatheq(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdConcat(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdConcat(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdConcat(Production node, Node child) {
         node.AddChild(child);
     }
 

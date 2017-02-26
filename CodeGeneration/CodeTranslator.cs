@@ -1678,6 +1678,7 @@ namespace Code_Translation
                     {
                         code += varid + "[" + i + "] = new " + vardtype + "[" + size2 + "];\n";
                     }
+                    code += ";\n";
                     code = code.Remove(code.Length - 2, 2);
                 }
                 //isArrDec = false;

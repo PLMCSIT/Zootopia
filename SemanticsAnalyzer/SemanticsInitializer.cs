@@ -586,13 +586,13 @@ namespace Semantics_Analyzer
         public override void ChildProdIdentVar(Production node, Node child)
         {
             node.AddChild(child);
-            if (child.GetName() == "ID")
-            {
-                int idline = child.GetStartLine();
-                int idcol = child.GetStartColumn();
-                Tokens token = GetTokens(idline, idcol);
-                currscope = token.getLexemes();
-            }
+            //if (child.GetName() == "ID")
+            //{
+            //    int idline = child.GetStartLine();
+            //    int idcol = child.GetStartColumn();
+            //    Tokens token = GetTokens(idline, idcol);
+            //    currscope = token.getLexemes();
+            //}
         }
 
          
@@ -2049,14 +2049,12 @@ namespace Semantics_Analyzer
          
         public override Node ExitProdSubFunction(Production node)
         {
-            Node Functions = node;
-            string function = Functions.GetChildAt(0).GetName();
             SemanticsConstants.Identifiers id = new SemanticsConstants.Identifiers();
-            if (function == "Prod_vardec")
+            if (node.GetChildCount() > 7 && node.GetName() == "Prod_sub_function")
             {
-                Node vardtype = Functions.GetChildAt(0).GetChildAt(1);
-                int idline = vardtype.GetChildAt(1).GetStartLine();
-                int idcol = vardtype.GetChildAt(1).GetStartColumn();
+                Node vardtype = node.GetChildAt(0);
+                int idline = vardtype.GetStartLine();
+                int idcol = vardtype.GetStartColumn();
                 Tokens token = GetTokens(idline, idcol);
                 string identifier = token.getLexemes();
                 string datatype = vardtype.GetChildAt(0).GetName();
@@ -2065,15 +2063,13 @@ namespace Semantics_Analyzer
 
                 switch (datatype)
                 {
-                    case "Int":
+                    case "Newt":
                         value = "0"; break;
-                    case "Double":
+                    case "Duck":
                         value = "0.0"; break;
-                    case "String":
+                    case "Starling":
                         value = "\"\""; break;
-                    case "Char":
-                        value = "''"; break;
-                    case "Boolean":
+                    case "Bull":
                         value = "Yes"; break;
                 }
 
