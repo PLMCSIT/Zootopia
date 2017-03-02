@@ -128,7 +128,8 @@ namespace Semantics_Analyzer
         {
            
             string tokenstream = "";
-            string result = "Semantics\n Analyzer Failed...\n";
+            string result = " ";
+            //string result = "Semantics\n Analyzer Failed...\n";
             int line = 1;
             int linejump = 0;
             foreach (var t in tokens)
@@ -217,7 +218,7 @@ namespace Semantics_Analyzer
                         {
                             if (item.getScope() == id.getScope() || item.getScope() == "Global")
                             {
-                                error += "\nSemantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
+                                //error += "\nSemantics Error (Ln" + id.getLines() + "): " + id.getId() + " is already declared.\n";
                                 isvalid = false;
                                 break;
                             }
@@ -629,7 +630,20 @@ namespace Semantics_Analyzer
             node.AddChild(child);
         }
 
-         
+        public override void EnterProdIdchoice(Production node)
+        {
+        }
+
+        public override Node ExitProdIdchoice(Production node)
+        {
+            return node;
+        }
+
+        public override void ChildProdIdchoice(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
+
         public override void EnterProdNext2varTail(Production node)
         {
         }
@@ -2063,13 +2077,13 @@ namespace Semantics_Analyzer
 
                 switch (datatype)
                 {
-                    case "Newt":
+                    case "Int":
                         value = "0"; break;
-                    case "Duck":
+                    case "Double":
                         value = "0.0"; break;
-                    case "Starling":
+                    case "String":
                         value = "\"\""; break;
-                    case "Bull":
+                    case "Boolean":
                         value = "Yes"; break;
                 }
 

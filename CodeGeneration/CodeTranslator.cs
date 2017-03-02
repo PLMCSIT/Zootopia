@@ -82,13 +82,13 @@ namespace Code_Translation
         private bool isSwitch = false;
         private bool isCase = false;
         private bool isDo = false;
-        private bool isArray;
+        private bool isArray = false;
         private bool isFor = false;
         private bool isOutput = false;
         private bool isAt = false;
         private bool isAdd;
         private string input_datatype;
-        private bool isDec;
+        private bool isDec = false;
         private bool isMultiOutput;
         private bool isGlobal;
         private bool isIdentVar = false;
@@ -103,13 +103,23 @@ namespace Code_Translation
         private bool isFunctArgs = false;
         private bool isSemiDone;
         private int size;
-        private bool hasArrDec = false;
+        private bool hasArrDec;
         private bool hasMultiArrDec;
         private string multarrval;
         private bool isNextID;
         private bool isArrDec;
         private bool hasArrIn = false;
         private bool isMultID = false;
+        private bool isArrInput;
+        private bool isIdDec;
+        private bool isIdInput = false;
+        private bool isArrayInput;
+        private bool isIdArray;
+
+        public bool NotTermi;
+        private bool isMultArriD = false;
+        private bool isMultArray = false;
+        private bool isInput = false;
 
         public string Start()
         {
@@ -497,19 +507,31 @@ namespace Code_Translation
             {
                 if (!isArray)
                 {
-                        if (!isFunct)
-                        {
-                            if (!isIdentVar)
+                    if (!isIdInput)
+                    {
+                            if (!isFunct)
                             {
-                                if (!isFunctVar)
+                                if (!isIdentVar)
                                 {
-                                    code += ";\n";
+                                    if (!isFunctVar)
+                                    {
+                                        if (!NotTermi)
+                                        {
+                                            code += ";\n";
+                                        }
+                                        else
+                                        {
+                                            NotTermi = false;
+                                        }
+                                        //if (isMultArriD)
+                                        //    code += ";\n";
+                                    }
                                 }
                             }
-                        }
-                        else
-                            isFunct = false;
+                            else
+                                isFunct = false;
                         isAdd = false;
+                    }
                 }
             }
             return node;
@@ -564,13 +586,17 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                if (!isArray)
-                    if(!isArrayDec)
-                    code += "[";
-                if (!isDec)
-                    code += "[";
-                isAdd = false;
+                    if (!isDec)
+                    {
+                        //if (!isArray)
+                        //{
+                                if (!isArrayDec)
+                                    code += "[";
+                                
+                        //}
+                    }
             }
+            isAdd = false;
             return node;
         }
         public override void EnterCb(Token node)
@@ -581,11 +607,14 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                if (!isArray)
-                    if (!isArrayDec)
-                        code += "]";
                 if (!isDec)
-                    code += "]";
+                {
+                    //if (!isArray)
+                    //{
+                        if (!isArrayDec)
+                            code += "]";
+                    //}
+                }
                 isAdd = false;
             }
             return node;
@@ -598,11 +627,12 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                if (hasArrDec)
-                {
-                    code += "{";
-                    isAdd = false;
-                }
+                    if (hasArrDec)
+                    {
+                        code += "{";
+                    }
+                code += "{";
+                isAdd = false;
             }
             return node;
         }
@@ -617,8 +647,9 @@ namespace Code_Translation
                 if (hasArrDec)
                 {
                     code += "}";
-                    isAdd = false;
                 }
+                code += "}";
+                isAdd = false;
            }
             return node;
         }
@@ -975,7 +1006,7 @@ namespace Code_Translation
                         }
                     }
                     
-                }
+                 }
                 isAdd = false;
             }
             return node;
@@ -1066,15 +1097,22 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                if (!isArray)
-                {
-                    if (!isArrayDec)
+                    if (!isArray)
                     {
-                        Tokens t = new Tokens();
-                        t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                        code += t.getLexemes();
+                        if (!isArrayDec)
+                        {
+                            Tokens t = new Tokens();
+                            t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                            code += t.getLexemes();
+
+                        }
                     }
-                }
+                //if ((isInput) || (isOutput))
+                //{
+                //    Tokens t = new Tokens();
+                //    t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                //    code += t.getLexemes();
+                //}
                 isAdd = false;
             }
             return node;
@@ -1143,23 +1181,29 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                    //if (!isArray)
-                    //{
-                        //if (!isArrDec)
+                        //if (!isIdArray)
                         //{
                             if (!isIdentVar)
                             {
-                                Tokens t = new Tokens();
-                                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                                code += " " + t.getLexemes().Remove(0, 1);
-                                if (isDec)
-                                {
-                                    int codenum = t.getCode();
-                                    tokens[codenum].setDatatype(input_datatype);
-                                }
+                    if (isIdInput)
+                    {
+                        Tokens t = new Tokens();
+                        t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                        code += "do { try {\n" + t.getLexemes().Remove(0, 1);
+                    }
+                    else
+                    {
+                        Tokens t = new Tokens();
+                        t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                        code += " " + t.getLexemes().Remove(0, 1);
+                        if (isDec)
+                        {
+                            int codenum = t.getCode();
+                            tokens[codenum].setDatatype(input_datatype);
+                        }
+                    }
                             }
                         //}
-                    //}
                 isAdd = false;
             }
             return node;
@@ -1225,7 +1269,6 @@ namespace Code_Translation
         public override Node ExitProdGlobalDec(Production node)
         {
             isGlobal = false;
-            currscope = "Mane";
             return node;
         }
 
@@ -1367,14 +1410,17 @@ namespace Code_Translation
 
         public override void EnterProdNext2var(Production node)
         {
-            isArray = false;
-            hasDeclared = false;
-            isMultID = false;
+            isIdArray = true;
         }
 
 
         public override Node ExitProdNext2var(Production node)
         {
+            
+            isIdArray = false;
+            hasDeclared = false;
+            isMultID = false;
+            isIdInput = false;
             return node;
         }
 
@@ -1421,6 +1467,7 @@ namespace Code_Translation
                 hasDeclared = true;
                 isArray = false;
                 isMultID = false;
+                
             }
             else if (node.GetChildCount() == 2 && node.GetChildAt(0).GetName() == "COMMA")
             {
@@ -1461,9 +1508,35 @@ namespace Code_Translation
                     isMultID = false;
                 }
             }
-            
+            if (child.GetName() == "prod_idchoice")
+            {
+                string idDec = "";
+                Node iDec = child.GetChildAt(0);
+                if (iDec.GetName() == "ID")
+                {
+                    Tokens t = new Tokens();
+                    t = GetTokens(iDec.GetStartLine(), iDec.GetStartColumn());
+                    idDec = t.getLexemes();
+                    idDec = idDec.Remove(0, 1);
+                    code += idDec;
+                }
+            }
         }
 
+        public override void EnterProdIdchoice(Production node)
+        {
+        }
+
+        public override Node ExitProdIdchoice(Production node)
+        {
+            isDec = true;
+            return node;
+        }
+
+        public override void ChildProdIdchoice(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
 
         public override void EnterProdNext2varTail(Production node)
         {
@@ -1627,22 +1700,23 @@ namespace Code_Translation
 
         public override Node ExitProdArray1d(Production node)
         {
+            isArray = false;
             string dtype = "";
             string size1 = "";
             string size2 = "";
             string arrop = "";
             string arrval = "";
-            bool isMultiD = false;
             Node arr1d = node.GetChildAt(3);
             if (node.GetChildCount() == 4 && arr1d.GetChildAt(0).GetName() == "EQUAL")
             {
                 hasArrDec = true;
-                code = code.Remove(code.Length - 3, 3);
+                //code = code.Remove(code.Length - 3, 3);
             }
             else if (node.GetChildCount() == 4 && arr1d.GetChildAt(0).GetName() == "OB")
             {
-                isMultiD = true;
+                isMultArriD = true;
                 hasArrDec = false;
+                isMultArray = true;
             }
             else
             {
@@ -1664,10 +1738,10 @@ namespace Code_Translation
                 case "Boolean": dtype = "bool"; break;
             }
 
-            if (isMultiD)
+            if (isMultArriD)
             {
                 Node multi = node.GetChildAt(3);
-                code = code.Remove(code.Length - 4, 4);
+                    //code = code.Remove(code.Length - 4, 4);
                 if (multi.GetName() == "prod_elem1D_next")
                 {
                     Node size_2 = multi.GetChildAt(1);
@@ -1678,10 +1752,8 @@ namespace Code_Translation
                     {
                         code += varid + "[" + i + "] = new " + vardtype + "[" + size2 + "];\n";
                     }
-                    code += ";\n";
-                    code = code.Remove(code.Length - 2, 2);
                 }
-                //isArrDec = false;
+                //NotTermi = false;
             }
             else if (hasArrDec)
             {
@@ -1699,9 +1771,9 @@ namespace Code_Translation
                             multarrval = t.getLexemes();
                             code += ", " + multarrval;
                             arrval += ", " + multarrval;
-                            code = code.Remove(code.Length - 3, 3);
+                            //code = code.Remove(code.Length - 3, 3);
                         }
-                        code = code.Remove(code.Length - 4, 4);
+                        code = code.Remove(code.Length - 3, 3);
                         code += vardtype + "[]" + varid + " = " + "{ " + arrval + " };\n";
                 }
                 else
@@ -1728,10 +1800,12 @@ namespace Code_Translation
                 //}
                 //else
                 //{
-                code = code.Remove(code.Length -2, 2);
+                //code = code.Remove(code.Length -3, 3);
                     code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "];\n";
                 //}
             }
+            isMultArriD = false;
+            isMultArray = false;
             return node;
         }
 
@@ -2081,11 +2155,13 @@ namespace Code_Translation
 
         public override void EnterProdLocalDec(Production node)
         {
+            isDec = true;
         }
 
 
         public override Node ExitProdLocalDec(Production node)
         {
+            isArray = false;
             isIdentVar = false;
             return node;
         }
@@ -2127,12 +2203,14 @@ namespace Code_Translation
 
         public override void EnterProdStatement(Production node)
         {
+            //isIdInput = false;
+            //isOutput = true;
         }
 
 
         public override Node ExitProdStatement(Production node)
         {
-
+            //isOutput = true;
             return node;
         }
 
@@ -2162,11 +2240,13 @@ namespace Code_Translation
 
         public override void EnterProdAssign1(Production node)
         {
+            isIdArray = true;
         }
 
 
         public override Node ExitProdAssign1(Production node)
         {
+            isIdArray = false;
             return node;
         }
 
@@ -2179,12 +2259,25 @@ namespace Code_Translation
 
         public override void EnterProdAssignTail(Production node)
         {
+            isArrayInput = true;
+
+            //isIdArray = false;
+            //if (isIdArray)
+                //NotTermi = true;
+                isIdInput = false;
         }
 
 
         public override Node ExitProdAssignTail(Production node)
         {
-            hasArrIn = true;
+            //string arin = "";
+            //Node arrin = node.GetChildAt(0).GetChildAt(0).GetChildAt(1);
+            //Tokens t = new Tokens();
+            //t = GetTokens(arrin.GetStartLine(), arrin.GetStartColumn());
+            //arin = t.getLexemes();
+            //code += "[ " + arin + " ];\n";
+            //isArrayInput = false;
+            //isIdArray = true;
             return node;
         }
 
@@ -2287,6 +2380,7 @@ namespace Code_Translation
 
         public override void EnterProdMathEqtail2(Production node)
         {
+            isIdInput = false;
         }
 
 
@@ -2453,89 +2547,88 @@ namespace Code_Translation
 
         public override void EnterProdInput(Production node)
         {
+            isIdInput = true;
+            isIdArray = true;
+            isInput = true;
         }
 
 
         public override Node ExitProdInput(Production node)
         {
+            isIdArray = false;
+            Node idInput = node.GetChildAt(2);
+                if (idInput.GetName() == "ID" && node.GetChildCount() == 4)
+                {
+                    Tokens t = new Tokens();
+                    t = GetTokens(idInput.GetStartLine(), idInput.GetStartColumn());
+                    //t = tokens[t.getCode()];
+                    string input_datatype = "";
 
+                    foreach (var item in identifiers)
+                    {
+                        if (item.getScope() == currscope)
+                        {
+                            if (item.getId() == t.getLexemes())
+                            {
+                                input_datatype = item.getDtype();
+                            }
+                        }
+                    }
+
+                    switch (input_datatype)
+                    {
+                        case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\"); }} while (true);\n "; break;
+                        case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                        case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                        case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                        default:
+                            break;
+                    }
+                }
+            if (idInput.GetName() == "ID" && node.GetChildCount() == 5)
+            {
+                Tokens t = new Tokens();
+                t = GetTokens(idInput.GetStartLine(), idInput.GetStartColumn());
+                //t = tokens[t.getCode()];
+                string input_datatype = "";
+
+                foreach (var item in identifiers)
+                {
+                    if (item.getScope() == currscope)
+                    {
+                        if (item.getId() == t.getLexemes())
+                        {
+                            input_datatype = item.getDtype();
+                        }
+                    }
+                }
+
+                switch (input_datatype)
+                {
+                    case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\"); }} while (true);\n "; break;
+                    case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                    case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                    case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                    default:
+                        break;
+                }
+            }
+            isIdInput = false;
+            isInput = false;
             return node;
-            //if (!runtime_error)
-            //{
-            //    Node isRead = node.GetChildAt(0);
-            //    if (isRead.GetName() == "READ")
-            //    {
-            //        Node id = node.GetChildAt(1);
-            //        int idcol = id.GetStartColumn();
-            //        int idline = id.GetStartLine();
-            //        Tokens token = GetTokens(idline, idcol);
-            //        foreach (var item in identifiers)
-            //        {
-            //            if (item.getId() == token.getLexemes())
-            //            {
-            //                var input = (String)Console.ReadLine();
-            //                if(String.IsNullOrEmpty(input))
-            //                {
-
-            //                    input = Console.ReadLine();
-            //                }
-            //                string dtype = item.getDtype();
-            //                bool isneg = false;
-            //                switch (dtype)
-            //                {
-            //                    case "Int":
-            //                        int input_int = 0;
-            //                        if (input.Contains("~"))
-            //                        {
-            //                            isneg = true;
-            //                            input = input.Remove(0, 1);
-            //                        }
-            //                        if (Int32.TryParse(input, out input_int))
-            //                        {
-            //                            if (isneg)
-            //                            {
-            //                                input_int *= -1;
-            //                            }
-            //                            item.setValue(input_int.ToString());
-            //                        }
-            //                        else
-            //                        {
-            //                            runtime_error = true;
-            //                            Console.WriteLine("");
-            //                            Console.WriteLine("Runtime error: Type mismatch!");
-
-            //                        }
-            //                        break;
-            //                    case "Double":
-            //                        double input_double = 0;
-            //                        if (input.Contains("~"))
-            //                        {
-            //                            isneg = true;
-            //                            input = input.Remove(0, 1);
-            //                        }
-            //                        if (Double.TryParse(input, out input_double))
-            //                        {
-            //                            if (isneg)
-            //                            {
-            //                                input_double *= -1;
-            //                            }
-            //                            item.setValue(input_double.ToString());
-            //                        }
-            //                        else
-            //                        {
-            //                            runtime_error = true;
-            //                            Console.WriteLine("");
-            //                            Console.WriteLine("Runtime error: Type mismatch!");
-            //                        }
-
-            //                        break;
-            // 
-
         }
 
 
         public override void ChildProdInput(Production node, Node child)
         {
+            //bool isArrIn = false;
+            //bool isIdIn = false;
+            //if (node.GetChildCount() == 2 && child.GetName() == "ID")
+            //    isIdIn = true;
+            //if((node.GetChildCount() == 3 && child.GetName() == "prod_assign_tail") && (!isIdIn))
+            //{
+            //    isArrIn = true;
+            //}
             //string size = "";
             //if (child.GetName() == "prod_assign_tail")
             //{
@@ -2571,48 +2664,60 @@ namespace Code_Translation
             //            break;
             //    }
             //}
-            if (child.GetName() == "ID")
-                {
-                    Tokens t = new Tokens();
-                    t = GetTokens(child.GetStartLine(), child.GetStartColumn());
-                    //t = tokens[t.getCode()];
-                    string input_datatype = "";
+            //if (isArrIn)
+            //    code += "= Console";
+            //if (isIdIn && node.GetName() != "prod_assign_tail")
+            //{
+            //    if (child.GetName() == "ID")
+            //    {
+            //        Tokens t = new Tokens();
+            //        t = GetTokens(child.GetStartLine(), child.GetStartColumn());
+            //        //t = tokens[t.getCode()];
+            //        string input_datatype = "";
 
-                    foreach (var item in identifiers)
-                    {
-                        if (item.getScope() == currscope)
-                        {
-                            if (item.getId() == t.getLexemes())
-                            {
-                                input_datatype = item.getDtype();
-                            }
-                        }
-                    }
+            //        foreach (var item in identifiers)
+            //        {
+            //            if (item.getScope() == currscope)
+            //            {
+            //                if (item.getId() == t.getLexemes())
+            //                {
+            //                    input_datatype = item.getDtype();
+            //                }
+            //            }
+            //        }
 
-                    switch (input_datatype)
-                    {
-                        case "Newt": code += " = Int32.Parse(Console.ReadLine())"; break;
-                        case "Duck": code += " = Double.Parse(Console.ReadLine())"; break;
-                        case "Char": code += " = Char.Parse(Console.ReadLine())"; break;
-                        case "Starling": code += " = Console.ReadLine()"; break;
-                        case "Bull": code += " = Boolean.Parse(Console.ReadLine())"; break;
-                        default:
-                            break;
-                    }
-                }
-                
+            //        switch (input_datatype)
+            //        {
+            //            case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\"); }} while (true) "; break;
+            //            case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true) "; break;
+            //            case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true) "; break;
+            //            case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true) "; break;
+            //            default:
+            //                break;
+            //        }
+            //    }
+            //}
+            
+            //if (node.GetChildCount() == 3 && child.GetName() == "prod_assign_tail")
+            //{
+            //    isArrInput = true;
+            //    code += " = Console.ReadLine()";
+            //}
+
 
             node.AddChild(child);
         }
-
+        
 
         public override void EnterProdScanFig(Production node)
         {
+            isDec = false;
         }
 
 
         public override Node ExitProdScanFig(Production node)
         {
+            isDec = false;
             return node;
         }
 
@@ -2724,11 +2829,13 @@ namespace Code_Translation
 
         public override void EnterProdOutput(Production node)
         {
+            //isOutput = true;
         }
 
 
         public override Node ExitProdOutput(Production node)
         {
+            //isOutput = false;
             return node;
         }
 
@@ -2804,17 +2911,18 @@ namespace Code_Translation
 
         public override void ChildProdMultiOutput(Production node, Node child)
         {
-            node.AddChild(child);
         }
 
 
         public override void EnterProdConditional(Production node)
         {
+            isIdInput = false;
         }
 
 
         public override Node ExitProdConditional(Production node)
         {
+            isIdInput = false;
             return node;
         }
 
@@ -3135,11 +3243,13 @@ namespace Code_Translation
 
         public override void EnterProdIterative(Production node)
         {
+            //isIdInput = false;
         }
 
 
         public override Node ExitProdIterative(Production node)
         {
+            //isIdInput = false;
             return node;
         }
 
@@ -3152,11 +3262,13 @@ namespace Code_Translation
 
         public override void EnterProdLoopFig1(Production node)
         {
+            isInput = true;
         }
 
 
         public override Node ExitProdLoopFig1(Production node)
         {
+            isInput = true;
             return node;
         }
 
@@ -3256,6 +3368,7 @@ namespace Code_Translation
 
         public override void EnterProdFuncInside(Production node)
         {
+            isDec = true;
         }
 
 
@@ -3267,7 +3380,6 @@ namespace Code_Translation
 
         public override void ChildProdFuncInside(Production node, Node child)
         {
-            node.AddChild(child);
             node.AddChild(child);
 
             if (child.GetName() == "TERMI")

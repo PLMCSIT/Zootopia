@@ -708,7 +708,7 @@ Public Class Form1
                                     symbolCtr += 1
                                     tokens = New TokenLibrary.TokenLibrary.TokenClass
                                     tokens.setTokens("false")
-                                    tokens.setLexemes("bullLit")
+                                    tokens.setLexemes(" ")
                                     tokens.setAttributes("bullLit, false")
                                     tokens.setLines(line)
                                     tokenstream.Add(tokens)
@@ -1364,7 +1364,7 @@ Public Class Form1
                                 symbolCtr += 1
                                 tokens = New TokenLibrary.TokenLibrary.TokenClass
                                 tokens.setTokens("true")
-                                tokens.setLexemes("bullLit")
+                                tokens.setLexemes("true")
                                 tokens.setAttributes("bullLit, true")
                                 tokens.setLines(line)
                                 tokenstream.Add(tokens)
@@ -1372,7 +1372,7 @@ Public Class Form1
                                 objList.SubItems.Add(line)
                                 objList.SubItems.Add("true")
                                 objList.SubItems.Add("bullLit")
-                                objList.SubItems.Add("bullLite, true")
+                                objList.SubItems.Add("bullLit, true")
                                 read = True
                                 i += 3
                             Else
@@ -3371,7 +3371,9 @@ Public Class Form1
         generate = codeGenStart(tokenDump(tokenstream), semantics)
         generate.Start()
         Dim code As String = generate.code
-        code += vbLf & "}" & vbLf & "}"
+        code += vbLf & "private static string substr(string str, int index)" & vbLf & "{" & vbLf & "return str.Substring(index);" & vbLf & "}" & vbLf & "private static string substr(string str, int index, int length)" & vbLf & "{" & vbLf & "return str.Substring(index, length);" & vbLf & "}" & vbLf & "private static int strlen(string str)" & vbLf & "{" & vbLf & "return str.Length;" & vbLf & "}" & vbLf
+        code += vbLf & "}" & vbLf
+        code += "}"
         If CodeGenerationToolStripMenuItem1.Checked Then
             MessageBox.Show(code)
         End If
@@ -3435,2019 +3437,2019 @@ Public Class Form1
         Return token
     End Function
 
-    Private Sub semantic()
-        Dim dtype(4) As String
-        dtype(0) = "newt"
-        dtype(1) = "duck"
-        dtype(2) = "bull"
-        dtype(3) = "starling"
-
-        Dim k As Integer = 0
-        Dim isMane As Boolean = False
-        Dim errCtr As Integer = 0
-        Dim symbolCtr As Integer = 0
-        Dim isStork As Boolean = False
-        Dim isFunction As Boolean = False
-
-        While k < dGridLexi.Items.Count
-            If setokee(k) = "stork" Then
-                isStork = True
-            End If
-
-            If setokee(k) = "mane" Then
-                isStork = False
-                isMane = True
-            End If
-
-            If setokee(k) = "opsymbol" Then
-                symbolCtr += 1
-            End If
-
-            If setokee(k) = "clsymbol" Then
-                symbolCtr -= 1
-            End If
-
-            If setokee(k) = "identifier" Then
-                Dim kawntctr As Integer = 0
-                Dim identifier As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
-                Dim ctr As Integer = 0
-                Dim curind As Integer
-
-                If dGridIden.Items.Count > 1 Then
-                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                        If dGridIden.Items.Item(index).SubItems(1).Text() = identifier Then 'kung nasa dGridIden yung @zootopia
-                            curind = index
-                            Exit For
-                        End If
-                    Next
-
-                    For index As Integer = curind + 1 To dGridIden.Items.Count - 1
-                        If identifier = dGridIden.Items.Item(index).SubItems(1).Text() Then 'kung nasa dGridIden yung @zootopia
-                            ctr += 1
-                        End If
-                        If ctr >= 1 Then
-                            Exit For
-                        End If
-                    Next
-
-                    If ctr >= 1 Then
-                        Dim x As Integer
-                        x = k
-                        While setokee(x) <> "newline"
-                            x -= 1
-                        End While
-
-                        If setokee(x + 1) = "newt" Or setokee(x + 1) = "starling" Or setokee(x + 1) = "duck" Or setokee(x + 1) = "bull" Then
-                            kawntctr += 1
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(identifier + " -Multiple declaration of variable")
-                        End If
-                    End If
-
-                End If
-
-                '========================================================================
-                Dim identifier2 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
-                Dim ctr2 As Integer = 0
-                For index As Integer = 0 To dGridIden.Items.Count - 1
-                    If identifier2 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
-                        ctr2 += 1
-                    End If
-                Next
-
-                If dGridBoard.Items.Count > 0 Then
-                    For index As Integer = 0 To dGridBoard.Items.Count - 1
-                        If identifier2 = dGridBoard.Items.Item(index).SubItems(0).Text Then 'kung nasa dGridIden yung @zootopia
-                            ctr2 += 1
-                        End If
-                    Next
-                End If
-
-                If ctr2 < 1 Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add(identifier2 + " -Undeclared variable or stork(structure)")
-                End If
-                'GoTo boarde
-                '=========================================================================
-                Dim identifier3 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
-                Dim ctr3 As Integer = 0
-                Dim cur As Integer
-
-                For index As Integer = 0 To dGridIden.Items.Count - 1
-                    If identifier3 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
-                        ctr3 += 1
-                    End If
-                Next
-
-                For index As Integer = 0 To dGridIden.Items.Count - 1
-                    If identifier3 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
-                        cur = index
-                    End If
-                Next
-
-                If ctr3 > 0 Then
-                    Dim ctr4 As Integer = 0
-                    For index As Integer = 0 To dGridLexi.Items.Count - 1
-                        If identifier3 = dGridLexi.Items.Item(index).SubItems(2).Text Then 'kung nasa dGridIden yung @zootopia
-                            ctr4 += 1
-                        End If
-                    Next
-
-                    If dGridBoard.Items.Count > 0 Then
-                        For index As Integer = 0 To dGridBoard.Items.Count - 1
-                            If identifier3 = dGridBoard.Items.Item(index).SubItems(0).Text Then 'kung nasa dGridIden yung @zootopia
-                                ctr4 += 2
-                            End If
-                        Next
-                    End If
-
-                    If ctr4 < 2 And dGridIden.Items.Item(cur).SubItems(9).Text <> "stork" Then
-                        errCtr += 1
-                        objList = dGridSemantic.Items.Add(errCtr)
-                        objList.SubItems.Add(selinee(k))
-                        objList.SubItems.Add(identifier3 + " -Unused variable")
-                    End If
-                End If
-                '==============================================================================
-                Dim identifier4 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
-
-                Dim declCount As Integer = 0
-                Dim declCtr As Integer = k
-                While Not (setokee(declCtr) = ":" Or setokee(declCtr) = "newline" Or inArray(setokee(k), dtype, 4))
-                    If setokee(declCtr) = "at" Then
-                        declCount += 1
-                    End If
-                    declCtr -= 1
-                End While
-
-                If declCount > 0 Then   'if declaration
-                    Dim c As Integer
-                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                        If dGridIden.Items.Item(index).SubItems(1).Text() = identifier4 Then
-                            c = index
-                        End If
-                    Next
-
-                    Dim curType = dGridIden.Items.Item(c).SubItems(5).Text()
-                    If setokee(k + 1) = "assgnOp" Then  'para sa variable
-                        Dim datatype As String = dGridIden.Items.Item(c).SubItems(2).Text()
-                        Dim val_data As String = dGridIden.Items.Item(c).SubItems(4).Text()
-                        Dim value As String = dGridIden.Items.Item(c).SubItems(3).Text()
-                        If datatype = "newt" Then
-                            If Not (val_data = "newtlit" Or val_data = "null") Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
-                            End If
-                        ElseIf datatype = "starling" Then
-                            If Not (val_data = "starlinglit" Or val_data = "null") Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
-                            End If
-                        ElseIf datatype = "bull" Then
-                            If Not (val_data = "bullLit" Or val_data = "null") Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
-                            End If
-                        ElseIf datatype = "duck" Then
-                            If Not (val_data = "ducklit" Or val_data = "newtlit" Or val_data = "null") Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
-                            End If
-                        End If
-                    ElseIf setokee(k + 1) = "oppar" Then    'para sa function
-                        'MessageBox.Show("line= " & selinee(k))
-                        Dim kawnt As Integer = k + 1
-                        While setokee(kawnt) <> "newline"
-                            If setokee(kawnt) = "clpar" Then
-                                Exit While
-                            End If
-                            kawnt += 1
-                        End While
-
-                        If setokee(kawnt + 1) = ":" Then
-                            Dim datatype2 As String = dGridIden.Items.Item(c).SubItems(2).Text()
-                            Dim count As Integer = k + 1
-                            Dim counter As Integer = 0
-                            While Not setokee(count) = ":"
-                                If Not (setokee(count) = datatype2 Or setokee(count) = "," Or setokee(count) = "oppar" Or setokee(count) = "clpar") Then
-                                    counter += 1
-                                End If
-                                count += 1
-                            End While
-                            If counter >= 1 Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Data Type of parameter must be same with the data type of the function used.")
-                            End If
-                        Else 'PANG FUNCTION DEFINITION
-                            Dim datatype2 As String = dGridIden.Items.Item(c).SubItems(2).Text()
-                            'MessageBox.Show(datatype2 & "Sa Else")
-                            Dim count As Integer = k + 1
-                            Dim counter As Integer = 0
-                            Dim counter2 As Integer = 0
-                            While Not setokee(count) = "clpar"
-                                'MessageBox.Show(setokee(count))
-                                If Not (setokee(count) = datatype2 Or setokee(count) = "," Or setokee(count) = "at" Or setokee(count) = "identifier" Or setokee(count) = "opsquare" Or setokee(count) = "clsquare" Or setokee(count) = "oppar" Or setokee(count) = "clpar") Then
-                                    counter += 1
-                                End If
-                                count += 1
-                            End While
-                            If counter >= 1 Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Data Type of parameter must be the same with the function content.")
-                            End If
-
-                            count = k + 1
-                            If setokee(k + 2) <> "clpar" Then
-                                While setokee(count) <> "clpar"
-                                    If setokee(count) = "," Then
-                                        counter2 += 1
-                                    End If
-                                    count += 1
-                                End While
-
-                                counter2 += 1
-                                'MessageBox.Show(cou)
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim param As String = dGridIden.Items.Item(c).SubItems(8).Text()
-                                    If Int(param) <> counter2 Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("No. of parameter in written function is not equal with function declaration.")
-                                    End If
-                                End If
-                            End If
-                        End If
-
-                    ElseIf setokee(k + 1) = "opsquare" Then
-                        Dim currType As String = dGridIden.Items.Item(c).SubItems(5).Text() 'array1/array2
-                        If currType = "array1" Then
-                            Dim arrSize As String = dGridIden.Items.Item(c).SubItems(7).Text
-                            If Char.IsDigit(arrSize) Then
-                                If Int(arrSize) < 1 Or Int(arrSize) > 10 Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Size should be greater than 0 or less than 100")
-                                End If
-                            Else
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
-                            End If
-                        ElseIf currType = "array2" Then
-                            Dim arrSize As String = dGridIden.Items.Item(c).SubItems(7).Text
-                            Dim arrSize2 As String = dGridIden.Items.Item(c).SubItems(10).Text
-                            If Char.IsDigit(arrSize) Then
-                                If Int(arrSize) < 1 Or Int(arrSize) > 10 Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Size must be greater than 0 or less than 10")
-                                End If
-                            Else
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
-                            End If
-
-                            If Char.IsDigit(arrSize2) Then
-                                If Int(arrSize2) < 1 Or Int(arrSize2) > 10 Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Size must be greater than 0 or less than 10")
-                                End If
-                            Else
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
-                            End If
-                        End If
-
-
-
-                        If setokee(k + 3) = "assgnOp" Or setokee(k + 4) = "assgnOp" Or setokee(k + 5) = "assgnOp" Or setokee(k + 6) = "assgnOp" Or setokee(k + 7) = "assgnOp" Then
-                            Dim arrdtype As String = dGridIden.Items.Item(c).SubItems(4).Text()
-                            Dim arrType As String = dGridIden.Items.Item(c).SubItems(5).Text()
-                            Dim arrcount As Integer = k
-                            Dim arrctr As Integer = 0
-                            Dim elemCtr As Integer = k + 4
-                            Dim commaCtr As Integer = 0
-                            Dim parCtr As Integer = 0
-
-                            While setokee(arrcount) <> "assgnOp"
-                                arrcount += 1
-                            End While
-
-                            While Not (setokee(arrcount) = ":" Or setokee(arrcount) = "clcurly")
-                                If Not (setokee(arrcount) = "assgnOp" Or setokee(arrcount) = "opcurly" Or setokee(arrcount) = "clcurly" Or setokee(arrcount) = "oppar" _
-                                    Or setokee(arrcount) = "," Or setokee(arrcount) = "clpar" Or setokee(arrcount) = arrdtype) Then
-                                    arrctr += 1
-                                End If
-                                arrcount += 1
-                            End While
-
-                            If arrctr > 0 Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Data Type of an element should be the same with the array content.")
-                            End If
-
-                            If arrType = "array1" Then
-                                While Not (setokee(elemCtr) = ":" Or setokee(elemCtr) = "clcurly")
-                                    If setokee(elemCtr) = "," Then
-                                        commaCtr += 1
-                                    End If
-                                    elemCtr += 1
-                                End While
-
-                                Dim arrSize1 As String = ""
-                                If Not dGridIden.Items.Item(c).SubItems(7).Text() = "null" Then
-                                    arrSize1 = dGridIden.Items.Item(c).SubItems(7).Text()
-                                End If
-
-                                If commaCtr >= Int(arrSize1) Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("#no. of elem(s) is not within the size of an array.")
-                                End If
-
-                            ElseIf arrType = "array2" Then
-                                While Not (setokee(elemCtr) = ":" Or setokee(elemCtr) = "clcurly")
-                                    If setokee(elemCtr) = "," Then
-                                        commaCtr += 1
-                                    ElseIf setokee(elemCtr) = "oppar" Then
-                                        parCtr += 1
-                                    End If
-                                    elemCtr += 1
-                                End While
-
-                                Dim arrSize1 As String = dGridIden.Items.Item(c).SubItems(7).Text()
-                                Dim arrSize2 As String = dGridIden.Items.Item(c).SubItems(10).Text()
-                                Dim totalSize As String = Int(arrSize1) * Int(arrSize2)
-
-                                If commaCtr >= totalSize Or commaCtr > 100 Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("#no. of column(s) is not within the size of an array.")
-                                End If
-
-                                If parCtr > arrSize1 Or parCtr > 10 Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("#no. of row(s) is not around the size of an array.")
-                                End If
-
-                            End If
-
-                        End If
-                    End If
-
-                ElseIf declCount = 0 Then   'di declaration
-
-                    If setokee(k) = "identifier" Then
-                        'INDEX  out of bounds
-                        If dGridIden.Items.Count > 0 Then
-                            Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
-                            Dim d1 As Integer
-                            For index As Integer = 0 To dGridIden.Items.Count - 1
-                                If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
-                                    d1 = index
-                                End If
-                            Next
-
-                            Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
-                            If setType = "array1" Then
-                                Dim getSize As String = dGridIden.Items.Item(d1).SubItems(7).Text
-                                If setokee(k + 1) = "newtlit" Then
-                                    Dim curIndex As String = dGridLexi.Items.Item(k).SubItems(2).Text
-                                    ' MessageBox.Show(curIndex & " " & getSize)
-                                    If curIndex >= getSize Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Index is out of bounds")
-                                    End If
-                                End If
-                                '-------------------------------------------------------------------
-                                'No. of parameter
-                            ElseIf setType = "function" Then
-                                Dim getParam As String = dGridIden.Items.Item(d1).SubItems(8).Text
-                                Dim getDtype As String = dGridIden.Items.Item(d1).SubItems(2).Text
-                                Dim counta As Integer = k + 1
-                                Dim paramCtr As Integer = 0
-
-                                If setokee(k + 1) = "oppar" Then
-                                    While Not setokee(counta) = "clpar"
-                                        If setokee(counta) = "," Then
-                                            paramCtr += 1
-                                        End If
-                                        counta += 1
-                                    End While
-
-                                    paramCtr += 1
-
-                                    If getDtype <> "viper" Then
-                                        If paramCtr < Int(getParam) Or paramCtr > Int(getParam) Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("No. of param is not equal to the declared param")
-                                        End If
-                                    End If
-
-                                    'MessageBox.Show("paramCtr= " & paramCtr)
-                                    '------------------------------------------------------------------
-                                    Dim counta2 As Integer = k + 1
-
-                                    While Not setokee(counta2) = "clpar"
-                                        If getDtype = "newt" Then
-                                            If setokee(counta2) = "identifier" Then
-                                                Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
-                                                Dim counta3 As Integer 'c
-                                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                                    If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                                        counta3 = index 'c
-                                                    End If
-                                                Next
-
-                                                Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
-                                                If currDType = "duck" Or currDType = "bull" Or currDType = "starling" Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                                End If
-                                            ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "starlinglit" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                            End If
-
-                                        ElseIf getDtype = "duck" Then
-                                            If setokee(counta2) = "identifier" Then
-                                                Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
-                                                Dim counta3 As Integer 'c
-                                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                                    If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                                        counta3 = index 'c
-                                                    End If
-                                                Next
-
-                                                Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
-                                                If currDType = "newt" Or currDType = "bull" Or currDType = "starling" Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                                End If
-                                            ElseIf setokee(counta2) = "newtlit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "starlinglit" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                            End If
-
-                                        ElseIf getDtype = "bull" Then
-                                            If setokee(counta2) = "identifier" Then
-                                                Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
-                                                Dim counta3 As Integer 'c
-                                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                                    If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                                        counta3 = index 'c
-                                                    End If
-                                                Next
-
-                                                Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
-                                                If currDType = "duck" Or currDType = "newt" Or currDType = "starling" Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                                End If
-                                            ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "newtlit" Or setokee(counta2) = "starlinglit" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                            End If
-                                        ElseIf getDtype = "starling" Then
-                                            If setokee(counta2) = "identifier" Then
-                                                Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
-                                                Dim counta3 As Integer 'c
-                                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                                    If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                                        counta3 = index 'c
-                                                    End If
-                                                Next
-
-                                                Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
-                                                If currDType = "duck" Or currDType = "bull" Or currDType = "newt" Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                                End If
-                                            ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "newtlit" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
-                                            End If
-                                        End If
-                                        counta2 += 1
-                                    End While
-                                Else
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add(setID & " - is used not as a function")
-
-                                    Dim x As Integer = k + 1
-                                    While setokee(x) <> "newline"
-                                        x += 1
-                                    End While
-                                    k = x
-                                End If
-
-                                'wawalain yung to
-                                '------------------------------------------------------------------
-                            ElseIf setokee(k + 1) = "at" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim boaId As String = dGridLexi.Items.Item(k).SubItems(2).Text()
-                                    Dim match As Integer
-                                    Dim isMember As Boolean = False
-                                    Dim isStor As Boolean = False
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = boaId Then 'c
-                                            match = index 'c
-                                        End If
-                                    Next
-
-                                    Dim typee As String = dGridIden.Items.Item(match).SubItems(5).Text
-
-                                    If typee <> "stork" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(boaId & " - is not stork_name")
-                                    Else
-                                        isStor = True
-                                    End If
-
-                                    If isStor = True Then
-                                        Dim boaObj As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
-                                        For index As Integer = 0 To dGridBoard.Items.Count - 1
-                                            If dGridBoard.Items.Item(index).SubItems(0).Text() = boaObj Then 'c
-                                                isMember = True
-                                            End If
-                                        Next
-
-                                        If isMember = True Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add(boaObj & " - identifier is already used a stork_name")
-                                        Else
-                                            objList = dGridBoard.Items.Add(boaObj)
-                                            objList.SubItems.Add(boaId)
-                                        End If
-                                    End If
-
-
-                                End If
-
-                            End If
-                            'END SA IF-FUNCTION
-                        End If
-                        'END IF MAY LAMAN YUNG dGridIden
-                    End If
-                    'END IF ID YUNG SETOKEE(K) PARA SA DECLARATION
-                    Dim identifier5 As String = dGridLexi.Items.Item(k).SubItems(2).Text()
-
-                    Dim d As Integer
-                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                        If dGridIden.Items.Item(index).SubItems(1).Text() = identifier5 Then
-                            d = index
-                        End If
-                    Next
-
-                    Dim curIDType As String = dGridIden.Items.Item(d).SubItems(5).Text()
-
-                    If setokee(k + 1) = "assgnOp" And (setokee(k + 3) = "," Or setokee(k + 3) = ":") Then      'para sa variable
-                        If Not curIDType = "constant" Then
-                            Dim idDType As String = ""
-                            Dim idType As String = ""
-                            Dim curID As String = ""
-
-                            If setokee(k + 2) = "identifier" Then
-                                curID = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
-                                Dim e As Integer
-                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                    If dGridIden.Items.Item(index).SubItems(1).Text() = curID Then
-                                        e = index
-                                    End If
-                                Next
-                                If dGridIden.Items.Item(e).SubItems(4).Text() = "null" Then
-                                    idDType = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If idDType = "newt" Then
-                                        idType = "newtlit"
-                                    ElseIf idDType = "bull" Then
-                                        idType = "bullLit"
-                                    ElseIf idDType = "duck" Then
-                                        idType = "ducklit"
-                                    ElseIf idDType = "starling" Then
-                                        idType = "starlinglit"
-                                    End If
-                                Else
-                                    idType = dGridIden.Items.Item(e).SubItems(4).Text()
-                                End If
-                            Else
-                                idType = dGridLexi.Items.Item(k + 2).SubItems(3).Text()
-                            End If
-
-                            Dim curDType As String = ""
-                            Dim curType As String = ""
-                            If dGridIden.Items.Item(d).SubItems(4).Text() = "null" Then
-                                curDType = dGridIden.Items.Item(d).SubItems(2).Text()
-                                If curDType = "newt" Then
-                                    curType = "newtlit"
-                                ElseIf curDType = "bull" Then
-                                    curType = "bullLit"
-                                ElseIf curDType = "duck" Then
-                                    curType = "ducklit"
-                                ElseIf curDType = "starling" Then
-                                    curType = "starlinglit"
-                                End If
-                            Else
-                                curType = dGridIden.Items.Item(d).SubItems(4).Text()
-                            End If
-                            '-------------------------------------
-                            'TYPE MISMATCH SA ASSIGNMENT NG VALUE SA VARIABLE
-                            If Not curType = idType Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add("Type mismatch.") 'assigning ng value sa var
-                            End If
-
-                            If setokee(k + 2) = "identifier" Then
-                                Dim se1Type As String = dGridIden.Items.Item(d).SubItems(5).Text 'if variable talaga yung 1st
-                                Dim fDType As String = dGridIden.Items.Item(d).SubItems(2).Text
-                                Dim sID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
-                                Dim sDType As String = ""
-                                Dim f As Integer
-                                For index As Integer = 0 To dGridIden.Items.Count - 1
-                                    If dGridIden.Items.Item(index).SubItems(1).Text() = sID Then
-                                        f = index
-                                    End If
-                                Next
-                                Dim se2Type As String = dGridIden.Items.Item(f).SubItems(5).Text 'if variable talaga yung 2nd
-                                sDType = dGridIden.Items.Item(f).SubItems(2).Text
-
-                                'MessageBox.Show("Type1= " & se1Type & " ,Type2= " & se2Type)
-
-                                If se1Type <> "variable" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add(se1Type & " " & dGridIden.Items.Item(d).SubItems(1).Text & " is used as a variable")
-                                End If
-
-                                If se2Type <> "variable" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add(se2Type & " " & dGridIden.Items.Item(f).SubItems(1).Text & " is used as a variable")
-                                End If
-                            End If
-
-
-                            '--------------------------------------------------------------------
-                        Else
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add("Cannot change value for set")
-                        End If
-                    ElseIf setokee(k + 1) = "assgnOp" And setokee(k + 2) = "identifier" Then
-                        'MessageBox.Show("assign tayo")
-                        Dim fDType As String = dGridIden.Items.Item(d).SubItems(2).Text
-                        Dim sID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
-                        Dim sDType As String = ""
-                        Dim f As Integer
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = sID Then
-                                f = index
-                            End If
-                        Next
-                        sDType = dGridIden.Items.Item(f).SubItems(2).Text
-
-                        'MessageBox.Show("Type1= " & se1Type & " ,Type2= " & se2Type)
-                        If fDType <> sDType Then
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                        End If
-                        '------------
-
-                        '-----------------------------------------------------------------
-                        'MATH EXP SA TEXT OR FLAG
-                    ElseIf setokee(k + 2) = "increOp" Or setokee(k + 2) = "decreOp" Or setokee(k + 3) = "mathOp" _
-                         Or setokee(k + 3) = "decreOp" Or setokee(k + 3) = "increOp" Then
-
-                        Dim curDType = dGridIden.Items.Item(d).SubItems(2).Text()
-                        If curDType = "starling" Or curDType = "bull" Then
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add("Type mismatch. Cannot assign math Op to the variable with '" & curDType & "' data type.")
-                        End If
-                        '--------------------------------------------------------------------
-                        'PARA SA ARRAY
-                    ElseIf curIDType = "array1" Then
-                        If setokee(k + 2) = "newtlit" Or setokee(k + 2) = "identifier" Then
-                            Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
-                            Dim d1 As Integer
-                            For index As Integer = 0 To dGridIden.Items.Count - 1
-                                If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
-                                    d1 = index
-                                End If
-                            Next
-                            'INDEX OUT OF BOUNDS
-                            If dGridIden.Items.Count > 0 Then
-                                Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
-                                Dim getSize As String = dGridIden.Items.Item(d1).SubItems(7).Text
-                                If setType = "array1" Then
-                                    If setokee(k + 2) = "newtlit" Then
-                                        Dim curIndex As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text
-                                        If Int(curIndex) >= Int(getSize) Or Int(curIndex) < 0 Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("Index is out of bounds ")
-                                        End If
-                                    ElseIf setokee(k + 2) = "identifier" Then
-                                        Dim sizeID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
-                                        Dim d2 As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
-                                                d2 = index
-                                            End If
-                                        Next
-
-                                        Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
-                                        If Not sizeDType = "newt" Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("Can't assign variable " & sizeID & " as size of an array")
-                                        Else
-                                            Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
-                                            If sizeVal = "null" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(sizeID & " - No value is assigned before using as size of an array")
-                                            Else
-                                                If Int(sizeVal) >= Int(getSize) Or Int(sizeVal) < 0 Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add("Index is out of bounds.")
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
-                            End If
-                            'END IF MAY LAMAN YUNG dGridIden
-                        End If
-
-                        If setokee(k + 4) = "assgnOp" Then
-                            Dim daType As String = dGridIden.Items.Item(d).SubItems(2).Text
-                            If daType = "newt" Then
-                                If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 5) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "duck" Then
-                                If setokee(k + 5) = "newtlit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 5) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "bull" Then
-                                If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "newtlit" Or setokee(k + 5) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 5) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "starling" Then
-                                If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "newtlit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 5) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            End If
-                        End If
-                    ElseIf curIDType = "array2" Then
-                        If setokee(k + 2) = "newtlit" Or setokee(k + 2) = "identifier" Then
-                            Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
-                            Dim d1 As Integer
-                            For index As Integer = 0 To dGridIden.Items.Count - 1
-                                If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
-                                    d1 = index
-                                End If
-                            Next
-                            'INDEX OUT OF BOUNDS
-                            If dGridIden.Items.Count > 0 Then
-                                Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
-                                Dim getSize1 As String = dGridIden.Items.Item(d1).SubItems(7).Text
-                                Dim getSize2 As String = dGridIden.Items.Item(d1).SubItems(10).Text
-                                If setType = "array2" Then
-                                    If setokee(k + 2) = "newtlit" Then
-                                        Dim curIndex As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text
-                                        If Int(curIndex) >= Int(getSize1) Or Int(curIndex) < 0 Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("1st Index is out of bounds")
-                                        End If
-                                    ElseIf setokee(k + 2) = "identifier" Then
-                                        Dim sizeID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
-                                        Dim d2 As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
-                                                d2 = index
-                                            End If
-                                        Next
-
-                                        Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
-                                        If Not sizeDType = "newt" Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("Can't assign variable " & sizeID & " as 1st index of array")
-                                        Else
-                                            Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
-                                            If sizeVal = "null" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(sizeID & " - No value is assigned before using as 1st index of array")
-                                            Else
-                                                If Int(sizeVal) >= Int(getSize1) Or Int(sizeVal) < 0 Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add("1st Index is out of bounds.")
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-
-                                    If setokee(k + 5) = "newtlit" Then
-                                        Dim curIndex As String = dGridLexi.Items.Item(k + 5).SubItems(2).Text
-                                        If Int(curIndex) >= Int(getSize2) Or Int(curIndex) < 0 Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("2nd Index is out of bounds ")
-                                        End If
-                                    ElseIf setokee(k + 5) = "identifier" Then
-                                        Dim sizeID As String = dGridLexi.Items.Item(k + 5).SubItems(2).Text()
-                                        Dim d2 As Integer
-                                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                                            If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
-                                                d2 = index
-                                            End If
-                                        Next
-
-                                        Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
-                                        If Not sizeDType = "newt" Then
-                                            errCtr += 1
-                                            objList = dGridSemantic.Items.Add(errCtr)
-                                            objList.SubItems.Add(selinee(k))
-                                            objList.SubItems.Add("Can't assign var " & sizeID & " as 2nd index of array")
-                                        Else
-                                            Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
-                                            If sizeVal = "null" Then
-                                                errCtr += 1
-                                                objList = dGridSemantic.Items.Add(errCtr)
-                                                objList.SubItems.Add(selinee(k))
-                                                objList.SubItems.Add(sizeID & " - No value is assigned before using as 2nd index of array")
-                                            Else
-                                                If Int(sizeVal) >= Int(getSize2) Or Int(sizeVal) < 0 Then
-                                                    errCtr += 1
-                                                    objList = dGridSemantic.Items.Add(errCtr)
-                                                    objList.SubItems.Add(selinee(k))
-                                                    objList.SubItems.Add(" 2nd Index is out of bounds.")
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
-                            End If
-                            'END IF MAY LAMAN YUNG identlist/table
-                        End If
-
-                        If setokee(k + 7) = "assgnOp" Then
-                            Dim daType As String = dGridIden.Items.Item(d).SubItems(2).Text
-                            If daType = "newt" Then
-                                If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 8) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "duck" Then
-                                If setokee(k + 8) = "newtlit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 8) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "bull" Then
-                                If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "newtlit" Or setokee(k + 8) = "starlinglit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 8) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            ElseIf daType = "starling" Then
-                                If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "newtlit" Then
-                                    errCtr += 1
-                                    objList = dGridSemantic.Items.Add(errCtr)
-                                    objList.SubItems.Add(selinee(k))
-                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                ElseIf setokee(k + 8) = "identifier" Then
-                                    Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
-                                    Dim e As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
-                                            e = index
-                                        End If
-                                    Next
-
-                                    Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
-                                    If getDT <> daType Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
-                                    End If
-                                End If
-                            End If
-                        End If
-
-                    End If
-                End If
-            End If
-            If setokee(k) = "mathOp" Then
-                If setokee(k - 1) = "identifier" Then 'c
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'c
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
-                        If currDType = "starling" Or currDType = "bull" Then 'c
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for math expression") 'c
-                        ElseIf currDType = "newt" Or currDType = "duck" Then
-                            Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
-                            If currVal = "null" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in math expression")
-                            End If
-
-                        End If
-                    End If
-                ElseIf setokee(k - 1) = "starlinglit" Or setokee(k - 1) = "bullLit" Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for math expression") 'c
-                End If
-
-                If setokee(k + 1) = "identifier" Then 'c
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text() 'c
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
-                        If currDType = "starling" Or currDType = "bull" Then 'c
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for math expression") 'c
-                        ElseIf currDType = "newt" Or currDType = "duck" Then
-                            Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
-                            If currVal = "null" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in math expression")
-                            End If
-                        End If
-                    End If
-                ElseIf setokee(k + 1) = "starlinglit" Or setokee(k + 1) = "bullLit" Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for math expression") 'c
-                End If
-            End If
-
-            If setokee(k) = "increOp" Or setokee(k) = "decreOp" Then
-                If setokee(k - 1) = "identifier" Then 'c
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'c
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
-                        If currDType = "starling" Or currDType = "bull" Or currDType = "duck" Then 'c
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " (" & currDType & ") - Invalid for increment/ decrement operation") 'c
-                        ElseIf currDType = "newt" Then
-                            Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
-                            If currVal = "null" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in increment/decrement operation")
-                            End If
-                        End If
-                    End If
-                ElseIf setokee(k - 1) = "starlinglit" Or setokee(k - 1) = "bullLit" Or setokee(k - 1) = "ducklit" Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for increment/ decrement operation") 'c
-                End If
-
-                If setokee(k + 1) = "identifier" Then 'c
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text() 'c
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
-                        If currDType = "starling" Or currDType = "bull" Or currDType = "duck" Then 'c
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " (" & currDType & ") - Invalid for increment/ decrement operation") 'c
-                        ElseIf currDType = "newt" Then
-                            Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
-                            If currVal = "null" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in increment/decrement operation")
-                            End If
-                        End If
-                    End If
-                ElseIf setokee(k + 1) = "starlinglit" Or setokee(k + 1) = "bullLit" Or setokee(k - 1) = "ducklit" Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for increment/ decrement operation") 'c
-                End If
-            End If
-            If setokee(k) = ".+" Then
-                If dGridIden.Items.Count > 1 Then
-                    Dim fId As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text
-                    Dim sId As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text
-                    Dim fDtype As String = ""
-                    Dim sDtype As String = ""
-                    Dim cF, cS As Integer
-
-                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                        If dGridIden.Items.Item(index).SubItems(1).Text() = fId Then 'c
-                            cF = index 'c
-                        End If
-                    Next
-
-                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                        If dGridIden.Items.Item(index).SubItems(1).Text() = sId Then 'c
-                            cS = index 'c
-                        End If
-                    Next
-
-                    fDtype = dGridIden.Items.Item(cF).SubItems(2).Text
-                    If fDtype <> "starling" Then
-                        errCtr += 1
-                        objList = dGridSemantic.Items.Add(errCtr)
-                        objList.SubItems.Add(selinee(k))
-                        objList.SubItems.Add("Data type of " & fId & " should be 'starling(string)' for string operator")
-                    End If
-
-                    sDtype = dGridIden.Items.Item(cS).SubItems(2).Text
-                    If sDtype <> "starling" Then
-                        errCtr += 1
-                        objList = dGridSemantic.Items.Add(errCtr)
-                        objList.SubItems.Add(selinee(k))
-                        objList.SubItems.Add("Data type of " & sId & " should be 'starling(string)' for string operator")
-                    End If
-                End If
-                'end ng if may laman yung dGridIden
-            End If
-            If setokee(k) = "relOp2" Then
-                If setokee(k - 1) = "identifier" Then 'VARIABLE
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'CHANGE
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "bull" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "starling" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        End If
-
-                    End If
-                ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "identifier" Then
-                    '1d array
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 4).SubItems(2).Text() 'CHANGE
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "bull" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "starling" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        End If
-
-                    End If
-                ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "clsquare" And setokee(k - 7) = "identifier" Then
-                    '2d array
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 7).SubItems(2).Text() 'CHANGE
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "bull" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        ElseIf currDType = "starling" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
-                            End If
-                        End If
-
-                    End If
-                End If
-            End If
-            If setokee(k) = "relOp1" Then
-                If setokee(k - 1) = "identifier" Then 'VARIABLE
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'CHANGE
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "bull" Or currDType = "starling" Then
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-
-                        End If
-
-                    End If
-                ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "identifier" Then
-                    '1d array
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 4).SubItems(2).Text() 'CHANGE
-                        Dim counta As Integer 'c
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "bull" Or currDType = "starling" Then
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        End If
-                    End If
-                ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "clsquare" And setokee(k - 7) = "identifier" Then
-                    '2dimen arr
-                    If dGridIden.Items.Count > 0 Then
-                        Dim currID As String = dGridLexi.Items.Item(k - 7).SubItems(2).Text()
-                        Dim counta As Integer
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
-                                counta = index 'c
-                            End If
-                        Next
-                        Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
-                        'MessageBox.Show(currDType)
-
-                        If currDType = "newt" Then 'newt==
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "duck" Then
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                            End If
-                        ElseIf currDType = "bull" Or currDType = "starling" Then
-                            errCtr += 1
-                            objList = dGridSemantic.Items.Add(errCtr)
-                            objList.SubItems.Add(selinee(k))
-                            objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
-                            If setokee(k + 1) = "identifier" Then
-                                If dGridIden.Items.Count > 0 Then
-                                    Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
-                                    Dim setCtr As Integer
-                                    For index As Integer = 0 To dGridIden.Items.Count - 1
-                                        If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
-                                            setCtr = index 'c
-                                        End If
-                                    Next
-
-                                    Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
-                                    If setDType = "bull" Or setDType = "starling" Then
-                                        errCtr += 1
-                                        objList = dGridSemantic.Items.Add(errCtr)
-                                        objList.SubItems.Add(selinee(k))
-                                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
-                                    End If
-                                End If
-                            ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then
-                                errCtr += 1
-                                objList = dGridSemantic.Items.Add(errCtr)
-                                objList.SubItems.Add(selinee(k))
-                                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid.")
-                            End If
-                        End If
-
-                    End If
-                End If
-            End If
-
-            If setokee(k) = "hop" Then
-                'MessageBox.Show("deport")
-                Dim depDtype As String = ""
-                Dim funcDtype As String = ""
-                If setokee(k + 1) = "identifier" Then
-                    Dim seId As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text
-                    Dim getID As Integer
-
-                    If dGridIden.Items.Count > 0 Then
-                        For index As Integer = 0 To dGridIden.Items.Count - 1
-                            If dGridIden.Items.Item(index).SubItems(1).Text() = seId Then
-                                getID = index
-                            End If
-                        Next
-                    End If
-
-                    depDtype = dGridIden.Items.Item(getID).SubItems(2).Text
-                ElseIf setokee(k + 1) = "newtlit" Then
-                    depDtype = "newt"
-                ElseIf setokee(k + 1) = "ducklit" Then
-                    depDtype = "duck"
-                ElseIf setokee(k + 1) = "bullLit" Then
-                    depDtype = "bull"
-                ElseIf setokee(k + 1) = "starlinglit" Then
-                    depDtype = "starling"
-                End If
-
-                'MessageBox.Show(depDtype)
-                Dim dep As Integer = k
-                While dep >= 0
-                    If setokee(dep) = "clpar" And setokee(dep + 1) = "newline" Then
-                        Exit While
-                    Else
-                        dep -= 1
-                    End If
-                End While
-
-                Dim les As Integer = dep
-                'MessageBox.Show(dep)
-                While setokee(les) <> "oppar"
-                    If setokee(les) = "newt" Or setokee(les) = "duck" Or setokee(les) = "bull" Or setokee(les) = "starling" Then
-                        funcDtype = setokee(les)
-                        Exit While
-                    Else
-                        les -= 1
-                    End If
-                End While
-
-                'MessageBox.Show(funcDtype)
-
-                If depDtype <> funcDtype Then
-                    errCtr += 1
-                    objList = dGridSemantic.Items.Add(errCtr)
-                    objList.SubItems.Add(selinee(k))
-                    objList.SubItems.Add("Data type of hop(return) value is not match.")
-                End If
-            End If
-
-
-
-            k += 1
-        End While
-
-        'para sa errors
-        Dim err As String = ""
-        Dim err1 As String = ""
-        Dim err2 As String = ""
-        Dim err21 As String = ""
-        Dim er1 As ListViewItem
-        Dim er2 As ListViewItem
-        If dGridSemantic.Items.Count > 1 Then
-            For i As Integer = 0 To dGridSemantic.Items.Count - 1
-                er1 = dGridSemantic.Items(i)
-                err = dGridSemantic.Items.Item(i).SubItems(1).Text()
-                err1 = dGridSemantic.Items.Item(i).SubItems(2).Text()
-
-                For j As Integer = i + 1 To dGridSemantic.Items.Count - 1
-                    er2 = dGridSemantic.Items(j)
-                    err2 = dGridSemantic.Items.Item(j).SubItems(1).Text()
-                    err21 = dGridSemantic.Items.Item(j).SubItems(2).Text()
-
-                    If err = err2 And err1 = err21 Then
-                        dGridSemantic.Items.Remove(er2)
-                    End If
-                Next
-            Next
-        End If
-
-    End Sub
+    'Private Sub semantic()
+    '    Dim dtype(4) As String
+    '    dtype(0) = "newt"
+    '    dtype(1) = "duck"
+    '    dtype(2) = "bull"
+    '    dtype(3) = "starling"
+
+    '    Dim k As Integer = 0
+    '    Dim isMane As Boolean = False
+    '    Dim errCtr As Integer = 0
+    '    Dim symbolCtr As Integer = 0
+    '    Dim isStork As Boolean = False
+    '    Dim isFunction As Boolean = False
+
+    '    While k < dGridLexi.Items.Count
+    '        If setokee(k) = "stork" Then
+    '            isStork = True
+    '        End If
+
+    '        If setokee(k) = "mane" Then
+    '            isStork = False
+    '            isMane = True
+    '        End If
+
+    '        If setokee(k) = "opsymbol" Then
+    '            symbolCtr += 1
+    '        End If
+
+    '        If setokee(k) = "clsymbol" Then
+    '            symbolCtr -= 1
+    '        End If
+
+    '        If setokee(k) = "identifier" Then
+    '            Dim kawntctr As Integer = 0
+    '            Dim identifier As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
+    '            Dim ctr As Integer = 0
+    '            Dim curind As Integer
+
+    '            If dGridIden.Items.Count > 1 Then
+    '                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                    If dGridIden.Items.Item(index).SubItems(1).Text() = identifier Then 'kung nasa dGridIden yung @zootopia
+    '                        curind = index
+    '                        Exit For
+    '                    End If
+    '                Next
+
+    '                For index As Integer = curind + 1 To dGridIden.Items.Count - 1
+    '                    If identifier = dGridIden.Items.Item(index).SubItems(1).Text() Then 'kung nasa dGridIden yung @zootopia
+    '                        ctr += 1
+    '                    End If
+    '                    If ctr >= 1 Then
+    '                        Exit For
+    '                    End If
+    '                Next
+
+    '                If ctr >= 1 Then
+    '                    Dim x As Integer
+    '                    x = k
+    '                    While setokee(x) <> "newline"
+    '                        x -= 1
+    '                    End While
+
+    '                    If setokee(x + 1) = "newt" Or setokee(x + 1) = "starling" Or setokee(x + 1) = "duck" Or setokee(x + 1) = "bull" Then
+    '                        kawntctr += 1
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(identifier + " -Multiple declaration of variable")
+    '                    End If
+    '                End If
+
+    '            End If
+
+    '            '========================================================================
+    '            Dim identifier2 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
+    '            Dim ctr2 As Integer = 0
+    '            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                If identifier2 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
+    '                    ctr2 += 1
+    '                End If
+    '            Next
+
+    '            If dGridBoard.Items.Count > 0 Then
+    '                For index As Integer = 0 To dGridBoard.Items.Count - 1
+    '                    If identifier2 = dGridBoard.Items.Item(index).SubItems(0).Text Then 'kung nasa dGridIden yung @zootopia
+    '                        ctr2 += 1
+    '                    End If
+    '                Next
+    '            End If
+
+    '            If ctr2 < 1 Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add(identifier2 + " -Undeclared variable or stork(structure)")
+    '            End If
+    '            'GoTo boarde
+    '            '=========================================================================
+    '            Dim identifier3 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
+    '            Dim ctr3 As Integer = 0
+    '            Dim cur As Integer
+
+    '            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                If identifier3 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
+    '                    ctr3 += 1
+    '                End If
+    '            Next
+
+    '            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                If identifier3 = dGridIden.Items.Item(index).SubItems(1).Text Then 'kung nasa dGridIden yung @zootopia
+    '                    cur = index
+    '                End If
+    '            Next
+
+    '            If ctr3 > 0 Then
+    '                Dim ctr4 As Integer = 0
+    '                For index As Integer = 0 To dGridLexi.Items.Count - 1
+    '                    If identifier3 = dGridLexi.Items.Item(index).SubItems(2).Text Then 'kung nasa dGridIden yung @zootopia
+    '                        ctr4 += 1
+    '                    End If
+    '                Next
+
+    '                If dGridBoard.Items.Count > 0 Then
+    '                    For index As Integer = 0 To dGridBoard.Items.Count - 1
+    '                        If identifier3 = dGridBoard.Items.Item(index).SubItems(0).Text Then 'kung nasa dGridIden yung @zootopia
+    '                            ctr4 += 2
+    '                        End If
+    '                    Next
+    '                End If
+
+    '                If ctr4 < 2 And dGridIden.Items.Item(cur).SubItems(9).Text <> "stork" Then
+    '                    errCtr += 1
+    '                    objList = dGridSemantic.Items.Add(errCtr)
+    '                    objList.SubItems.Add(selinee(k))
+    '                    objList.SubItems.Add(identifier3 + " -Unused variable")
+    '                End If
+    '            End If
+    '            '==============================================================================
+    '            Dim identifier4 As String = dGridLexi.Items.Item(k).SubItems(2).Text() 'name ng id sa lextable @zootopia
+
+    '            Dim declCount As Integer = 0
+    '            Dim declCtr As Integer = k
+    '            While Not (setokee(declCtr) = ":" Or setokee(declCtr) = "newline" Or inArray(setokee(k), dtype, 4))
+    '                If setokee(declCtr) = "at" Then
+    '                    declCount += 1
+    '                End If
+    '                declCtr -= 1
+    '            End While
+
+    '            If declCount > 0 Then   'if declaration
+    '                Dim c As Integer
+    '                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                    If dGridIden.Items.Item(index).SubItems(1).Text() = identifier4 Then
+    '                        c = index
+    '                    End If
+    '                Next
+
+    '                Dim curType = dGridIden.Items.Item(c).SubItems(5).Text()
+    '                If setokee(k + 1) = "assgnOp" Then  'para sa variable
+    '                    Dim datatype As String = dGridIden.Items.Item(c).SubItems(2).Text()
+    '                    Dim val_data As String = dGridIden.Items.Item(c).SubItems(4).Text()
+    '                    Dim value As String = dGridIden.Items.Item(c).SubItems(3).Text()
+    '                    If datatype = "newt" Then
+    '                        If Not (val_data = "newtlit" Or val_data = "null") Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
+    '                        End If
+    '                    ElseIf datatype = "starling" Then
+    '                        If Not (val_data = "starlinglit" Or val_data = "null") Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
+    '                        End If
+    '                    ElseIf datatype = "bull" Then
+    '                        If Not (val_data = "bullLit" Or val_data = "null") Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
+    '                        End If
+    '                    ElseIf datatype = "duck" Then
+    '                        If Not (val_data = "ducklit" Or val_data = "newtlit" Or val_data = "null") Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(value + " -Invalid value for data type " + datatype)
+    '                        End If
+    '                    End If
+    '                ElseIf setokee(k + 1) = "oppar" Then    'para sa function
+    '                    'MessageBox.Show("line= " & selinee(k))
+    '                    Dim kawnt As Integer = k + 1
+    '                    While setokee(kawnt) <> "newline"
+    '                        If setokee(kawnt) = "clpar" Then
+    '                            Exit While
+    '                        End If
+    '                        kawnt += 1
+    '                    End While
+
+    '                    If setokee(kawnt + 1) = ":" Then
+    '                        Dim datatype2 As String = dGridIden.Items.Item(c).SubItems(2).Text()
+    '                        Dim count As Integer = k + 1
+    '                        Dim counter As Integer = 0
+    '                        While Not setokee(count) = ":"
+    '                            If Not (setokee(count) = datatype2 Or setokee(count) = "," Or setokee(count) = "oppar" Or setokee(count) = "clpar") Then
+    '                                counter += 1
+    '                            End If
+    '                            count += 1
+    '                        End While
+    '                        If counter >= 1 Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Data Type of parameter must be same with the data type of the function used.")
+    '                        End If
+    '                    Else 'PANG FUNCTION DEFINITION
+    '                        Dim datatype2 As String = dGridIden.Items.Item(c).SubItems(2).Text()
+    '                        'MessageBox.Show(datatype2 & "Sa Else")
+    '                        Dim count As Integer = k + 1
+    '                        Dim counter As Integer = 0
+    '                        Dim counter2 As Integer = 0
+    '                        While Not setokee(count) = "clpar"
+    '                            'MessageBox.Show(setokee(count))
+    '                            If Not (setokee(count) = datatype2 Or setokee(count) = "," Or setokee(count) = "at" Or setokee(count) = "identifier" Or setokee(count) = "opsquare" Or setokee(count) = "clsquare" Or setokee(count) = "oppar" Or setokee(count) = "clpar") Then
+    '                                counter += 1
+    '                            End If
+    '                            count += 1
+    '                        End While
+    '                        If counter >= 1 Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Data Type of parameter must be the same with the function content.")
+    '                        End If
+
+    '                        count = k + 1
+    '                        If setokee(k + 2) <> "clpar" Then
+    '                            While setokee(count) <> "clpar"
+    '                                If setokee(count) = "," Then
+    '                                    counter2 += 1
+    '                                End If
+    '                                count += 1
+    '                            End While
+
+    '                            counter2 += 1
+    '                            'MessageBox.Show(cou)
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim param As String = dGridIden.Items.Item(c).SubItems(8).Text()
+    '                                If Int(param) <> counter2 Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("No. of parameter in written function is not equal with function declaration.")
+    '                                End If
+    '                            End If
+    '                        End If
+    '                    End If
+
+    '                ElseIf setokee(k + 1) = "opsquare" Then
+    '                    Dim currType As String = dGridIden.Items.Item(c).SubItems(5).Text() 'array1/array2
+    '                    If currType = "array1" Then
+    '                        Dim arrSize As String = dGridIden.Items.Item(c).SubItems(7).Text
+    '                        If Char.IsDigit(arrSize) Then
+    '                            If Int(arrSize) < 1 Or Int(arrSize) > 10 Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Size should be greater than 0 or less than 100")
+    '                            End If
+    '                        Else
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
+    '                        End If
+    '                    ElseIf currType = "array2" Then
+    '                        Dim arrSize As String = dGridIden.Items.Item(c).SubItems(7).Text
+    '                        Dim arrSize2 As String = dGridIden.Items.Item(c).SubItems(10).Text
+    '                        If Char.IsDigit(arrSize) Then
+    '                            If Int(arrSize) < 1 Or Int(arrSize) > 10 Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Size must be greater than 0 or less than 10")
+    '                            End If
+    '                        Else
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
+    '                        End If
+
+    '                        If Char.IsDigit(arrSize2) Then
+    '                            If Int(arrSize2) < 1 Or Int(arrSize2) > 10 Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Size must be greater than 0 or less than 10")
+    '                            End If
+    '                        Else
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Size must be a newtlit or identifier with data type of 'newt'")
+    '                        End If
+    '                    End If
+
+
+
+    '                    If setokee(k + 3) = "assgnOp" Or setokee(k + 4) = "assgnOp" Or setokee(k + 5) = "assgnOp" Or setokee(k + 6) = "assgnOp" Or setokee(k + 7) = "assgnOp" Then
+    '                        Dim arrdtype As String = dGridIden.Items.Item(c).SubItems(4).Text()
+    '                        Dim arrType As String = dGridIden.Items.Item(c).SubItems(5).Text()
+    '                        Dim arrcount As Integer = k
+    '                        Dim arrctr As Integer = 0
+    '                        Dim elemCtr As Integer = k + 4
+    '                        Dim commaCtr As Integer = 0
+    '                        Dim parCtr As Integer = 0
+
+    '                        While setokee(arrcount) <> "assgnOp"
+    '                            arrcount += 1
+    '                        End While
+
+    '                        While Not (setokee(arrcount) = ":" Or setokee(arrcount) = "clcurly")
+    '                            If Not (setokee(arrcount) = "assgnOp" Or setokee(arrcount) = "opcurly" Or setokee(arrcount) = "clcurly" Or setokee(arrcount) = "oppar" _
+    '                                Or setokee(arrcount) = "," Or setokee(arrcount) = "clpar" Or setokee(arrcount) = arrdtype) Then
+    '                                arrctr += 1
+    '                            End If
+    '                            arrcount += 1
+    '                        End While
+
+    '                        If arrctr > 0 Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Data Type of an element should be the same with the array content.")
+    '                        End If
+
+    '                        If arrType = "array1" Then
+    '                            While Not (setokee(elemCtr) = ":" Or setokee(elemCtr) = "clcurly")
+    '                                If setokee(elemCtr) = "," Then
+    '                                    commaCtr += 1
+    '                                End If
+    '                                elemCtr += 1
+    '                            End While
+
+    '                            Dim arrSize1 As String = ""
+    '                            If Not dGridIden.Items.Item(c).SubItems(7).Text() = "null" Then
+    '                                arrSize1 = dGridIden.Items.Item(c).SubItems(7).Text()
+    '                            End If
+
+    '                            If commaCtr >= Int(arrSize1) Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("#no. of elem(s) is not within the size of an array.")
+    '                            End If
+
+    '                        ElseIf arrType = "array2" Then
+    '                            While Not (setokee(elemCtr) = ":" Or setokee(elemCtr) = "clcurly")
+    '                                If setokee(elemCtr) = "," Then
+    '                                    commaCtr += 1
+    '                                ElseIf setokee(elemCtr) = "oppar" Then
+    '                                    parCtr += 1
+    '                                End If
+    '                                elemCtr += 1
+    '                            End While
+
+    '                            Dim arrSize1 As String = dGridIden.Items.Item(c).SubItems(7).Text()
+    '                            Dim arrSize2 As String = dGridIden.Items.Item(c).SubItems(10).Text()
+    '                            Dim totalSize As String = Int(arrSize1) * Int(arrSize2)
+
+    '                            If commaCtr >= totalSize Or commaCtr > 100 Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("#no. of column(s) is not within the size of an array.")
+    '                            End If
+
+    '                            If parCtr > arrSize1 Or parCtr > 10 Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("#no. of row(s) is not around the size of an array.")
+    '                            End If
+
+    '                        End If
+
+    '                    End If
+    '                End If
+
+    '            ElseIf declCount = 0 Then   'di declaration
+
+    '                If setokee(k) = "identifier" Then
+    '                    'INDEX  out of bounds
+    '                    If dGridIden.Items.Count > 0 Then
+    '                        Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
+    '                        Dim d1 As Integer
+    '                        For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                            If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
+    '                                d1 = index
+    '                            End If
+    '                        Next
+
+    '                        Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
+    '                        If setType = "array1" Then
+    '                            Dim getSize As String = dGridIden.Items.Item(d1).SubItems(7).Text
+    '                            If setokee(k + 1) = "newtlit" Then
+    '                                Dim curIndex As String = dGridLexi.Items.Item(k).SubItems(2).Text
+    '                                ' MessageBox.Show(curIndex & " " & getSize)
+    '                                If curIndex >= getSize Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Index is out of bounds")
+    '                                End If
+    '                            End If
+    '                            '-------------------------------------------------------------------
+    '                            'No. of parameter
+    '                        ElseIf setType = "function" Then
+    '                            Dim getParam As String = dGridIden.Items.Item(d1).SubItems(8).Text
+    '                            Dim getDtype As String = dGridIden.Items.Item(d1).SubItems(2).Text
+    '                            Dim counta As Integer = k + 1
+    '                            Dim paramCtr As Integer = 0
+
+    '                            If setokee(k + 1) = "oppar" Then
+    '                                While Not setokee(counta) = "clpar"
+    '                                    If setokee(counta) = "," Then
+    '                                        paramCtr += 1
+    '                                    End If
+    '                                    counta += 1
+    '                                End While
+
+    '                                paramCtr += 1
+
+    '                                If getDtype <> "viper" Then
+    '                                    If paramCtr < Int(getParam) Or paramCtr > Int(getParam) Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("No. of param is not equal to the declared param")
+    '                                    End If
+    '                                End If
+
+    '                                'MessageBox.Show("paramCtr= " & paramCtr)
+    '                                '------------------------------------------------------------------
+    '                                Dim counta2 As Integer = k + 1
+
+    '                                While Not setokee(counta2) = "clpar"
+    '                                    If getDtype = "newt" Then
+    '                                        If setokee(counta2) = "identifier" Then
+    '                                            Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
+    '                                            Dim counta3 As Integer 'c
+    '                                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                                If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                                                    counta3 = index 'c
+    '                                                End If
+    '                                            Next
+
+    '                                            Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
+    '                                            If currDType = "duck" Or currDType = "bull" Or currDType = "starling" Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                            End If
+    '                                        ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "starlinglit" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                        End If
+
+    '                                    ElseIf getDtype = "duck" Then
+    '                                        If setokee(counta2) = "identifier" Then
+    '                                            Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
+    '                                            Dim counta3 As Integer 'c
+    '                                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                                If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                                                    counta3 = index 'c
+    '                                                End If
+    '                                            Next
+
+    '                                            Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
+    '                                            If currDType = "newt" Or currDType = "bull" Or currDType = "starling" Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                            End If
+    '                                        ElseIf setokee(counta2) = "newtlit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "starlinglit" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                        End If
+
+    '                                    ElseIf getDtype = "bull" Then
+    '                                        If setokee(counta2) = "identifier" Then
+    '                                            Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
+    '                                            Dim counta3 As Integer 'c
+    '                                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                                If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                                                    counta3 = index 'c
+    '                                                End If
+    '                                            Next
+
+    '                                            Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
+    '                                            If currDType = "duck" Or currDType = "newt" Or currDType = "starling" Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                            End If
+    '                                        ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "newtlit" Or setokee(counta2) = "starlinglit" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                        End If
+    '                                    ElseIf getDtype = "starling" Then
+    '                                        If setokee(counta2) = "identifier" Then
+    '                                            Dim currID As String = dGridLexi.Items.Item(counta2).SubItems(2).Text() 'c
+    '                                            Dim counta3 As Integer 'c
+    '                                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                                If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                                                    counta3 = index 'c
+    '                                                End If
+    '                                            Next
+
+    '                                            Dim currDType As String = dGridIden.Items.Item(counta3).SubItems(2).Text() 'c
+    '                                            If currDType = "duck" Or currDType = "bull" Or currDType = "newt" Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                            End If
+    '                                        ElseIf setokee(counta2) = "ducklit" Or setokee(counta2) = "bullLit" Or setokee(counta2) = "newtlit" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(dGridLexi.Items.Item(counta2).SubItems(2).Text() & " - Invalid data type for param")
+    '                                        End If
+    '                                    End If
+    '                                    counta2 += 1
+    '                                End While
+    '                            Else
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add(setID & " - is used not as a function")
+
+    '                                Dim x As Integer = k + 1
+    '                                While setokee(x) <> "newline"
+    '                                    x += 1
+    '                                End While
+    '                                k = x
+    '                            End If
+
+    '                            'wawalain yung to
+    '                            '------------------------------------------------------------------
+    '                        ElseIf setokee(k + 1) = "at" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim boaId As String = dGridLexi.Items.Item(k).SubItems(2).Text()
+    '                                Dim match As Integer
+    '                                Dim isMember As Boolean = False
+    '                                Dim isStor As Boolean = False
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = boaId Then 'c
+    '                                        match = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim typee As String = dGridIden.Items.Item(match).SubItems(5).Text
+
+    '                                If typee <> "stork" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(boaId & " - is not stork_name")
+    '                                Else
+    '                                    isStor = True
+    '                                End If
+
+    '                                If isStor = True Then
+    '                                    Dim boaObj As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
+    '                                    For index As Integer = 0 To dGridBoard.Items.Count - 1
+    '                                        If dGridBoard.Items.Item(index).SubItems(0).Text() = boaObj Then 'c
+    '                                            isMember = True
+    '                                        End If
+    '                                    Next
+
+    '                                    If isMember = True Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add(boaObj & " - identifier is already used a stork_name")
+    '                                    Else
+    '                                        objList = dGridBoard.Items.Add(boaObj)
+    '                                        objList.SubItems.Add(boaId)
+    '                                    End If
+    '                                End If
+
+
+    '                            End If
+
+    '                        End If
+    '                        'END SA IF-FUNCTION
+    '                    End If
+    '                    'END IF MAY LAMAN YUNG dGridIden
+    '                End If
+    '                'END IF ID YUNG SETOKEE(K) PARA SA DECLARATION
+    '                Dim identifier5 As String = dGridLexi.Items.Item(k).SubItems(2).Text()
+
+    '                Dim d As Integer
+    '                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                    If dGridIden.Items.Item(index).SubItems(1).Text() = identifier5 Then
+    '                        d = index
+    '                    End If
+    '                Next
+
+    '                Dim curIDType As String = dGridIden.Items.Item(d).SubItems(5).Text()
+
+    '                If setokee(k + 1) = "assgnOp" And (setokee(k + 3) = "," Or setokee(k + 3) = ":") Then      'para sa variable
+    '                    If Not curIDType = "constant" Then
+    '                        Dim idDType As String = ""
+    '                        Dim idType As String = ""
+    '                        Dim curID As String = ""
+
+    '                        If setokee(k + 2) = "identifier" Then
+    '                            curID = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
+    '                            Dim e As Integer
+    '                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                If dGridIden.Items.Item(index).SubItems(1).Text() = curID Then
+    '                                    e = index
+    '                                End If
+    '                            Next
+    '                            If dGridIden.Items.Item(e).SubItems(4).Text() = "null" Then
+    '                                idDType = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If idDType = "newt" Then
+    '                                    idType = "newtlit"
+    '                                ElseIf idDType = "bull" Then
+    '                                    idType = "bullLit"
+    '                                ElseIf idDType = "duck" Then
+    '                                    idType = "ducklit"
+    '                                ElseIf idDType = "starling" Then
+    '                                    idType = "starlinglit"
+    '                                End If
+    '                            Else
+    '                                idType = dGridIden.Items.Item(e).SubItems(4).Text()
+    '                            End If
+    '                        Else
+    '                            idType = dGridLexi.Items.Item(k + 2).SubItems(3).Text()
+    '                        End If
+
+    '                        Dim curDType As String = ""
+    '                        Dim curType As String = ""
+    '                        If dGridIden.Items.Item(d).SubItems(4).Text() = "null" Then
+    '                            curDType = dGridIden.Items.Item(d).SubItems(2).Text()
+    '                            If curDType = "newt" Then
+    '                                curType = "newtlit"
+    '                            ElseIf curDType = "bull" Then
+    '                                curType = "bullLit"
+    '                            ElseIf curDType = "duck" Then
+    '                                curType = "ducklit"
+    '                            ElseIf curDType = "starling" Then
+    '                                curType = "starlinglit"
+    '                            End If
+    '                        Else
+    '                            curType = dGridIden.Items.Item(d).SubItems(4).Text()
+    '                        End If
+    '                        '-------------------------------------
+    '                        'TYPE MISMATCH SA ASSIGNMENT NG VALUE SA VARIABLE
+    '                        If Not curType = idType Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add("Type mismatch.") 'assigning ng value sa var
+    '                        End If
+
+    '                        If setokee(k + 2) = "identifier" Then
+    '                            Dim se1Type As String = dGridIden.Items.Item(d).SubItems(5).Text 'if variable talaga yung 1st
+    '                            Dim fDType As String = dGridIden.Items.Item(d).SubItems(2).Text
+    '                            Dim sID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
+    '                            Dim sDType As String = ""
+    '                            Dim f As Integer
+    '                            For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                If dGridIden.Items.Item(index).SubItems(1).Text() = sID Then
+    '                                    f = index
+    '                                End If
+    '                            Next
+    '                            Dim se2Type As String = dGridIden.Items.Item(f).SubItems(5).Text 'if variable talaga yung 2nd
+    '                            sDType = dGridIden.Items.Item(f).SubItems(2).Text
+
+    '                            'MessageBox.Show("Type1= " & se1Type & " ,Type2= " & se2Type)
+
+    '                            If se1Type <> "variable" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add(se1Type & " " & dGridIden.Items.Item(d).SubItems(1).Text & " is used as a variable")
+    '                            End If
+
+    '                            If se2Type <> "variable" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add(se2Type & " " & dGridIden.Items.Item(f).SubItems(1).Text & " is used as a variable")
+    '                            End If
+    '                        End If
+
+
+    '                        '--------------------------------------------------------------------
+    '                    Else
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add("Cannot change value for set")
+    '                    End If
+    '                ElseIf setokee(k + 1) = "assgnOp" And setokee(k + 2) = "identifier" Then
+    '                    'MessageBox.Show("assign tayo")
+    '                    Dim fDType As String = dGridIden.Items.Item(d).SubItems(2).Text
+    '                    Dim sID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()  '@zootopia
+    '                    Dim sDType As String = ""
+    '                    Dim f As Integer
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = sID Then
+    '                            f = index
+    '                        End If
+    '                    Next
+    '                    sDType = dGridIden.Items.Item(f).SubItems(2).Text
+
+    '                    'MessageBox.Show("Type1= " & se1Type & " ,Type2= " & se2Type)
+    '                    If fDType <> sDType Then
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                    End If
+    '                    '------------
+
+    '                    '-----------------------------------------------------------------
+    '                    'MATH EXP SA TEXT OR FLAG
+    '                ElseIf setokee(k + 2) = "increOp" Or setokee(k + 2) = "decreOp" Or setokee(k + 3) = "mathOp" _
+    '                     Or setokee(k + 3) = "decreOp" Or setokee(k + 3) = "increOp" Then
+
+    '                    Dim curDType = dGridIden.Items.Item(d).SubItems(2).Text()
+    '                    If curDType = "starling" Or curDType = "bull" Then
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add("Type mismatch. Cannot assign math Op to the variable with '" & curDType & "' data type.")
+    '                    End If
+    '                    '--------------------------------------------------------------------
+    '                    'PARA SA ARRAY
+    '                ElseIf curIDType = "array1" Then
+    '                    If setokee(k + 2) = "newtlit" Or setokee(k + 2) = "identifier" Then
+    '                        Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
+    '                        Dim d1 As Integer
+    '                        For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                            If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
+    '                                d1 = index
+    '                            End If
+    '                        Next
+    '                        'INDEX OUT OF BOUNDS
+    '                        If dGridIden.Items.Count > 0 Then
+    '                            Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
+    '                            Dim getSize As String = dGridIden.Items.Item(d1).SubItems(7).Text
+    '                            If setType = "array1" Then
+    '                                If setokee(k + 2) = "newtlit" Then
+    '                                    Dim curIndex As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text
+    '                                    If Int(curIndex) >= Int(getSize) Or Int(curIndex) < 0 Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("Index is out of bounds ")
+    '                                    End If
+    '                                ElseIf setokee(k + 2) = "identifier" Then
+    '                                    Dim sizeID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
+    '                                    Dim d2 As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
+    '                                            d2 = index
+    '                                        End If
+    '                                    Next
+
+    '                                    Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
+    '                                    If Not sizeDType = "newt" Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("Can't assign variable " & sizeID & " as size of an array")
+    '                                    Else
+    '                                        Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
+    '                                        If sizeVal = "null" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(sizeID & " - No value is assigned before using as size of an array")
+    '                                        Else
+    '                                            If Int(sizeVal) >= Int(getSize) Or Int(sizeVal) < 0 Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add("Index is out of bounds.")
+    '                                            End If
+    '                                        End If
+    '                                    End If
+    '                                End If
+    '                            End If
+    '                        End If
+    '                        'END IF MAY LAMAN YUNG dGridIden
+    '                    End If
+
+    '                    If setokee(k + 4) = "assgnOp" Then
+    '                        Dim daType As String = dGridIden.Items.Item(d).SubItems(2).Text
+    '                        If daType = "newt" Then
+    '                            If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 5) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "duck" Then
+    '                            If setokee(k + 5) = "newtlit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 5) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "bull" Then
+    '                            If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "newtlit" Or setokee(k + 5) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 5) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "starling" Then
+    '                            If setokee(k + 5) = "ducklit" Or setokee(k + 5) = "bullLit" Or setokee(k + 5) = "newtlit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 5) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 5).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        End If
+    '                    End If
+    '                ElseIf curIDType = "array2" Then
+    '                    If setokee(k + 2) = "newtlit" Or setokee(k + 2) = "identifier" Then
+    '                        Dim setID As String = dGridLexi.Items.Item(k).SubItems(2).Text()
+    '                        Dim d1 As Integer
+    '                        For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                            If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
+    '                                d1 = index
+    '                            End If
+    '                        Next
+    '                        'INDEX OUT OF BOUNDS
+    '                        If dGridIden.Items.Count > 0 Then
+    '                            Dim setType As String = dGridIden.Items.Item(d1).SubItems(5).Text
+    '                            Dim getSize1 As String = dGridIden.Items.Item(d1).SubItems(7).Text
+    '                            Dim getSize2 As String = dGridIden.Items.Item(d1).SubItems(10).Text
+    '                            If setType = "array2" Then
+    '                                If setokee(k + 2) = "newtlit" Then
+    '                                    Dim curIndex As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text
+    '                                    If Int(curIndex) >= Int(getSize1) Or Int(curIndex) < 0 Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("1st Index is out of bounds")
+    '                                    End If
+    '                                ElseIf setokee(k + 2) = "identifier" Then
+    '                                    Dim sizeID As String = dGridLexi.Items.Item(k + 2).SubItems(2).Text()
+    '                                    Dim d2 As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
+    '                                            d2 = index
+    '                                        End If
+    '                                    Next
+
+    '                                    Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
+    '                                    If Not sizeDType = "newt" Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("Can't assign variable " & sizeID & " as 1st index of array")
+    '                                    Else
+    '                                        Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
+    '                                        If sizeVal = "null" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(sizeID & " - No value is assigned before using as 1st index of array")
+    '                                        Else
+    '                                            If Int(sizeVal) >= Int(getSize1) Or Int(sizeVal) < 0 Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add("1st Index is out of bounds.")
+    '                                            End If
+    '                                        End If
+    '                                    End If
+    '                                End If
+
+    '                                If setokee(k + 5) = "newtlit" Then
+    '                                    Dim curIndex As String = dGridLexi.Items.Item(k + 5).SubItems(2).Text
+    '                                    If Int(curIndex) >= Int(getSize2) Or Int(curIndex) < 0 Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("2nd Index is out of bounds ")
+    '                                    End If
+    '                                ElseIf setokee(k + 5) = "identifier" Then
+    '                                    Dim sizeID As String = dGridLexi.Items.Item(k + 5).SubItems(2).Text()
+    '                                    Dim d2 As Integer
+    '                                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                        If dGridIden.Items.Item(index).SubItems(1).Text() = sizeID Then
+    '                                            d2 = index
+    '                                        End If
+    '                                    Next
+
+    '                                    Dim sizeDType As String = dGridIden.Items.Item(d2).SubItems(2).Text
+    '                                    If Not sizeDType = "newt" Then
+    '                                        errCtr += 1
+    '                                        objList = dGridSemantic.Items.Add(errCtr)
+    '                                        objList.SubItems.Add(selinee(k))
+    '                                        objList.SubItems.Add("Can't assign var " & sizeID & " as 2nd index of array")
+    '                                    Else
+    '                                        Dim sizeVal As String = dGridIden.Items.Item(d2).SubItems(3).Text
+    '                                        If sizeVal = "null" Then
+    '                                            errCtr += 1
+    '                                            objList = dGridSemantic.Items.Add(errCtr)
+    '                                            objList.SubItems.Add(selinee(k))
+    '                                            objList.SubItems.Add(sizeID & " - No value is assigned before using as 2nd index of array")
+    '                                        Else
+    '                                            If Int(sizeVal) >= Int(getSize2) Or Int(sizeVal) < 0 Then
+    '                                                errCtr += 1
+    '                                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                                objList.SubItems.Add(selinee(k))
+    '                                                objList.SubItems.Add(" 2nd Index is out of bounds.")
+    '                                            End If
+    '                                        End If
+    '                                    End If
+    '                                End If
+    '                            End If
+    '                        End If
+    '                        'END IF MAY LAMAN YUNG identlist/table
+    '                    End If
+
+    '                    If setokee(k + 7) = "assgnOp" Then
+    '                        Dim daType As String = dGridIden.Items.Item(d).SubItems(2).Text
+    '                        If daType = "newt" Then
+    '                            If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 8) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "duck" Then
+    '                            If setokee(k + 8) = "newtlit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 8) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "bull" Then
+    '                            If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "newtlit" Or setokee(k + 8) = "starlinglit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 8) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        ElseIf daType = "starling" Then
+    '                            If setokee(k + 8) = "ducklit" Or setokee(k + 8) = "bullLit" Or setokee(k + 8) = "newtlit" Then
+    '                                errCtr += 1
+    '                                objList = dGridSemantic.Items.Add(errCtr)
+    '                                objList.SubItems.Add(selinee(k))
+    '                                objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                            ElseIf setokee(k + 8) = "identifier" Then
+    '                                Dim cureID = dGridLexi.Items.Item(k + 8).SubItems(2).Text()  '@zootopia
+    '                                Dim e As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = cureID Then
+    '                                        e = index
+    '                                    End If
+    '                                Next
+
+    '                                Dim getDT As String = dGridIden.Items.Item(e).SubItems(2).Text()
+    '                                If getDT <> daType Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add("Type mismatch for assigning value to " & dGridIden.Items.Item(d).SubItems(1).Text)
+    '                                End If
+    '                            End If
+    '                        End If
+    '                    End If
+
+    '                End If
+    '            End If
+    '        End If
+    '        If setokee(k) = "mathOp" Then
+    '            If setokee(k - 1) = "identifier" Then 'c
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'c
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
+    '                    If currDType = "starling" Or currDType = "bull" Then 'c
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for math expression") 'c
+    '                    ElseIf currDType = "newt" Or currDType = "duck" Then
+    '                        Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
+    '                        If currVal = "null" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in math expression")
+    '                        End If
+
+    '                    End If
+    '                End If
+    '            ElseIf setokee(k - 1) = "starlinglit" Or setokee(k - 1) = "bullLit" Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for math expression") 'c
+    '            End If
+
+    '            If setokee(k + 1) = "identifier" Then 'c
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text() 'c
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
+    '                    If currDType = "starling" Or currDType = "bull" Then 'c
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for math expression") 'c
+    '                    ElseIf currDType = "newt" Or currDType = "duck" Then
+    '                        Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
+    '                        If currVal = "null" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in math expression")
+    '                        End If
+    '                    End If
+    '                End If
+    '            ElseIf setokee(k + 1) = "starlinglit" Or setokee(k + 1) = "bullLit" Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for math expression") 'c
+    '            End If
+    '        End If
+
+    '        If setokee(k) = "increOp" Or setokee(k) = "decreOp" Then
+    '            If setokee(k - 1) = "identifier" Then 'c
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'c
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
+    '                    If currDType = "starling" Or currDType = "bull" Or currDType = "duck" Then 'c
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " (" & currDType & ") - Invalid for increment/ decrement operation") 'c
+    '                    ElseIf currDType = "newt" Then
+    '                        Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
+    '                        If currVal = "null" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in increment/decrement operation")
+    '                        End If
+    '                    End If
+    '                End If
+    '            ElseIf setokee(k - 1) = "starlinglit" Or setokee(k - 1) = "bullLit" Or setokee(k - 1) = "ducklit" Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - Invalid for increment/ decrement operation") 'c
+    '            End If
+
+    '            If setokee(k + 1) = "identifier" Then 'c
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text() 'c
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'c
+    '                    If currDType = "starling" Or currDType = "bull" Or currDType = "duck" Then 'c
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " (" & currDType & ") - Invalid for increment/ decrement operation") 'c
+    '                    ElseIf currDType = "newt" Then
+    '                        Dim currVal As String = dGridIden.Items.Item(counta).SubItems(3).Text()
+    '                        If currVal = "null" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k - 1).SubItems(2).Text() & " - No value is assigned before using in increment/decrement operation")
+    '                        End If
+    '                    End If
+    '                End If
+    '            ElseIf setokee(k + 1) = "starlinglit" Or setokee(k + 1) = "bullLit" Or setokee(k - 1) = "ducklit" Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Invalid for increment/ decrement operation") 'c
+    '            End If
+    '        End If
+    '        If setokee(k) = ".+" Then
+    '            If dGridIden.Items.Count > 1 Then
+    '                Dim fId As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text
+    '                Dim sId As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text
+    '                Dim fDtype As String = ""
+    '                Dim sDtype As String = ""
+    '                Dim cF, cS As Integer
+
+    '                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                    If dGridIden.Items.Item(index).SubItems(1).Text() = fId Then 'c
+    '                        cF = index 'c
+    '                    End If
+    '                Next
+
+    '                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                    If dGridIden.Items.Item(index).SubItems(1).Text() = sId Then 'c
+    '                        cS = index 'c
+    '                    End If
+    '                Next
+
+    '                fDtype = dGridIden.Items.Item(cF).SubItems(2).Text
+    '                If fDtype <> "starling" Then
+    '                    errCtr += 1
+    '                    objList = dGridSemantic.Items.Add(errCtr)
+    '                    objList.SubItems.Add(selinee(k))
+    '                    objList.SubItems.Add("Data type of " & fId & " should be 'starling(string)' for string operator")
+    '                End If
+
+    '                sDtype = dGridIden.Items.Item(cS).SubItems(2).Text
+    '                If sDtype <> "starling" Then
+    '                    errCtr += 1
+    '                    objList = dGridSemantic.Items.Add(errCtr)
+    '                    objList.SubItems.Add(selinee(k))
+    '                    objList.SubItems.Add("Data type of " & sId & " should be 'starling(string)' for string operator")
+    '                End If
+    '            End If
+    '            'end ng if may laman yung dGridIden
+    '        End If
+    '        If setokee(k) = "relOp2" Then
+    '            If setokee(k - 1) = "identifier" Then 'VARIABLE
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'CHANGE
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "bull" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "starling" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    End If
+
+    '                End If
+    '            ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "identifier" Then
+    '                '1d array
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 4).SubItems(2).Text() 'CHANGE
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "bull" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "starling" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    End If
+
+    '                End If
+    '            ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "clsquare" And setokee(k - 7) = "identifier" Then
+    '                '2d array
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 7).SubItems(2).Text() 'CHANGE
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text() 'datatype ng k-?
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "newt" Or setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "newtlit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "bull" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "newt" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "newtlit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    ElseIf currDType = "starling" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "duck" Or setDType = "bull" Or setDType = "newt" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "ducklit" Or setokee(k + 1) = "bullLit" Or setokee(k + 1) = "newtlit" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for arguements should be the same for condition")
+    '                        End If
+    '                    End If
+
+    '                End If
+    '            End If
+    '        End If
+    '        If setokee(k) = "relOp1" Then
+    '            If setokee(k - 1) = "identifier" Then 'VARIABLE
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 1).SubItems(2).Text() 'CHANGE
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "bull" Or currDType = "starling" Then
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+
+    '                    End If
+
+    '                End If
+    '            ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "identifier" Then
+    '                '1d array
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 4).SubItems(2).Text() 'CHANGE
+    '                    Dim counta As Integer 'c
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "bull" Or currDType = "starling" Then
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    End If
+    '                End If
+    '            ElseIf setokee(k - 1) = "clsquare" And setokee(k - 4) = "clsquare" And setokee(k - 7) = "identifier" Then
+    '                '2dimen arr
+    '                If dGridIden.Items.Count > 0 Then
+    '                    Dim currID As String = dGridLexi.Items.Item(k - 7).SubItems(2).Text()
+    '                    Dim counta As Integer
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = currID Then 'c
+    '                            counta = index 'c
+    '                        End If
+    '                    Next
+    '                    Dim currDType As String = dGridIden.Items.Item(counta).SubItems(2).Text()
+    '                    'MessageBox.Show(currDType)
+
+    '                    If currDType = "newt" Then 'newt==
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "duck" Then
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then 'CHANGE
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                        End If
+    '                    ElseIf currDType = "bull" Or currDType = "starling" Then
+    '                        errCtr += 1
+    '                        objList = dGridSemantic.Items.Add(errCtr)
+    '                        objList.SubItems.Add(selinee(k))
+    '                        objList.SubItems.Add(dGridIden.Items.Item(counta).SubItems(1).Text() & " - Data type for relational operation is invalid")
+    '                        If setokee(k + 1) = "identifier" Then
+    '                            If dGridIden.Items.Count > 0 Then
+    '                                Dim setID As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text()
+    '                                Dim setCtr As Integer
+    '                                For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                                    If dGridIden.Items.Item(index).SubItems(1).Text() = setID Then 'c
+    '                                        setCtr = index 'c
+    '                                    End If
+    '                                Next
+
+    '                                Dim setDType As String = dGridIden.Items.Item(setCtr).SubItems(2).Text()
+    '                                If setDType = "bull" Or setDType = "starling" Then
+    '                                    errCtr += 1
+    '                                    objList = dGridSemantic.Items.Add(errCtr)
+    '                                    objList.SubItems.Add(selinee(k))
+    '                                    objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid")
+    '                                End If
+    '                            End If
+    '                        ElseIf setokee(k + 1) = "bullLit" Or setokee(k + 1) = "starlinglit" Then
+    '                            errCtr += 1
+    '                            objList = dGridSemantic.Items.Add(errCtr)
+    '                            objList.SubItems.Add(selinee(k))
+    '                            objList.SubItems.Add(dGridLexi.Items.Item(k + 1).SubItems(2).Text() & " - Data type for relational operation is invalid.")
+    '                        End If
+    '                    End If
+
+    '                End If
+    '            End If
+    '        End If
+
+    '        If setokee(k) = "hop" Then
+    '            'MessageBox.Show("deport")
+    '            Dim depDtype As String = ""
+    '            Dim funcDtype As String = ""
+    '            If setokee(k + 1) = "identifier" Then
+    '                Dim seId As String = dGridLexi.Items.Item(k + 1).SubItems(2).Text
+    '                Dim getID As Integer
+
+    '                If dGridIden.Items.Count > 0 Then
+    '                    For index As Integer = 0 To dGridIden.Items.Count - 1
+    '                        If dGridIden.Items.Item(index).SubItems(1).Text() = seId Then
+    '                            getID = index
+    '                        End If
+    '                    Next
+    '                End If
+
+    '                depDtype = dGridIden.Items.Item(getID).SubItems(2).Text
+    '            ElseIf setokee(k + 1) = "newtlit" Then
+    '                depDtype = "newt"
+    '            ElseIf setokee(k + 1) = "ducklit" Then
+    '                depDtype = "duck"
+    '            ElseIf setokee(k + 1) = "bullLit" Then
+    '                depDtype = "bull"
+    '            ElseIf setokee(k + 1) = "starlinglit" Then
+    '                depDtype = "starling"
+    '            End If
+
+    '            'MessageBox.Show(depDtype)
+    '            Dim dep As Integer = k
+    '            While dep >= 0
+    '                If setokee(dep) = "clpar" And setokee(dep + 1) = "newline" Then
+    '                    Exit While
+    '                Else
+    '                    dep -= 1
+    '                End If
+    '            End While
+
+    '            Dim les As Integer = dep
+    '            'MessageBox.Show(dep)
+    '            While setokee(les) <> "oppar"
+    '                If setokee(les) = "newt" Or setokee(les) = "duck" Or setokee(les) = "bull" Or setokee(les) = "starling" Then
+    '                    funcDtype = setokee(les)
+    '                    Exit While
+    '                Else
+    '                    les -= 1
+    '                End If
+    '            End While
+
+    '            'MessageBox.Show(funcDtype)
+
+    '            If depDtype <> funcDtype Then
+    '                errCtr += 1
+    '                objList = dGridSemantic.Items.Add(errCtr)
+    '                objList.SubItems.Add(selinee(k))
+    '                objList.SubItems.Add("Data type of hop(return) value is not match.")
+    '            End If
+    '        End If
+
+
+
+    '        k += 1
+    '    End While
+
+    '    'para sa errors
+    '    Dim err As String = ""
+    '    Dim err1 As String = ""
+    '    Dim err2 As String = ""
+    '    Dim err21 As String = ""
+    '    Dim er1 As ListViewItem
+    '    Dim er2 As ListViewItem
+    '    If dGridSemantic.Items.Count > 1 Then
+    '        For i As Integer = 0 To dGridSemantic.Items.Count - 1
+    '            er1 = dGridSemantic.Items(i)
+    '            err = dGridSemantic.Items.Item(i).SubItems(1).Text()
+    '            err1 = dGridSemantic.Items.Item(i).SubItems(2).Text()
+
+    '            For j As Integer = i + 1 To dGridSemantic.Items.Count - 1
+    '                er2 = dGridSemantic.Items(j)
+    '                err2 = dGridSemantic.Items.Item(j).SubItems(1).Text()
+    '                err21 = dGridSemantic.Items.Item(j).SubItems(2).Text()
+
+    '                If err = err2 And err1 = err21 Then
+    '                    dGridSemantic.Items.Remove(er2)
+    '                End If
+    '            Next
+    '        Next
+    '    End If
+
+    'End Sub
 
 
     'Private Sub identifierList()
