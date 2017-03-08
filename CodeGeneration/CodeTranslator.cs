@@ -120,6 +120,8 @@ namespace Code_Translation
         private bool isMultArriD = false;
         private bool isMultArray = false;
         private bool isInput = false;
+        private bool isIdArrayIn;
+        private bool isunaryOp;
 
         public string Start()
         {
@@ -1416,9 +1418,7 @@ namespace Code_Translation
 
         public override Node ExitProdNext2var(Production node)
         {
-            
             isIdArray = false;
-            hasDeclared = false;
             isMultID = false;
             isIdInput = false;
             return node;
@@ -2203,6 +2203,7 @@ namespace Code_Translation
 
         public override void EnterProdStatement(Production node)
         {
+            isArray = false;
             //isIdInput = false;
             //isOutput = true;
         }
@@ -2223,11 +2224,13 @@ namespace Code_Translation
 
         public override void EnterProdStateNext(Production node)
         {
+            
         }
 
 
         public override Node ExitProdStateNext(Production node)
         {
+            
             return node;
         }
 
@@ -2240,13 +2243,12 @@ namespace Code_Translation
 
         public override void EnterProdAssign1(Production node)
         {
-            isIdArray = true;
+            isIdArrayIn = true;
         }
 
 
         public override Node ExitProdAssign1(Production node)
         {
-            isIdArray = false;
             return node;
         }
 
@@ -2262,8 +2264,10 @@ namespace Code_Translation
             isArrayInput = true;
 
             //isIdArray = false;
-            //if (isIdArray)
-                //NotTermi = true;
+            if (isIdArray)
+                NotTermi = true;
+            if (isIdArrayIn)
+                NotTermi = false;
                 isIdInput = false;
         }
 
@@ -2577,10 +2581,10 @@ namespace Code_Translation
 
                     switch (input_datatype)
                     {
-                        case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\"); }} while (true);\n "; break;
-                        case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
-                        case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
-                        case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                        case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \"); }} while (true);\n "; break;
+                        case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
+                        case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
+                        case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
                         default:
                             break;
                     }
@@ -2605,10 +2609,10 @@ namespace Code_Translation
 
                 switch (input_datatype)
                 {
-                    case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\"); }} while (true);\n "; break;
-                    case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
-                    case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
-                    case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input!\")\n; }} while (true);\n "; break;
+                    case "Newt": code += " = Int32.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \"); }} while (true);\n "; break;
+                    case "Duck": code += " = Double.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
+                    case "Starling": code += " = Console.ReadLine(); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
+                    case "Bull": code += " = Boolean.Parse(Console.ReadLine()); break;\n } catch { Console.Write(\"Invalid Input! Input Again: \")\n; }} while (true);\n "; break;
                     default:
                         break;
                 }
@@ -3256,12 +3260,17 @@ namespace Code_Translation
 
         public override void ChildProdIterative(Production node, Node child)
         {
+            //if (child.GetName() == "WHALE")
+            //    isArray = false;
+            //else
+            //    isArray = true;
             node.AddChild(child);
         }
 
 
         public override void EnterProdLoopFig1(Production node)
         {
+
             isInput = true;
         }
 
@@ -3335,6 +3344,9 @@ namespace Code_Translation
 
         public override Node ExitProdUnaryOp(Production node)
         {
+            //isIdInput = false;
+            //isArrayInput = false;
+            NotTermi = false;
             return node;
         }
 

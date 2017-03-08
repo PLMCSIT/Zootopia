@@ -252,7 +252,7 @@ public class SyntaxParser : RecursiveDescentParser {
                                         "prod_array1D");
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.OB, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 0, 1);
         alt.AddToken((int) SyntaxConstants.CB, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_ELEM1D_NEXT, 0, 1);
         pattern.AddAlternative(alt);
@@ -266,7 +266,7 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.OB, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 0, 1);
         alt.AddToken((int) SyntaxConstants.CB, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_ELEM2D_NEXT, 0, 1);
         pattern.AddAlternative(alt);
@@ -738,7 +738,7 @@ public class SyntaxParser : RecursiveDescentParser {
                                         "prod_arr1D");
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.OB, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 0, 1);
         alt.AddToken((int) SyntaxConstants.CB, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_ARR2D, 0, 1);
         pattern.AddAlternative(alt);
@@ -748,7 +748,7 @@ public class SyntaxParser : RecursiveDescentParser {
                                         "prod_arr2D");
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.OB, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_SIZE, 0, 1);
         alt.AddToken((int) SyntaxConstants.CB, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
