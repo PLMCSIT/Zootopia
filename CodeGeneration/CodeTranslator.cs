@@ -122,6 +122,7 @@ namespace Code_Translation
         private bool isInput = false;
         private bool isIdArrayIn;
         private bool isunaryOp;
+        private bool is2dArrayElem = false;
 
         public string Start()
         {
@@ -663,7 +664,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "(";
+                if (is2dArrayElem)
+                    code += "{";
+                else
+                    code += "(";
+
                 isAdd = false;
             }
             return node;
@@ -676,9 +681,14 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                if (!isFunct)
+                if (is2dArrayElem)
+                    code += "}";
+                else
                 {
-                    code += ")";
+                    if (!isFunct)
+                    {
+                        code += ")";
+                    }
                 }
                 isAdd = false;
             }
@@ -1916,11 +1926,13 @@ namespace Code_Translation
 
         public override void EnterProdElem2dList(Production node)
         {
+            is2dArrayElem = true;
         }
 
 
         public override Node ExitProdElem2dList(Production node)
         {
+            is2dArrayElem = false;
             return node;
         }
 
