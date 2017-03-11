@@ -76,7 +76,7 @@ namespace Code_Translation
 
 
         public string error = "";
-        public string code = "using System; \nnamespace Zootopia\n{\n public class Compiler\n{\n";
+        public string code = "using System;\n using System.Collections.Generic; \n public class Compiler\n{\n";
         private bool isRead = false;
         private bool isSay = false;
         private bool isSwitch = false;
@@ -1023,6 +1023,20 @@ namespace Code_Translation
             }
             return node;
         }
+        public override void EnterGallop(Token node)
+        {
+            isAdd = true;
+        }
+        
+        public override Node ExitGallop(Token node)
+        {
+            if (isAdd)
+            {
+                code += "continue ";
+                isAdd = false;
+            }
+            return node;
+        }
         public override void EnterDuck(Token node)
         {
             isAdd = true;
@@ -1735,6 +1749,7 @@ namespace Code_Translation
             }
 
             Node size_1 = node.GetChildAt(1);
+            Node idarr = size_1.GetChildAt(0);
             Tokens t = new Tokens();
             t = GetTokens(size_1.GetStartLine(), size_1.GetStartColumn());
             size1 = t.getLexemes();
@@ -1811,6 +1826,10 @@ namespace Code_Translation
                 //else
                 //{
                 //code = code.Remove(code.Length -3, 3);
+                if(idarr.GetName() == "ID")
+                {
+                    size1 = t.getLexemes().Remove(0, 1);
+                }
                     code += vardtype + "[] " + varid + " = new " + vardtype + "[" + size1 + "];\n";
                 //}
             }
@@ -2216,8 +2235,8 @@ namespace Code_Translation
         public override void EnterProdStatement(Production node)
         {
             isArray = false;
-            //isIdInput = false;
-            //isOutput = true;
+            //isIdArray = true;
+            //isOutput =  = true;
         }
 
 
@@ -2229,6 +2248,20 @@ namespace Code_Translation
 
 
         public override void ChildProdStatement(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
+
+        public override void EnterProdContbreak(Production node)
+        {
+        }
+
+        public override Node ExitProdContbreak(Production node)
+        {
+            return node;
+        }
+
+        public override void ChildProdContbreak(Production node, Node child)
         {
             node.AddChild(child);
         }
@@ -2565,6 +2598,7 @@ namespace Code_Translation
         {
             isIdInput = true;
             isIdArray = true;
+            isIdArrayIn = false;
             isInput = true;
         }
 

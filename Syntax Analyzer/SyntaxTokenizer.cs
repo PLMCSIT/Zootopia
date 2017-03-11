@@ -164,6 +164,12 @@ public class SyntaxTokenizer : Tokenizer {
                                    "null");
         AddPattern(pattern);
 
+        pattern = new TokenPattern((int) SyntaxConstants.GALLOP,
+                                   "GALLOP",
+                                   TokenPattern.PatternType.STRING,
+                                   "gallop");
+        AddPattern(pattern);
+
         pattern = new TokenPattern((int) SyntaxConstants.COMSYM,
                                    "COMSYM",
                                    TokenPattern.PatternType.STRING,

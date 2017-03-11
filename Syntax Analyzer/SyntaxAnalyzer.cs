@@ -85,6 +85,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.NULL:
             EnterNull((Token) node);
             break;
+        case (int) SyntaxConstants.GALLOP:
+            EnterGallop((Token) node);
+            break;
         case (int) SyntaxConstants.COMSYM:
             EnterComsym((Token) node);
             break;
@@ -337,6 +340,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_STATEMENT:
             EnterProdStatement((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_CONTBREAK:
+            EnterProdContbreak((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_STATE_NEXT:
             EnterProdStateNext((Production) node);
             break;
@@ -575,6 +581,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitAt((Token) node);
         case (int) SyntaxConstants.NULL:
             return ExitNull((Token) node);
+        case (int) SyntaxConstants.GALLOP:
+            return ExitGallop((Token) node);
         case (int) SyntaxConstants.COMSYM:
             return ExitComsym((Token) node);
         case (int) SyntaxConstants.TERMI:
@@ -743,6 +751,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdLocalDec((Production) node);
         case (int) SyntaxConstants.PROD_STATEMENT:
             return ExitProdStatement((Production) node);
+        case (int) SyntaxConstants.PROD_CONTBREAK:
+            return ExitProdContbreak((Production) node);
         case (int) SyntaxConstants.PROD_STATE_NEXT:
             return ExitProdStateNext((Production) node);
         case (int) SyntaxConstants.PROD_ASSIGN1:
@@ -989,6 +999,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_STATEMENT:
             ChildProdStatement(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_CONTBREAK:
+            ChildProdContbreak(node, child);
             break;
         case (int) SyntaxConstants.PROD_STATE_NEXT:
             ChildProdStateNext(node, child);
@@ -1716,6 +1729,32 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual Node ExitNull(Token node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterGallop(Token node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitGallop(Token node) {
         return node;
     }
 
@@ -4418,6 +4457,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdStatement(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdContbreak(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdContbreak(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdContbreak(Production node, Node child) {
         node.AddChild(child);
     }
 

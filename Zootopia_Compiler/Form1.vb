@@ -794,313 +794,32 @@ Public Class Form1
                     read = True
                 End If
 
-            ElseIf sc(i) = "h" Then
-                If sc(i + 1) = "o" Then
-                    If sc(i + 1) = "o" And sc(i + 2) = "p" Then
-                        If sc(i + 3) = " " Then
-                            symbolCtr += 1
-                            tokens = New TokenLibrary.TokenLibrary.TokenClass
-                            tokens.setTokens("hop")
-                            tokens.setLexemes("hop")
-                            tokens.setAttributes("hop")
-                            tokens.setLines(line)
-                            tokenstream.Add(tokens)
-                            objList = dGridLexi.Items.Add(symbolCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add("hop")
-                            objList.SubItems.Add("hop")
-                            objList.SubItems.Add("hop")
-                            read = True
-                            i += 2
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'hop'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'ho'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'h'")
-                    read = True
-                End If
-
-            ElseIf sc(i) = "i" Then
-                If sc(i + 1) = "f" Then
-                    If sc(i + 2) = "(" Or sc(i + 2) = " " Then
-                        symbolCtr += 1
-                        tokens = New TokenLibrary.TokenLibrary.TokenClass
-                        tokens.setTokens("if")
-                        tokens.setLexemes("if")
-                        tokens.setAttributes("if")
-                        tokens.setLines(line)
-                        tokenstream.Add(tokens)
-                        objList = dGridLexi.Items.Add(symbolCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add("if")
-                        objList.SubItems.Add("if")
-                        objList.SubItems.Add("if")
-                        read = True
-                        i += 1
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'if'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'i'")
-                    read = True
-                End If
-
-
-            ElseIf sc(i) = "l" Then
-                If sc(i + 1) = "e" Then
-                    If sc(i + 1) = "e" And sc(i + 2) = "t" Then
-                        If sc(i + 3) = " " Then
-                            symbolCtr += 1
-                            tokens = New TokenLibrary.TokenLibrary.TokenClass
-                            tokens.setTokens("let")
-                            tokens.setLexemes("let")
-                            tokens.setAttributes("let")
-                            tokens.setLines(line)
-                            tokenstream.Add(tokens)
-                            objList = dGridLexi.Items.Add(symbolCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add("let")
-                            objList.SubItems.Add("let")
-                            objList.SubItems.Add("let")
-                            read = True
-                            i += 2
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'let'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'le'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'l'")
-                    read = True
-                End If
-            ElseIf sc(i) = "m" Then
+            ElseIf sc(i) = "g" Then
                 If sc(i + 1) = "a" Then
-                    If sc(i + 1) = "a" And sc(i + 2) = "n" Then
-                        If sc(i + 1) = "a" And sc(i + 2) = "n" And sc(i + 3) = "e" Then
-                            If sc(i + 4) = "(" Then
-                                symbolCtr += 1
-                                tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("mane")
-                                tokens.setLexemes("mane")
-                                tokens.setAttributes("mane")
-                                tokens.setLines(line)
-                                tokenstream.Add(tokens)
-                                objList = dGridLexi.Items.Add(symbolCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add("mane")
-                                objList.SubItems.Add("mane")
-                                objList.SubItems.Add("mane")
-                                read = True
-                                i += 3
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'mane'")
-                                read = True
-                                i += 3
-                            End If
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'man'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'ma'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'m'")
-                    read = True
-                End If
-
-            ElseIf sc(i) = "n" Then
-                If sc(i + 1) = "e" Then
-                    If sc(i + 1) = "e" And sc(i + 2) = "w" Then
-                        If sc(i + 1) = "e" And sc(i + 2) = "w" And sc(i + 3) = "t" Then
-                            If sc(i + 4) = " " Or sc(i + 4) = "," Or sc(i + 4) = ")" Then
-                                symbolCtr += 1
-                                tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("newt")
-                                tokens.setLexemes("newt")
-                                tokens.setAttributes("data type")
-                                tokens.setLines(line)
-                                tokenstream.Add(tokens)
-                                objList = dGridLexi.Items.Add(symbolCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add("newt")
-                                objList.SubItems.Add("newt")
-                                objList.SubItems.Add("data type")
-                                read = True
-                                i += 3
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'newt'")
-                                read = True
-                                i += 3
-                            End If
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'new'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'ne'")
-                        read = True
-                        i += 1
-                    End If
-
-                ElseIf sc(i + 1) = "u" Then
-                    If sc(i + 1) = "u" And sc(i + 2) = "l" Then
-                        If sc(i + 1) = "u" And sc(i + 2) = "l" And sc(i + 3) = "l" Then
-                            If sc(i + 4) = ")" Or sc(i + 4) = " " Then
-                                symbolCtr += 1
-                                tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("")
-                                tokens.setLexemes("")
-                                tokens.setAttributes(" ")
-                                tokens.setLines(line)
-                                tokenstream.Add(tokens)
-                                objList = dGridLexi.Items.Add(symbolCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add("null")
-                                objList.SubItems.Add("null")
-                                objList.SubItems.Add(" ")
-                                read = True
-                                i += 3
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'null'")
-                                read = True
-                                i += 3
-                            End If
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'nul'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'nu'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'n'")
-                    read = True
-                End If
-
-
-            ElseIf sc(i) = "s" Then
-                If sc(i + 1) = "t" Then
-                    If sc(i + 1) = "t" And sc(i + 2) = "a" Then
-                        If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" Then
-                            If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" Then
-                                If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" Then
-                                    If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" And sc(i + 6) = "n" Then
-                                        If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" And sc(i + 6) = "n" And sc(i + 7) = "g" Then
-                                            If sc(i + 8) = " " Or sc(i + 8) = "," Or sc(i + 8) = ")" Then
-                                                symbolCtr += 1
-                                                tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                                tokens.setTokens("starling")
-                                                tokens.setLexemes("starling")
-                                                tokens.setAttributes("data type")
-                                                tokens.setLines(line)
-                                                tokenstream.Add(tokens)
-                                                objList = dGridLexi.Items.Add(symbolCtr)
-                                                objList.SubItems.Add(line)
-                                                objList.SubItems.Add("starling")
-                                                objList.SubItems.Add("starling")
-                                                objList.SubItems.Add("data type")
-                                                read = True
-                                                i += 7
-                                            Else
-                                                errorCtr += 1
-                                                objList = dGridError.Items.Add(errorCtr)
-                                                objList.SubItems.Add(line)
-                                                objList.SubItems.Add(delimStr & "'starling'")
-                                                read = True
-                                                i += 7
-                                            End If
-                                        Else
-                                            errorCtr += 1
-                                            objList = dGridError.Items.Add(errorCtr)
-                                            objList.SubItems.Add(line)
-                                            objList.SubItems.Add(delimStr & "'starlin'")
-                                            read = True
-                                            i += 6
-                                        End If
+                    If sc(i + 1) = "a" And sc(i + 2) = "l" Then
+                        If sc(i + 1) = "a" And sc(i + 2) = "l" And sc(i + 3) = "l" Then
+                            If sc(i + 1) = "a" And sc(i + 2) = "l" And sc(i + 3) = "l" And sc(i + 4) = "o" Then
+                                If sc(i + 1) = "a" And sc(i + 2) = "l" And sc(i + 3) = "l" And sc(i + 4) = "o" And sc(i + 5) = "p" Then
+                                    If sc(i + 6) = ":" Then
+                                        symbolCtr += 1
+                                        tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                        tokens.setTokens("gallop")
+                                        tokens.setLexemes("gallop")
+                                        tokens.setAttributes("gallop")
+                                        tokens.setLines(line)
+                                        tokenstream.Add(tokens)
+                                        objList = dGridLexi.Items.Add(symbolCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add("gallop")
+                                        objList.SubItems.Add("gallop")
+                                        objList.SubItems.Add("gallop")
+                                        read = True
+                                        i += 5
                                     Else
                                         errorCtr += 1
                                         objList = dGridError.Items.Add(errorCtr)
                                         objList.SubItems.Add(line)
-                                        objList.SubItems.Add(delimStr & "'starli'")
+                                        objList.SubItems.Add(delimStr & "'gallop'")
                                         read = True
                                         i += 5
                                     End If
@@ -1108,7 +827,7 @@ Public Class Form1
                                     errorCtr += 1
                                     objList = dGridError.Items.Add(errorCtr)
                                     objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'starl'")
+                                    objList.SubItems.Add(delimStr & "'gallo'")
                                     read = True
                                     i += 4
                                 End If
@@ -1116,7 +835,7 @@ Public Class Form1
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'star'")
+                                objList.SubItems.Add(delimStr & "'gall'")
                                 read = True
                                 i += 3
                             End If
@@ -1124,455 +843,807 @@ Public Class Form1
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'sta'")
-                            read = True
-                            i += 2
-                        End If
-
-
-                    ElseIf sc(i + 1) = "t" And sc(i + 2) = "o" Then
-                        If sc(i + 1) = "t" And sc(i + 2) = "o" And sc(i + 3) = "r" Then
-                            If sc(i + 1) = "t" And sc(i + 2) = "o" And sc(i + 3) = "r" And sc(i + 4) = "k" Then
-                                If sc(i + 5) = " " Then
-                                    symbolCtr += 1
-                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                    tokens.setTokens("stork")
-                                    tokens.setLexemes("stork")
-                                    tokens.setAttributes("stork")
-                                    tokens.setLines(line)
-                                    tokenstream.Add(tokens)
-                                    objList = dGridLexi.Items.Add(symbolCtr)
-                                    objList.SubItems.Add(line)
-                                    objList.SubItems.Add("stork")
-                                    objList.SubItems.Add("stork")
-                                    objList.SubItems.Add("stork")
-                                    read = True
-                                    i += 4
-                                Else
-                                    errorCtr += 1
-                                    objList = dGridError.Items.Add(errorCtr)
-                                    objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'stork'")
-                                    read = True
-                                    i += 4
-                                End If
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'stor'")
-                                read = True
-                                i += 3
-                            End If
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'sto'")
+                            objList.SubItems.Add(delimStr & "'gal'")
                             read = True
                             i += 2
                         End If
                     Else
                         errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'st'")
-                        read = True
-                        i += 1
-                    End If
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'ga'")
+                                read = True
+                                i += 1
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'g'")
+                            read = True
+                        End If
 
-                ElseIf sc(i + 1) = "e" Then
-                    If sc(i + 1) = "e" And sc(i + 2) = "a" Then
-                        If sc(i + 1) = "e" And sc(i + 2) = "a" And sc(i + 3) = "l" Then
-                            If sc(i + 4) = " " Or sc(i + 4) = ";" Then
+
+
+                    ElseIf sc(i) = "h" Then
+                    If sc(i + 1) = "o" Then
+                        If sc(i + 1) = "o" And sc(i + 2) = "p" Then
+                            If sc(i + 3) = " " Then
                                 symbolCtr += 1
                                 tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("seal")
-                                tokens.setLexemes("seal")
-                                tokens.setAttributes("seal")
+                                tokens.setTokens("hop")
+                                tokens.setLexemes("hop")
+                                tokens.setAttributes("hop")
                                 tokens.setLines(line)
                                 tokenstream.Add(tokens)
                                 objList = dGridLexi.Items.Add(symbolCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add("seal")
-                                objList.SubItems.Add("seal")
-                                objList.SubItems.Add("seal")
+                                objList.SubItems.Add("hop")
+                                objList.SubItems.Add("hop")
+                                objList.SubItems.Add("hop")
                                 read = True
-                                i += 3
+                                i += 2
                             Else
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'seal'")
+                                objList.SubItems.Add(delimStr & "'hop'")
                                 read = True
-                                i += 3
+                                i += 2
                             End If
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'sea'")
+                            objList.SubItems.Add(delimStr & "'ho'")
                             read = True
-                            i += 2
+                            i += 1
                         End If
                     Else
                         errorCtr += 1
                         objList = dGridError.Items.Add(errorCtr)
                         objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'se'")
+                        objList.SubItems.Add(delimStr & "'h'")
                         read = True
-                        i += 1
                     End If
 
-                ElseIf sc(i + 1) = "w" Then
-                    If sc(i + 1) = "w" And sc(i + 2) = "a" Then
-                        If sc(i + 1) = "w" And sc(i + 2) = "a" And sc(i + 3) = "s" Then
-                            If sc(i + 1) = "w" And sc(i + 2) = "a" And sc(i + 3) = "s" And sc(i + 4) = "p" Then
-                                If sc(i + 5) = "(" Then
-                                    symbolCtr += 1
-                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                    tokens.setTokens("swasp")
-                                    tokens.setLexemes("swasp")
-                                    tokens.setAttributes("swasp")
-                                    tokens.setLines(line)
-                                    tokenstream.Add(tokens)
-                                    objList = dGridLexi.Items.Add(symbolCtr)
-                                    objList.SubItems.Add(line)
-                                    objList.SubItems.Add("swasp")
-                                    objList.SubItems.Add("swasp")
-                                    objList.SubItems.Add("swasp")
-                                    read = True
-                                    i += 4
-                                Else
-                                    errorCtr += 1
-                                    objList = dGridError.Items.Add(errorCtr)
-                                    objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'swasp'")
-                                    read = True
-                                    i += 4
-                                End If
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'swas'")
-                                read = True
-                                i += 3
-                            End If
+                ElseIf sc(i) = "i" Then
+                    If sc(i + 1) = "f" Then
+                        If sc(i + 2) = "(" Or sc(i + 2) = " " Then
+                            symbolCtr += 1
+                            tokens = New TokenLibrary.TokenLibrary.TokenClass
+                            tokens.setTokens("if")
+                            tokens.setLexemes("if")
+                            tokens.setAttributes("if")
+                            tokens.setLines(line)
+                            tokenstream.Add(tokens)
+                            objList = dGridLexi.Items.Add(symbolCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add("if")
+                            objList.SubItems.Add("if")
+                            objList.SubItems.Add("if")
+                            read = True
+                            i += 1
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'swa'")
+                            objList.SubItems.Add(delimStr & "'if'")
                             read = True
-                            i += 2
+                            i += 1
                         End If
                     Else
                         errorCtr += 1
                         objList = dGridError.Items.Add(errorCtr)
                         objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'sw'")
+                        objList.SubItems.Add(delimStr & "'i'")
                         read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'s'")
-                    read = True
-                End If
-
-
-
-            ElseIf sc(i) = "t" Then
-                If sc(i + 1) = "e" Then
-                    If sc(i + 1) = "e" And sc(i + 2) = "r" Then
-                        If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" Then
-                            If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" Then
-                                If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" And sc(i + 5) = "t" Then
-                                    If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" And sc(i + 5) = "t" _
-                                                            And sc(i + 6) = "e" Then
-                                        If sc(i + 7) = " " Or sc(i + 7) = ":" Then
-                                            symbolCtr += 1
-                                            tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                            tokens.setTokens("termite")
-                                            tokens.setLexemes("termite")
-                                            tokens.setAttributes("termite")
-                                            tokens.setLines(line)
-                                            tokenstream.Add(tokens)
-                                            objList = dGridLexi.Items.Add(symbolCtr)
-                                            objList.SubItems.Add(line)
-                                            objList.SubItems.Add("termite")
-                                            objList.SubItems.Add("termite")
-                                            objList.SubItems.Add("termite")
-                                            read = True
-                                            i += 6
-                                        Else
-                                            errorCtr += 1
-                                            objList = dGridError.Items.Add(errorCtr)
-                                            objList.SubItems.Add(line)
-                                            objList.SubItems.Add(delimStr & "'termite'")
-                                            read = True
-                                            i += 6
-                                        End If
-                                    Else
-                                        errorCtr += 1
-                                        objList = dGridError.Items.Add(errorCtr)
-                                        objList.SubItems.Add(line)
-                                        objList.SubItems.Add(delimStr & "'termit'")
-                                        read = True
-                                        i += 5
-                                    End If
-                                Else
-                                    errorCtr += 1
-                                    objList = dGridError.Items.Add(errorCtr)
-                                    objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'termi'")
-                                    read = True
-                                    i += 4
-                                End If
-                            Else
-                                errorCtr += 1
-                                objList = dGridError.Items.Add(errorCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'term'")
-                                read = True
-                                i += 3
-                            End If
-                        Else
-                            errorCtr += 1
-                            objList = dGridError.Items.Add(errorCtr)
-                            objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'ter'")
-                            read = True
-                            i += 2
-                        End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'te'")
-                        read = True
-                        i += 1
                     End If
 
-                ElseIf sc(i + 1) = "r" Then
-                    If sc(i + 1) = "r" And sc(i + 2) = "u" Then
-                        If sc(i + 1) = "r" And sc(i + 2) = "u" And sc(i + 3) = "e" Then
-                            If sc(i + 4) = " " Or sc(i + 4) = ":" Or sc(i + 4) = ")" Or sc(i + 4) = "," Or sc(i + 4) = "}" Or Not inArray(sc(i + 4), delimsymbol, 95) Then
+
+                ElseIf sc(i) = "l" Then
+                    If sc(i + 1) = "e" Then
+                        If sc(i + 1) = "e" And sc(i + 2) = "t" Then
+                            If sc(i + 3) = " " Then
                                 symbolCtr += 1
                                 tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("true")
-                                tokens.setLexemes("true")
-                                tokens.setAttributes("bullLit, true")
+                                tokens.setTokens("let")
+                                tokens.setLexemes("let")
+                                tokens.setAttributes("let")
                                 tokens.setLines(line)
                                 tokenstream.Add(tokens)
                                 objList = dGridLexi.Items.Add(symbolCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add("true")
-                                objList.SubItems.Add("bullLit")
-                                objList.SubItems.Add("bullLit, true")
+                                objList.SubItems.Add("let")
+                                objList.SubItems.Add("let")
+                                objList.SubItems.Add("let")
                                 read = True
-                                i += 3
+                                i += 2
                             Else
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'true'")
+                                objList.SubItems.Add(delimStr & "'let'")
                                 read = True
-                                i += 3
+                                i += 2
                             End If
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'tru'")
+                            objList.SubItems.Add(delimStr & "'le'")
                             read = True
-                            i += 2
+                            i += 1
                         End If
                     Else
                         errorCtr += 1
                         objList = dGridError.Items.Add(errorCtr)
                         objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'tr'")
+                        objList.SubItems.Add(delimStr & "'l'")
                         read = True
-                        i += 1
                     End If
-
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'t'")
-                    read = True
-                End If
-
-            ElseIf sc(i) = "v" Then
-                If sc(i + 1) = "i" Then
-                    If sc(i + 1) = "i" And sc(i + 2) = "p" Then
-                        If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" Then
-                            If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" And sc(i + 4) = "r" Then
-                                If sc(i + 5) = " " Then
+                ElseIf sc(i) = "m" Then
+                    If sc(i + 1) = "a" Then
+                        If sc(i + 1) = "a" And sc(i + 2) = "n" Then
+                            If sc(i + 1) = "a" And sc(i + 2) = "n" And sc(i + 3) = "e" Then
+                                If sc(i + 4) = "(" Then
                                     symbolCtr += 1
                                     tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                    tokens.setTokens("viper")
-                                    tokens.setLexemes("viper")
+                                    tokens.setTokens("mane")
+                                    tokens.setLexemes("mane")
+                                    tokens.setAttributes("mane")
+                                    tokens.setLines(line)
+                                    tokenstream.Add(tokens)
+                                    objList = dGridLexi.Items.Add(symbolCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add("mane")
+                                    objList.SubItems.Add("mane")
+                                    objList.SubItems.Add("mane")
+                                    read = True
+                                    i += 3
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'mane'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'man'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'ma'")
+                            read = True
+                            i += 1
+                        End If
+                    Else
+                        errorCtr += 1
+                        objList = dGridError.Items.Add(errorCtr)
+                        objList.SubItems.Add(line)
+                        objList.SubItems.Add(delimStr & "'m'")
+                        read = True
+                    End If
+
+                ElseIf sc(i) = "n" Then
+                    If sc(i + 1) = "e" Then
+                        If sc(i + 1) = "e" And sc(i + 2) = "w" Then
+                            If sc(i + 1) = "e" And sc(i + 2) = "w" And sc(i + 3) = "t" Then
+                                If sc(i + 4) = " " Or sc(i + 4) = "," Or sc(i + 4) = ")" Then
+                                    symbolCtr += 1
+                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                    tokens.setTokens("newt")
+                                    tokens.setLexemes("newt")
                                     tokens.setAttributes("data type")
                                     tokens.setLines(line)
                                     tokenstream.Add(tokens)
                                     objList = dGridLexi.Items.Add(symbolCtr)
                                     objList.SubItems.Add(line)
-                                    objList.SubItems.Add("viper")
-                                    objList.SubItems.Add("viper")
+                                    objList.SubItems.Add("newt")
+                                    objList.SubItems.Add("newt")
                                     objList.SubItems.Add("data type")
                                     read = True
-                                    i += 4
+                                    i += 3
                                 Else
                                     errorCtr += 1
                                     objList = dGridError.Items.Add(errorCtr)
                                     objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'viper'")
+                                    objList.SubItems.Add(delimStr & "'newt'")
                                     read = True
-                                    i += 4
+                                    i += 3
                                 End If
                             Else
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'vipe'")
+                                objList.SubItems.Add(delimStr & "'new'")
                                 read = True
-                                i += 3
+                                i += 2
                             End If
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'vip'")
+                            objList.SubItems.Add(delimStr & "'ne'")
                             read = True
-                            i += 2
+                            i += 1
                         End If
-                    Else
-                        errorCtr += 1
-                        objList = dGridError.Items.Add(errorCtr)
-                        objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'vi'")
-                        read = True
-                        i += 1
-                    End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'v'")
-                    read = True
-                End If
 
-            ElseIf sc(i) = "w" Then
-                If sc(i + 1) = "h" Then
-                    If sc(i + 1) = "h" And sc(i + 2) = "a" Then
-                        If sc(i + 1) = "h" And sc(i + 2) = "a" And sc(i + 3) = "l" Then
-                            If sc(i + 1) = "h" And sc(i + 2) = "a" And sc(i + 3) = "l" And sc(i + 4) = "e" Then
-                                If sc(i + 5) = "(" Or sc(i + 5) = " " Then
+                    ElseIf sc(i + 1) = "u" Then
+                        If sc(i + 1) = "u" And sc(i + 2) = "l" Then
+                            If sc(i + 1) = "u" And sc(i + 2) = "l" And sc(i + 3) = "l" Then
+                                If sc(i + 4) = ")" Or sc(i + 4) = " " Then
                                     symbolCtr += 1
                                     tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                    tokens.setTokens("whale")
-                                    tokens.setLexemes("whale")
-                                    tokens.setAttributes("whale")
+                                    tokens.setTokens("")
+                                    tokens.setLexemes("")
+                                    tokens.setAttributes(" ")
                                     tokens.setLines(line)
                                     tokenstream.Add(tokens)
                                     objList = dGridLexi.Items.Add(symbolCtr)
                                     objList.SubItems.Add(line)
-                                    objList.SubItems.Add("whale")
-                                    objList.SubItems.Add("whale")
-                                    objList.SubItems.Add("whale")
+                                    objList.SubItems.Add("null")
+                                    objList.SubItems.Add("null")
+                                    objList.SubItems.Add(" ")
                                     read = True
-                                    i += 4
+                                    i += 3
                                 Else
                                     errorCtr += 1
                                     objList = dGridError.Items.Add(errorCtr)
                                     objList.SubItems.Add(line)
-                                    objList.SubItems.Add(delimStr & "'whale'")
+                                    objList.SubItems.Add(delimStr & "'null'")
                                     read = True
-                                    i += 4
+                                    i += 3
                                 End If
                             Else
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'whal'")
+                                objList.SubItems.Add(delimStr & "'nul'")
                                 read = True
-                                i += 3
+                                i += 2
                             End If
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'wha'")
+                            objList.SubItems.Add(delimStr & "'nu'")
                             read = True
-                            i += 2
+                            i += 1
                         End If
                     Else
                         errorCtr += 1
                         objList = dGridError.Items.Add(errorCtr)
                         objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'wh'")
+                        objList.SubItems.Add(delimStr & "'n'")
                         read = True
-                        i += 1
                     End If
 
-                ElseIf sc(i + 1) = "i" Then
-                    If sc(i + 1) = "i" And sc(i + 2) = "p" Then
-                        If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" Then
-                            If sc(i + 4) = " " Or sc(i + 4) = ":" Then
-                                symbolCtr += 1
-                                tokens = New TokenLibrary.TokenLibrary.TokenClass
-                                tokens.setTokens("wipe")
-                                tokens.setLexemes("wipe")
-                                tokens.setAttributes("wipe")
-                                tokens.setLines(line)
-                                tokenstream.Add(tokens)
-                                objList = dGridLexi.Items.Add(symbolCtr)
-                                objList.SubItems.Add(line)
-                                objList.SubItems.Add("wipe")
-                                objList.SubItems.Add("wipe")
-                                objList.SubItems.Add("wipe")
-                                read = True
-                                i += 3
+
+                ElseIf sc(i) = "s" Then
+                    If sc(i + 1) = "t" Then
+                        If sc(i + 1) = "t" And sc(i + 2) = "a" Then
+                            If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" Then
+                                If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" Then
+                                    If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" Then
+                                        If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" And sc(i + 6) = "n" Then
+                                            If sc(i + 1) = "t" And sc(i + 2) = "a" And sc(i + 3) = "r" And sc(i + 4) = "l" And sc(i + 5) = "i" And sc(i + 6) = "n" And sc(i + 7) = "g" Then
+                                                If sc(i + 8) = " " Or sc(i + 8) = "," Or sc(i + 8) = ")" Then
+                                                    symbolCtr += 1
+                                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                                    tokens.setTokens("starling")
+                                                    tokens.setLexemes("starling")
+                                                    tokens.setAttributes("data type")
+                                                    tokens.setLines(line)
+                                                    tokenstream.Add(tokens)
+                                                    objList = dGridLexi.Items.Add(symbolCtr)
+                                                    objList.SubItems.Add(line)
+                                                    objList.SubItems.Add("starling")
+                                                    objList.SubItems.Add("starling")
+                                                    objList.SubItems.Add("data type")
+                                                    read = True
+                                                    i += 7
+                                                Else
+                                                    errorCtr += 1
+                                                    objList = dGridError.Items.Add(errorCtr)
+                                                    objList.SubItems.Add(line)
+                                                    objList.SubItems.Add(delimStr & "'starling'")
+                                                    read = True
+                                                    i += 7
+                                                End If
+                                            Else
+                                                errorCtr += 1
+                                                objList = dGridError.Items.Add(errorCtr)
+                                                objList.SubItems.Add(line)
+                                                objList.SubItems.Add(delimStr & "'starlin'")
+                                                read = True
+                                                i += 6
+                                            End If
+                                        Else
+                                            errorCtr += 1
+                                            objList = dGridError.Items.Add(errorCtr)
+                                            objList.SubItems.Add(line)
+                                            objList.SubItems.Add(delimStr & "'starli'")
+                                            read = True
+                                            i += 5
+                                        End If
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'starl'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'star'")
+                                    read = True
+                                    i += 3
+                                End If
                             Else
                                 errorCtr += 1
                                 objList = dGridError.Items.Add(errorCtr)
                                 objList.SubItems.Add(line)
-                                objList.SubItems.Add(delimStr & "'wipe'")
+                                objList.SubItems.Add(delimStr & "'sta'")
                                 read = True
-                                i += 3
+                                i += 2
+                            End If
+
+
+                        ElseIf sc(i + 1) = "t" And sc(i + 2) = "o" Then
+                            If sc(i + 1) = "t" And sc(i + 2) = "o" And sc(i + 3) = "r" Then
+                                If sc(i + 1) = "t" And sc(i + 2) = "o" And sc(i + 3) = "r" And sc(i + 4) = "k" Then
+                                    If sc(i + 5) = " " Then
+                                        symbolCtr += 1
+                                        tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                        tokens.setTokens("stork")
+                                        tokens.setLexemes("stork")
+                                        tokens.setAttributes("stork")
+                                        tokens.setLines(line)
+                                        tokenstream.Add(tokens)
+                                        objList = dGridLexi.Items.Add(symbolCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add("stork")
+                                        objList.SubItems.Add("stork")
+                                        objList.SubItems.Add("stork")
+                                        read = True
+                                        i += 4
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'stork'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'stor'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'sto'")
+                                read = True
+                                i += 2
                             End If
                         Else
                             errorCtr += 1
                             objList = dGridError.Items.Add(errorCtr)
                             objList.SubItems.Add(line)
-                            objList.SubItems.Add(delimStr & "'wip'")
+                            objList.SubItems.Add(delimStr & "'st'")
                             read = True
-                            i += 2
+                            i += 1
+                        End If
+
+                    ElseIf sc(i + 1) = "e" Then
+                        If sc(i + 1) = "e" And sc(i + 2) = "a" Then
+                            If sc(i + 1) = "e" And sc(i + 2) = "a" And sc(i + 3) = "l" Then
+                                If sc(i + 4) = " " Or sc(i + 4) = ";" Then
+                                    symbolCtr += 1
+                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                    tokens.setTokens("seal")
+                                    tokens.setLexemes("seal")
+                                    tokens.setAttributes("seal")
+                                    tokens.setLines(line)
+                                    tokenstream.Add(tokens)
+                                    objList = dGridLexi.Items.Add(symbolCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add("seal")
+                                    objList.SubItems.Add("seal")
+                                    objList.SubItems.Add("seal")
+                                    read = True
+                                    i += 3
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'seal'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'sea'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'se'")
+                            read = True
+                            i += 1
+                        End If
+
+                    ElseIf sc(i + 1) = "w" Then
+                        If sc(i + 1) = "w" And sc(i + 2) = "a" Then
+                            If sc(i + 1) = "w" And sc(i + 2) = "a" And sc(i + 3) = "s" Then
+                                If sc(i + 1) = "w" And sc(i + 2) = "a" And sc(i + 3) = "s" And sc(i + 4) = "p" Then
+                                    If sc(i + 5) = "(" Then
+                                        symbolCtr += 1
+                                        tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                        tokens.setTokens("swasp")
+                                        tokens.setLexemes("swasp")
+                                        tokens.setAttributes("swasp")
+                                        tokens.setLines(line)
+                                        tokenstream.Add(tokens)
+                                        objList = dGridLexi.Items.Add(symbolCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add("swasp")
+                                        objList.SubItems.Add("swasp")
+                                        objList.SubItems.Add("swasp")
+                                        read = True
+                                        i += 4
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'swasp'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'swas'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'swa'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'sw'")
+                            read = True
+                            i += 1
                         End If
                     Else
                         errorCtr += 1
                         objList = dGridError.Items.Add(errorCtr)
                         objList.SubItems.Add(line)
-                        objList.SubItems.Add(delimStr & "'wi'")
+                        objList.SubItems.Add(delimStr & "'s'")
                         read = True
-                        i += 1
                     End If
-                Else
-                    errorCtr += 1
-                    objList = dGridError.Items.Add(errorCtr)
-                    objList.SubItems.Add(line)
-                    objList.SubItems.Add(delimStr & "'w'")
-                    read = True
-                End If
 
-            ElseIf sc(i) = "z" Then
-                If sc(i + 1) = "o" Then
+
+
+                ElseIf sc(i) = "t" Then
+                    If sc(i + 1) = "e" Then
+                        If sc(i + 1) = "e" And sc(i + 2) = "r" Then
+                            If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" Then
+                                If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" Then
+                                    If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" And sc(i + 5) = "t" Then
+                                        If sc(i + 1) = "e" And sc(i + 2) = "r" And sc(i + 3) = "m" And sc(i + 4) = "i" And sc(i + 5) = "t" _
+                                                                And sc(i + 6) = "e" Then
+                                            If sc(i + 7) = " " Or sc(i + 7) = ":" Then
+                                                symbolCtr += 1
+                                                tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                                tokens.setTokens("termite")
+                                                tokens.setLexemes("termite")
+                                                tokens.setAttributes("termite")
+                                                tokens.setLines(line)
+                                                tokenstream.Add(tokens)
+                                                objList = dGridLexi.Items.Add(symbolCtr)
+                                                objList.SubItems.Add(line)
+                                                objList.SubItems.Add("termite")
+                                                objList.SubItems.Add("termite")
+                                                objList.SubItems.Add("termite")
+                                                read = True
+                                                i += 6
+                                            Else
+                                                errorCtr += 1
+                                                objList = dGridError.Items.Add(errorCtr)
+                                                objList.SubItems.Add(line)
+                                                objList.SubItems.Add(delimStr & "'termite'")
+                                                read = True
+                                                i += 6
+                                            End If
+                                        Else
+                                            errorCtr += 1
+                                            objList = dGridError.Items.Add(errorCtr)
+                                            objList.SubItems.Add(line)
+                                            objList.SubItems.Add(delimStr & "'termit'")
+                                            read = True
+                                            i += 5
+                                        End If
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'termi'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'term'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'ter'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'te'")
+                            read = True
+                            i += 1
+                        End If
+
+                    ElseIf sc(i + 1) = "r" Then
+                        If sc(i + 1) = "r" And sc(i + 2) = "u" Then
+                            If sc(i + 1) = "r" And sc(i + 2) = "u" And sc(i + 3) = "e" Then
+                                If sc(i + 4) = " " Or sc(i + 4) = ":" Or sc(i + 4) = ")" Or sc(i + 4) = "," Or sc(i + 4) = "}" Or Not inArray(sc(i + 4), delimsymbol, 95) Then
+                                    symbolCtr += 1
+                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                    tokens.setTokens("true")
+                                    tokens.setLexemes("true")
+                                    tokens.setAttributes("bullLit, true")
+                                    tokens.setLines(line)
+                                    tokenstream.Add(tokens)
+                                    objList = dGridLexi.Items.Add(symbolCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add("true")
+                                    objList.SubItems.Add("bullLit")
+                                    objList.SubItems.Add("bullLit, true")
+                                    read = True
+                                    i += 3
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'true'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'tru'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'tr'")
+                            read = True
+                            i += 1
+                        End If
+
+                    Else
+                        errorCtr += 1
+                        objList = dGridError.Items.Add(errorCtr)
+                        objList.SubItems.Add(line)
+                        objList.SubItems.Add(delimStr & "'t'")
+                        read = True
+                    End If
+
+                ElseIf sc(i) = "v" Then
+                    If sc(i + 1) = "i" Then
+                        If sc(i + 1) = "i" And sc(i + 2) = "p" Then
+                            If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" Then
+                                If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" And sc(i + 4) = "r" Then
+                                    If sc(i + 5) = " " Then
+                                        symbolCtr += 1
+                                        tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                        tokens.setTokens("viper")
+                                        tokens.setLexemes("viper")
+                                        tokens.setAttributes("data type")
+                                        tokens.setLines(line)
+                                        tokenstream.Add(tokens)
+                                        objList = dGridLexi.Items.Add(symbolCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add("viper")
+                                        objList.SubItems.Add("viper")
+                                        objList.SubItems.Add("data type")
+                                        read = True
+                                        i += 4
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'viper'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'vipe'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'vip'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'vi'")
+                            read = True
+                            i += 1
+                        End If
+                    Else
+                        errorCtr += 1
+                        objList = dGridError.Items.Add(errorCtr)
+                        objList.SubItems.Add(line)
+                        objList.SubItems.Add(delimStr & "'v'")
+                        read = True
+                    End If
+
+                ElseIf sc(i) = "w" Then
+                    If sc(i + 1) = "h" Then
+                        If sc(i + 1) = "h" And sc(i + 2) = "a" Then
+                            If sc(i + 1) = "h" And sc(i + 2) = "a" And sc(i + 3) = "l" Then
+                                If sc(i + 1) = "h" And sc(i + 2) = "a" And sc(i + 3) = "l" And sc(i + 4) = "e" Then
+                                    If sc(i + 5) = "(" Or sc(i + 5) = " " Then
+                                        symbolCtr += 1
+                                        tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                        tokens.setTokens("whale")
+                                        tokens.setLexemes("whale")
+                                        tokens.setAttributes("whale")
+                                        tokens.setLines(line)
+                                        tokenstream.Add(tokens)
+                                        objList = dGridLexi.Items.Add(symbolCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add("whale")
+                                        objList.SubItems.Add("whale")
+                                        objList.SubItems.Add("whale")
+                                        read = True
+                                        i += 4
+                                    Else
+                                        errorCtr += 1
+                                        objList = dGridError.Items.Add(errorCtr)
+                                        objList.SubItems.Add(line)
+                                        objList.SubItems.Add(delimStr & "'whale'")
+                                        read = True
+                                        i += 4
+                                    End If
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'whal'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'wha'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'wh'")
+                            read = True
+                            i += 1
+                        End If
+
+                    ElseIf sc(i + 1) = "i" Then
+                        If sc(i + 1) = "i" And sc(i + 2) = "p" Then
+                            If sc(i + 1) = "i" And sc(i + 2) = "p" And sc(i + 3) = "e" Then
+                                If sc(i + 4) = " " Or sc(i + 4) = ":" Then
+                                    symbolCtr += 1
+                                    tokens = New TokenLibrary.TokenLibrary.TokenClass
+                                    tokens.setTokens("wipe")
+                                    tokens.setLexemes("wipe")
+                                    tokens.setAttributes("wipe")
+                                    tokens.setLines(line)
+                                    tokenstream.Add(tokens)
+                                    objList = dGridLexi.Items.Add(symbolCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add("wipe")
+                                    objList.SubItems.Add("wipe")
+                                    objList.SubItems.Add("wipe")
+                                    read = True
+                                    i += 3
+                                Else
+                                    errorCtr += 1
+                                    objList = dGridError.Items.Add(errorCtr)
+                                    objList.SubItems.Add(line)
+                                    objList.SubItems.Add(delimStr & "'wipe'")
+                                    read = True
+                                    i += 3
+                                End If
+                            Else
+                                errorCtr += 1
+                                objList = dGridError.Items.Add(errorCtr)
+                                objList.SubItems.Add(line)
+                                objList.SubItems.Add(delimStr & "'wip'")
+                                read = True
+                                i += 2
+                            End If
+                        Else
+                            errorCtr += 1
+                            objList = dGridError.Items.Add(errorCtr)
+                            objList.SubItems.Add(line)
+                            objList.SubItems.Add(delimStr & "'wi'")
+                            read = True
+                            i += 1
+                        End If
+                    Else
+                        errorCtr += 1
+                        objList = dGridError.Items.Add(errorCtr)
+                        objList.SubItems.Add(line)
+                        objList.SubItems.Add(delimStr & "'w'")
+                        read = True
+                    End If
+
+                ElseIf sc(i) = "z" Then
+                    If sc(i + 1) = "o" Then
                     If sc(i + 1) = "o" And sc(i + 2) = "o" Then
                         If sc(i + 1) = "o" And sc(i + 2) = "o" And sc(i + 3) = "u" Then
                             If sc(i + 1) = "o" And sc(i + 2) = "o" And sc(i + 3) = "u" And sc(i + 4) = "t" Then
@@ -3371,9 +3442,10 @@ Public Class Form1
         generate = codeGenStart(tokenDump(tokenstream), semantics)
         generate.Start()
         Dim code As String = generate.code
+        code += vbLf & "public static int[] Random(int start, int end)" & vbLf & "{" & vbLf & "List<int> listNumbers = new List<int>();" & vbLf & "int length = (end - start) + 1;" & vbLf & "if (length < 2)" & vbLf & "{" & vbLf & "Console.WriteLine(""Insufficient Length Of Random Numbers..."");" & vbLf & "    return listNumbers.ToArray();" & vbLf & "}" & vbLf & "Random rand = new Random();" & vbLf & "int number;" & vbLf & "for (int i = 0; i < length; i++)" & vbLf & "{" & vbLf & "    do" & vbLf & "    {" & vbLf & "        number = rand.Next(start, end + 1);" & vbLf & "    } while (listNumbers.Contains(number));" & vbLf & "    listNumbers.Add(number);" & vbLf & "}" & vbLf & "return listNumbers.ToArray();}" & vbLf
         code += vbLf & "private static string substr(string str, int index)" & vbLf & "{" & vbLf & "return str.Substring(index);" & vbLf & "}" & vbLf & "private static string substr(string str, int index, int length)" & vbLf & "{" & vbLf & "return str.Substring(index, length);" & vbLf & "}" & vbLf & "private static int strlen(string str)" & vbLf & "{" & vbLf & "return str.Length;" & vbLf & "}" & vbLf
         code += vbLf & "}" & vbLf
-        code += "}"
+        'code += "}"
         If CodeGenerationToolStripMenuItem1.Checked Then
             MessageBox.Show(code)
         End If
