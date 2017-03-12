@@ -3300,7 +3300,7 @@ Public Class Form1
             '-----------------IDENTIFIER
             If sc(i) = "$" Then
                 Dim ident As String = "$"
-                If Char.IsLower(sc(i + 1)) Then
+                If Char.IsLower(sc(i + 1)) Or sc(i + 1) = "R" Then
                     ident = ident + sc(i + 1)
                     Dim ctr1 As Integer = i + 2
                     Dim length As Integer = 1

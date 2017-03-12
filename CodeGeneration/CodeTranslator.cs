@@ -459,7 +459,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "struct ";
+                code += "public struct ";
                 isAdd = false;
             }
             return node;
@@ -1294,6 +1294,7 @@ namespace Code_Translation
 
         public override Node ExitProdGlobalDec(Production node)
         {
+            isIdentVar = false;
             isGlobal = false;
             return node;
         }
@@ -1515,7 +1516,7 @@ namespace Code_Translation
                 varid = t.getLexemes();
                 varid = varid.Remove(0, 1);
                 hasDeclared = false;
-                isArray = false;
+                //isArray = false;
                 isMultID = true;
                 
             }
@@ -1564,11 +1565,14 @@ namespace Code_Translation
 
         public override void EnterProdNext2varTail(Production node)
         {
-
+            isIdArray = true;
         }
 
         public override Node ExitProdNext2varTail(Production node)
         {
+            isIdArray = false;
+            isMultID = false;
+            isIdInput = false;
             return node;
         }
 
@@ -1581,7 +1585,7 @@ namespace Code_Translation
                 code = code.Remove(code.Length - 2, 2);
                 if (!hasDeclared)
                 {
-                    if (!isFirstDec)
+                    if (!isFirstDec) 
                         code += ";\n";
                     else
                     {
@@ -1599,7 +1603,7 @@ namespace Code_Translation
                 varid = varid.Remove(0, 1);
                 isMultID = true;
                 hasDeclared = false;
-                isArray = false;
+                //isArray = false;
             }
             if (child.GetName() == "prod_next2var")
             {
@@ -1798,7 +1802,7 @@ namespace Code_Translation
                             arrval += ", " + multarrval;
                             //code = code.Remove(code.Length - 3, 3);
                         }
-                        code = code.Remove(code.Length - 3, 3);
+                        code = code.Remove(code.Length - 4, 4);
                         code += vardtype + "[]" + varid + " = " + "{ " + arrval + " };\n";
                 }
                 else
@@ -2083,23 +2087,29 @@ namespace Code_Translation
 
         public override void EnterProdStorkDec(Production node)
         {
+            
         }
 
 
         public override Node ExitProdStorkDec(Production node)
         {
+            currscope = "Mane";
             return node;
         }
 
 
         public override void ChildProdStorkDec(Production node, Node child)
         {
+            
             node.AddChild(child);
         }
 
 
         public override void EnterProdStorkElem(Production node)
         {
+            isIdentVar = false;
+            //isDec = true;
+            currscope = "Stork";
         }
 
 
@@ -2111,7 +2121,24 @@ namespace Code_Translation
 
         public override void ChildProdStorkElem(Production node, Node child)
         {
+            
             node.AddChild(child);
+            if (child.GetName() == "TERMI")
+            {
+                if (!hasDeclared)
+                {
+                    if (!isFirstDec)
+                    {
+                        if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                            code += ";\n";
+                    }
+                    code += "public static " + vardtype + " " + varid;
+                }
+                isIdentVar = true;
+
+                if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
+                    code += ";\n";
+            }
         }
 
 
