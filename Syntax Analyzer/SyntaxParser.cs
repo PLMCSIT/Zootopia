@@ -404,7 +404,7 @@ public class SyntaxParser : RecursiveDescentParser {
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.STORK, 1, 1);
         alt.AddToken((int) SyntaxConstants.AT, 1, 1);
-        alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_STORK_NAME, 1, 1);
         alt.AddToken((int) SyntaxConstants.ODC, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_STORK_ELEM, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_MULTISTORK_ELEM, 0, 1);
@@ -414,12 +414,20 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
+        pattern = new ProductionPattern((int) SyntaxConstants.PROD_STORK_NAME,
+                                        "prod_stork_name");
+        alt = new ProductionPatternAlternative();
+        alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        pattern.AddAlternative(alt);
+        AddPattern(pattern);
+
         pattern = new ProductionPattern((int) SyntaxConstants.PROD_STORK_ELEM,
                                         "prod_stork_elem");
         alt = new ProductionPatternAlternative();
         alt.AddProduction((int) SyntaxConstants.PROD_IDENT_VAR, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_MULTI_VARDEC, 0, 1);
         alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_MULTISTORK_ELEM, 0, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -458,11 +466,24 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
+        pattern = new ProductionPattern((int) SyntaxConstants.PROD_STORK_ACC,
+                                        "prod_stork_acc");
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_STORK_NAME, 1, 1);
+        alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        pattern.AddAlternative(alt);
+        AddPattern(pattern);
+
         pattern = new ProductionPattern((int) SyntaxConstants.PROD_LOCAL_DEC,
                                         "prod_local_dec");
         alt = new ProductionPatternAlternative();
         alt.AddProduction((int) SyntaxConstants.PROD_IDENT_VAR, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_NEXT2VAR, 0, 1);
+        alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_LOCAL_DEC, 0, 1);
+        pattern.AddAlternative(alt);
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_STORK_ACC, 1, 1);
         alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_LOCAL_DEC, 0, 1);
         pattern.AddAlternative(alt);

@@ -999,7 +999,22 @@ namespace Semantics_Analyzer
             node.AddChild(child);
         }
 
-         
+        public override void EnterProdStorkName(Production node)
+        {
+        }
+
+
+        public override Node ExitProdStorkName(Production node)
+        {
+            return node;
+        }
+
+
+        public override void ChildProdStorkName(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
+
         public override void EnterProdMultiVardec(Production node)
         {
         }
@@ -1077,24 +1092,26 @@ namespace Semantics_Analyzer
         {
             string dtype = "", scope = currscope, id = "";
             Node ident_var = node.GetChildAt(0);
-            Node datatype = ident_var.GetChildAt(0).GetChildAt(0);
-            dtype = getDtype(datatype.GetName());
-            bool isFunct = false;
-            bool isArray = false;
-            bool isSaved = false;
-            int idline, idcol;
-            idline = ident_var.GetChildAt(2).GetStartLine();
-            idcol = ident_var.GetChildAt(2).GetStartColumn();
-            Tokens token = new Tokens();
-            token = GetTokens(idline, idcol);
-            id = token.getLexemes();
-            SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
-            identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
-            isSaved = checkIdentifier(identifier);
-
-
-            if (node.GetChildCount() > 2)
+            if(ident_var.GetName() == "prod_ident_var")
             {
+                Node datatype = ident_var.GetChildAt(0).GetChildAt(0);
+                dtype = getDtype(datatype.GetName());
+                bool isFunct = false;
+                bool isArray = false;
+                bool isSaved = false;
+                int idline, idcol;
+                idline = ident_var.GetChildAt(2).GetStartLine();
+                idcol = ident_var.GetChildAt(2).GetStartColumn();
+                Tokens token = new Tokens();
+                token = GetTokens(idline, idcol);
+                id = token.getLexemes();
+                SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+                identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+                isSaved = checkIdentifier(identifier);
+
+
+                if (node.GetChildCount() > 2)
+                {
                     Node next2var = node.GetChildAt(1);
                     if (next2var.GetName() == "prod_next2var")
                     {
@@ -1111,7 +1128,22 @@ namespace Semantics_Analyzer
                             saveVariables(next2var, dtype, scope);
                         }
                     }
+                }
             }
+            else if (ident_var.GetName() == "prod_stork_name")
+            {
+                bool isSaved = false;
+                int idline, idcol;
+                idline = ident_var.GetStartLine();
+                idcol = ident_var.GetStartColumn();
+                Tokens token = new Tokens();
+                token = GetTokens(idline, idcol);
+                id = token.getLexemes();
+                SemanticsConstants.Identifiers identifier = new SemanticsConstants.Identifiers();
+                identifier = setIdentifier(id, "", dtype, scope, "", idline, token.getTokens());
+                isSaved = checkIdentifier(identifier);
+            }
+            
             return node;
         }
 

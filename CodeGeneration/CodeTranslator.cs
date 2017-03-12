@@ -123,6 +123,7 @@ namespace Code_Translation
         private bool isIdArrayIn;
         private bool isunaryOp;
         private bool is2dArrayElem = false;
+        private bool isStruct = false;
 
         public string Start()
         {
@@ -518,6 +519,8 @@ namespace Code_Translation
                                 {
                                     if (!isFunctVar)
                                     {
+                                    if (!isStruct)
+                                    {
                                         if (!NotTermi)
                                         {
                                             code += ";\n";
@@ -526,6 +529,11 @@ namespace Code_Translation
                                         {
                                             NotTermi = false;
                                         }
+                                    }
+                                    //    if(isStruct)
+                                    //{
+                                    //    code += ";\n";
+                                    //}
                                         //if (isMultArriD)
                                         //    code += ";\n";
                                     }
@@ -728,7 +736,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "+";
+                code += ".";
                 isAdd = false;
             }
             return node;
@@ -741,7 +749,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "?";
+                code += "+";
                 isAdd = false;
             }
             return node;
@@ -2087,12 +2095,13 @@ namespace Code_Translation
 
         public override void EnterProdStorkDec(Production node)
         {
-            
+            //isStruct = true;
         }
 
 
         public override Node ExitProdStorkDec(Production node)
         {
+            isStruct = false;
             currscope = "Mane";
             return node;
         }
@@ -2107,7 +2116,6 @@ namespace Code_Translation
 
         public override void EnterProdStorkElem(Production node)
         {
-            isIdentVar = false;
             //isDec = true;
             currscope = "Stork";
         }
@@ -2115,6 +2123,8 @@ namespace Code_Translation
 
         public override Node ExitProdStorkElem(Production node)
         {
+            //isStruct = true;
+            isIdentVar = false;
             return node;
         }
 
@@ -2242,7 +2252,10 @@ namespace Code_Translation
                                 if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
                                     code += ";\n";
                             }
+                        if (!isStruct)
                             code += vardtype + " " + varid;
+                        else
+                            isStruct = false; ;
                         }
 
                         isIdentVar = true;
@@ -2258,6 +2271,23 @@ namespace Code_Translation
             }
         }
 
+        public override void EnterProdStorkName(Production node)
+        {
+            isIdentVar = false;
+        }
+
+
+        public override Node ExitProdStorkName(Production node)
+        {
+            isStruct = true;
+            return node;
+        }
+
+
+        public override void ChildProdStorkName(Production node, Node child)
+        {
+            node.AddChild(child);
+        }
 
         public override void EnterProdStatement(Production node)
         {

@@ -3314,7 +3314,7 @@ Public Class Form1
                         End If
                     End While
 
-                    If sc(ctr1) = " " Or sc(ctr1) = "," Or sc(ctr1) = ":" _
+                    If sc(ctr1) = " " Or sc(ctr1) = "," Or sc(ctr1) = ":" Or sc(ctr1) = "." _
                     Or sc(ctr1) = "]" Or sc(ctr1) = "[" Or sc(ctr1) = "+" Or sc(ctr1) = "-" Or sc(ctr1) = "^" _
                     Or sc(ctr1) = "*" Or sc(ctr1) = "/" Or sc(ctr1) = "%" Or sc(ctr1) = "(" _
                     Or sc(ctr1) = "<" Or sc(ctr1) = ")" Or sc(ctr1) = ">" Or sc(ctr1) = "=" Or sc(ctr1) = "!" Or sc(ctr1) = ";" Or Not inArray(sc(ctr1), delimsymbol, 95) Then

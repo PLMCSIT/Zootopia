@@ -319,6 +319,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_STORK_DEC:
             EnterProdStorkDec((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_STORK_NAME:
+            EnterProdStorkName((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_STORK_ELEM:
             EnterProdStorkElem((Production) node);
             break;
@@ -333,6 +336,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_MANE:
             EnterProdMane((Production) node);
+            break;
+        case (int) SyntaxConstants.PROD_STORK_ACC:
+            EnterProdStorkAcc((Production) node);
             break;
         case (int) SyntaxConstants.PROD_LOCAL_DEC:
             EnterProdLocalDec((Production) node);
@@ -737,6 +743,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdParam2((Production) node);
         case (int) SyntaxConstants.PROD_STORK_DEC:
             return ExitProdStorkDec((Production) node);
+        case (int) SyntaxConstants.PROD_STORK_NAME:
+            return ExitProdStorkName((Production) node);
         case (int) SyntaxConstants.PROD_STORK_ELEM:
             return ExitProdStorkElem((Production) node);
         case (int) SyntaxConstants.PROD_MULTI_VARDEC:
@@ -747,6 +755,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdObjDec((Production) node);
         case (int) SyntaxConstants.PROD_MANE:
             return ExitProdMane((Production) node);
+        case (int) SyntaxConstants.PROD_STORK_ACC:
+            return ExitProdStorkAcc((Production) node);
         case (int) SyntaxConstants.PROD_LOCAL_DEC:
             return ExitProdLocalDec((Production) node);
         case (int) SyntaxConstants.PROD_STATEMENT:
@@ -979,6 +989,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_STORK_DEC:
             ChildProdStorkDec(node, child);
             break;
+        case (int) SyntaxConstants.PROD_STORK_NAME:
+            ChildProdStorkName(node, child);
+            break;
         case (int) SyntaxConstants.PROD_STORK_ELEM:
             ChildProdStorkElem(node, child);
             break;
@@ -993,6 +1006,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_MANE:
             ChildProdMane(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_STORK_ACC:
+            ChildProdStorkAcc(node, child);
             break;
         case (int) SyntaxConstants.PROD_LOCAL_DEC:
             ChildProdLocalDec(node, child);
@@ -4188,6 +4204,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * <exception cref='ParseException'>if the node analysis
      * discovered errors</exception>
      */
+    public virtual void EnterProdStorkName(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdStorkName(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdStorkName(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
     public virtual void EnterProdStorkElem(Production node) {
     }
 
@@ -4377,6 +4433,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdMane(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdStorkAcc(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdStorkAcc(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdStorkAcc(Production node, Node child) {
         node.AddChild(child);
     }
 
