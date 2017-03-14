@@ -2142,7 +2142,7 @@ namespace Code_Translation
                         if (!(code.ElementAt(code.Length - 1) == '\n' && code.ElementAt(code.Length - 2) == ';'))
                             code += ";\n";
                     }
-                    code += "public static " + vardtype + " " + varid;
+                    code += "public " + vardtype + " " + varid;
                 }
                 isIdentVar = true;
 

@@ -3142,7 +3142,7 @@ Public Class Form1
                 End While
 
                 If sc(i + x) = """" Then
-                    If str.Length <= 200 Then
+                    If str.Length <= 1000 Then
                         If sc(i + x + 1) = " " Or sc(i + x + 1) = ":" Or sc(i + x + 1) = ";" _
                         Or sc(i + x + 1) = ")" Or sc(i + x + 1) = "," Or sc(i + x + 1) = "}" Or sc(i + x + 1) = "!" Or sc(i + x + 1) = "<" Then
                             symbolCtr += 1
