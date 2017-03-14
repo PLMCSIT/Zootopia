@@ -627,7 +627,6 @@ public class SyntaxParser : RecursiveDescentParser {
         alt.AddToken((int) SyntaxConstants.CON, 1, 1);
         alt.AddToken((int) SyntaxConstants.ID, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_CONCAT, 0, 1);
-        alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -817,6 +816,10 @@ public class SyntaxParser : RecursiveDescentParser {
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.STARLIT, 1, 1);
         pattern.AddAlternative(alt);
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_LOOP_FIG1, 1, 1);
+        pattern.AddAlternative(alt);
         AddPattern(pattern);
 
         pattern = new ProductionPattern((int) SyntaxConstants.PROD_MULTI_OUTPUT,
@@ -926,8 +929,23 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.ID, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_ASSIGN_TAIL, 0, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_CONDI_CHOICE, 0, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_MATH_TAIL, 0, 1);
+        pattern.AddAlternative(alt);
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 1, 1);
+        alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_MATH_TAIL, 0, 1);
+        pattern.AddAlternative(alt);
+        AddPattern(pattern);
+
+        pattern = new ProductionPattern((int) SyntaxConstants.PROD_CONDI_CHOICE,
+                                        "prod_condi_choice");
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_ASSIGN_TAIL, 1, 1);
+        pattern.AddAlternative(alt);
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -1100,7 +1118,7 @@ public class SyntaxParser : RecursiveDescentParser {
         alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_COND_EXPR, 1, 1);
         alt.AddToken((int) SyntaxConstants.TERMI, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_INCREM_DECREM, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_INCREM_DECREM, 0, 1);
         alt.AddToken((int) SyntaxConstants.CP, 1, 1);
         alt.AddToken((int) SyntaxConstants.ODC, 1, 1);
         alt.AddProduction((int) SyntaxConstants.PROD_STATEMENT, 0, 1);
@@ -1115,6 +1133,8 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.ID, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_MATH_OP, 0, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_LOOP_FIG1, 0, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -1143,7 +1163,8 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddProduction((int) SyntaxConstants.PROD_LOOP_FIG1, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 0, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_COMP_INCDEC, 0, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -1154,6 +1175,14 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.DECRE, 1, 1);
+        pattern.AddAlternative(alt);
+        AddPattern(pattern);
+
+        pattern = new ProductionPattern((int) SyntaxConstants.PROD_COMP_INCDEC,
+                                        "prod_comp_incdec");
+        alt = new ProductionPatternAlternative();
+        alt.AddToken((int) SyntaxConstants.EQUAL, 1, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_NEXT_FIG, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 

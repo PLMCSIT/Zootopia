@@ -76,7 +76,7 @@ namespace Code_Translation
 
 
         public string error = "";
-        public string code = "using System;\n using System.Collections.Generic; \n public class Compiler\n{\n";
+        public string code = "using System;\n using System.Collections.Generic; \n public class Compiler\n{\npublic static bool pass = false;\n";
         private bool isRead = false;
         private bool isSay = false;
         private bool isSwitch = false;
@@ -121,9 +121,13 @@ namespace Code_Translation
         private bool isMultArray = false;
         private bool isInput = false;
         private bool isIdArrayIn;
-        private bool isunaryOp;
+        private bool isunaryOp = false;
         private bool is2dArrayElem = false;
         private bool isStruct = false;
+        private bool isUnary = false;
+        private bool isUnary2 = false;
+        private bool isUnary3 = false;
+        private bool isUnaryID = false;
 
         public string Start()
         {
@@ -421,7 +425,7 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "for ";
+                code += "pass = false; \nfor ";
                 isAdd = false;
             }
             return node;
@@ -642,8 +646,8 @@ namespace Code_Translation
                     {
                         code += "{";
                     }
-                code += "{";
-                isAdd = false;
+                    code += "{";
+                    isAdd = false;
             }
             return node;
         }
@@ -695,7 +699,9 @@ namespace Code_Translation
                 {
                     if (!isFunct)
                     {
+                        if(!isUnary)
                         code += ")";
+                        isUnary = false;
                     }
                 }
                 isAdd = false;
@@ -710,7 +716,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "\n{\n";
+                if(!isUnary2)
+                {
+                    code += "\n{\n";
+                }
+                isUnary2 = false;
                 isAdd = false;
             }
             return node;
@@ -989,8 +999,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "++";
-                isAdd = false;
+                if (!isunaryOp)
+                {
+                    code += "++";
+                    isAdd = false;
+                }
             }
             return node;
         }
@@ -1002,8 +1015,11 @@ namespace Code_Translation
         {
             if (isAdd)
             {
-                code += "--";
-                isAdd = false;
+                if (!isunaryOp)
+                {
+                    code += "--";
+                    isAdd = false;
+                }
             }
             return node;
         }
@@ -1227,14 +1243,18 @@ namespace Code_Translation
                     }
                     else
                     {
-                        Tokens t = new Tokens();
-                        t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                        code += " " + t.getLexemes().Remove(0, 1);
-                        if (isDec)
+                        if (!isUnaryID)
                         {
-                            int codenum = t.getCode();
-                            tokens[codenum].setDatatype(input_datatype);
+                            Tokens t = new Tokens();
+                            t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                            code += " " + t.getLexemes().Remove(0, 1);
+                            if (isDec)
+                            {
+                                int codenum = t.getCode();
+                                tokens[codenum].setDatatype(input_datatype);
+                            }
                         }
+                    isUnaryID = false;
                     }
                             }
                         //}
@@ -2291,6 +2311,7 @@ namespace Code_Translation
 
         public override void EnterProdStatement(Production node)
         {
+            isUnaryID = false;
             isArray = false;
             //isIdArray = true;
             //isOutput =  = true;
@@ -3350,23 +3371,25 @@ namespace Code_Translation
 
         public override void EnterProdIterative(Production node)
         {
+            
             //isIdInput = false;
         }
 
 
         public override Node ExitProdIterative(Production node)
         {
-            //isIdInput = false;
             return node;
         }
 
 
         public override void ChildProdIterative(Production node, Node child)
         {
+            //Node fur = node.GetChildAt(0);
             //if (child.GetName() == "WHALE")
             //    isArray = false;
             //else
             //    isArray = true;
+
             node.AddChild(child);
         }
 
@@ -3403,6 +3426,11 @@ namespace Code_Translation
 
         public override void ChildProdLoopFig2(Production node, Node child)
         {
+            //if(child.GetName() == "INCRE")
+            //{
+            //    Node idIncre = node.GetChildAt(1);
+
+            //}
             node.AddChild(child);
         }
 
@@ -3425,11 +3453,36 @@ namespace Code_Translation
         
         public override void EnterProdIncremDecrem(Production node)
         {
+            isunaryOp = true;
+            //isUnaryID = true;
         }
 
 
         public override Node ExitProdIncremDecrem(Production node)
         {
+            Node increm = node.GetChildAt(0);
+            if (increm.GetName() == "prod_unary_op")
+            {
+                //isUnaryID = true;
+                //isUnary3 = true;
+                isUnary = true;
+                isUnary2 = true;
+                string idunary = " ";
+                Node id = node.GetChildAt(1);
+                Tokens t = new Tokens();
+                t = GetTokens(id.GetStartLine(), id.GetStartColumn()); 
+                idunary = t.getLexemes().Remove(0, 1);
+                if(increm.GetChildAt(0).GetName() =="INCRE")
+                {
+                    code += "){\n ++" + idunary + ";\n pass = true;\n ";
+                }
+                else if (increm.GetChildAt(0).GetName() == "DECRE")
+                {
+                    code += "){\n --" + idunary + ";\n pass = true;\n ";
+                }
+                code = code;
+            }
+            //isunaryOp = false;
             return node;
         }
 
@@ -3437,6 +3490,30 @@ namespace Code_Translation
         public override void ChildProdIncremDecrem(Production node, Node child)
         {
             node.AddChild(child);
+            if (child.GetName() == "prod_unary_op")
+            {
+                //Node increm = node.GetChildAt(0);
+                //Node idIncrem = node.GetChildAt(0).GetChildAt(1);
+                //if (child.GetName() == "prod_loop_fig1")
+                //{
+                    if (child.GetChildAt(0).GetName() == "INCRE" || child.GetChildAt(0).GetName() == "DECRE")
+                    {
+                        isUnaryID = true;
+                    }
+                //}
+            }
+            if (child.GetName() == "prod_loop_fig1")
+            {
+                //Node increm = node.GetChildAt(0);
+                //Node idIncrem = node.GetChildAt(0).GetChildAt(1);
+                //if (child.GetName() == "prod_loop_fig1")
+                //{
+                if (child.GetChildAt(0).GetName() == "ID")
+                {
+                    isunaryOp = false;
+                }
+                //}
+            }
         }
 
 
