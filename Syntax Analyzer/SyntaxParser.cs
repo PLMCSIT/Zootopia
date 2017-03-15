@@ -1133,8 +1133,17 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddToken((int) SyntaxConstants.ID, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_MATH_OP, 0, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_LOOP_FIG1, 0, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_MATHEQ, 0, 1);
+        pattern.AddAlternative(alt);
+        AddPattern(pattern);
+
+        pattern = new ProductionPattern((int) SyntaxConstants.PROD_INCREM_FIG,
+                                        "prod_increm_fig");
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 1, 1);
+        pattern.AddAlternative(alt);
+        alt = new ProductionPatternAlternative();
+        alt.AddProduction((int) SyntaxConstants.PROD_COMP_INCDEC, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 
@@ -1163,8 +1172,7 @@ public class SyntaxParser : RecursiveDescentParser {
         pattern.AddAlternative(alt);
         alt = new ProductionPatternAlternative();
         alt.AddProduction((int) SyntaxConstants.PROD_LOOP_FIG1, 1, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_UNARY_OP, 0, 1);
-        alt.AddProduction((int) SyntaxConstants.PROD_COMP_INCDEC, 0, 1);
+        alt.AddProduction((int) SyntaxConstants.PROD_INCREM_FIG, 1, 1);
         pattern.AddAlternative(alt);
         AddPattern(pattern);
 

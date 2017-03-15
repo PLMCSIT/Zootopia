@@ -128,6 +128,7 @@ namespace Code_Translation
         private bool isUnary2 = false;
         private bool isUnary3 = false;
         private bool isUnaryID = false;
+        private bool isNoUnaryId;
 
         public string Start()
         {
@@ -1245,13 +1246,16 @@ namespace Code_Translation
                     {
                         if (!isUnaryID)
                         {
-                            Tokens t = new Tokens();
-                            t = GetTokens(node.GetStartLine(), node.GetStartColumn());
-                            code += " " + t.getLexemes().Remove(0, 1);
-                            if (isDec)
+                            if (!isNoUnaryId)
                             {
-                                int codenum = t.getCode();
-                                tokens[codenum].setDatatype(input_datatype);
+                                Tokens t = new Tokens();
+                                t = GetTokens(node.GetStartLine(), node.GetStartColumn());
+                                code += " " + t.getLexemes().Remove(0, 1);
+                                if (isDec)
+                                {
+                                    int codenum = t.getCode();
+                                    tokens[codenum].setDatatype(input_datatype);
+                                }
                             }
                         }
                     isUnaryID = false;
@@ -1931,12 +1935,14 @@ namespace Code_Translation
 
         public override Node ExitProdElem1dList(Production node)
         {
+            
             return node;
         }
 
 
         public override void ChildProdElem1dList(Production node, Node child)
         {
+
             node.AddChild(child);
         }
 
@@ -2311,6 +2317,7 @@ namespace Code_Translation
 
         public override void EnterProdStatement(Production node)
         {
+            isNoUnaryId = false;
             isUnaryID = false;
             isArray = false;
             //isIdArray = true;
@@ -3403,7 +3410,13 @@ namespace Code_Translation
 
         public override Node ExitProdLoopFig1(Production node)
         {
-            isInput = true;
+            //isInput = true;
+            //Node idun = node.GetChildAt(0);
+            //if(node.GetChildCount() == 1 && idun.GetName() == "ID")
+            //{
+            //    isNoUnaryId = true
+            ////}
+            //isNoUnaryId = true;
             return node;
         }
 
@@ -3453,6 +3466,7 @@ namespace Code_Translation
         
         public override void EnterProdIncremDecrem(Production node)
         {
+            //isNoUnaryId = true;
             isunaryOp = true;
             //isUnaryID = true;
         }
@@ -3482,6 +3496,14 @@ namespace Code_Translation
                 }
                 code = code;
             }
+            //if(increm.GetName() == "prod_loop_fig1")
+            //{
+            //    if(increm.GetChildAt(0).GetName() == "ID")
+            //    {
+            //        isNoUnaryId = true;
+            //    }
+            //}
+            //isNoUnaryId = false;
             //isunaryOp = false;
             return node;
         }
@@ -3511,8 +3533,9 @@ namespace Code_Translation
                 if (child.GetChildAt(0).GetName() == "ID")
                 {
                     isunaryOp = false;
+                    //isNoUnaryId = true;
                 }
-                //}
+                
             }
         }
 

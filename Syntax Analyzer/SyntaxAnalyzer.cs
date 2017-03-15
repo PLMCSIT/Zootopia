@@ -496,6 +496,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
         case (int) SyntaxConstants.PROD_LOOP_FIG1:
             EnterProdLoopFig1((Production) node);
             break;
+        case (int) SyntaxConstants.PROD_INCREM_FIG:
+            EnterProdIncremFig((Production) node);
+            break;
         case (int) SyntaxConstants.PROD_REL_EXPR1:
             EnterProdRelExpr1((Production) node);
             break;
@@ -867,6 +870,8 @@ public abstract class SyntaxAnalyzer : Analyzer {
             return ExitProdIterative((Production) node);
         case (int) SyntaxConstants.PROD_LOOP_FIG1:
             return ExitProdLoopFig1((Production) node);
+        case (int) SyntaxConstants.PROD_INCREM_FIG:
+            return ExitProdIncremFig((Production) node);
         case (int) SyntaxConstants.PROD_REL_EXPR1:
             return ExitProdRelExpr1((Production) node);
         case (int) SyntaxConstants.PROD_LOOP_FIG2:
@@ -1175,6 +1180,9 @@ public abstract class SyntaxAnalyzer : Analyzer {
             break;
         case (int) SyntaxConstants.PROD_LOOP_FIG1:
             ChildProdLoopFig1(node, child);
+            break;
+        case (int) SyntaxConstants.PROD_INCREM_FIG:
+            ChildProdIncremFig(node, child);
             break;
         case (int) SyntaxConstants.PROD_REL_EXPR1:
             ChildProdRelExpr1(node, child);
@@ -6569,6 +6577,46 @@ public abstract class SyntaxAnalyzer : Analyzer {
      * discovered errors</exception>
      */
     public virtual void ChildProdLoopFig1(Production node, Node child) {
+        node.AddChild(child);
+    }
+
+    /**
+     * <summary>Called when entering a parse tree node.</summary>
+     *
+     * <param name='node'>the node being entered</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void EnterProdIncremFig(Production node) {
+    }
+
+    /**
+     * <summary>Called when exiting a parse tree node.</summary>
+     *
+     * <param name='node'>the node being exited</param>
+     *
+     * <returns>the node to add to the parse tree, or
+     *          null if no parse tree should be created</returns>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual Node ExitProdIncremFig(Production node) {
+        return node;
+    }
+
+    /**
+     * <summary>Called when adding a child to a parse tree
+     * node.</summary>
+     *
+     * <param name='node'>the parent node</param>
+     * <param name='child'>the child node, or null</param>
+     *
+     * <exception cref='ParseException'>if the node analysis
+     * discovered errors</exception>
+     */
+    public virtual void ChildProdIncremFig(Production node, Node child) {
         node.AddChild(child);
     }
 

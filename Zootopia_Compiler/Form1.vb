@@ -3453,7 +3453,7 @@ Public Class Form1
             Dim output As New OutputInitializer
             output.Start(code)
             If (output.error <> "") Then
-                MessageBox.Show(output.error, "Woops!")
+                'MessageBox.Show(output.error, "Woops!")
             End If
         End If
 
